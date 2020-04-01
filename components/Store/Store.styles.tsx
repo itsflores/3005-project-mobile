@@ -13,7 +13,7 @@ export default StyleSheet.create({
     marginTop: StatusBar.currentHeight,
     paddingLeft: 20,
     paddingRight: 20,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
     // borderColor: 'yellow',
     // borderWidth: 3
   },
@@ -27,5 +27,24 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     // borderColor: 'red',
     // borderWidth: 3
-  }
+  },
+  newBookButton: {
+    flexDirection: 'row',
+    alignContent: 'center',
+    alignItems: 'center',
+    // borderColor: 'pink',
+    // borderWidth: 3
+  },
+  newBookImage: {
+    resizeMode: 'contain',
+    width: 50,
+    height: 50
+  },
+  bookListConainer: {
+    width: '100%',
+    marginTop: 20,
+    marginBottom: 20,
+    // borderColor: 'green',
+    // borderWidth: 3
+  },
 })

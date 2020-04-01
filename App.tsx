@@ -55,7 +55,7 @@ const App = () => {
                 <Image source={focused ? storeActive : store} style={{ height: 20, resizeMode: 'contain', marginTop: 10 }} />
               )
             }}
-            name="Store" 
+            name="Store"
             component={Store} 
           />
           <Tab.Screen 

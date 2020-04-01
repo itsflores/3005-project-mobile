@@ -52,17 +52,17 @@ export default class Store extends React.Component<StoreProps, StoreState> {
             Store
           </Text>
           {userAdmin && (
-            <TouchableOpacity style={{ flexDirection: 'row', alignContent: 'center', alignItems: 'center' }}>
+            <TouchableOpacity style={StoreStyles.newBookButton}>
               <Text style={[generalStyles.title, { marginRight: 10 }]}>
                 New
                 {"\n"}
                 Book
               </Text>
-              <Image source={newbook} style={{ resizeMode: 'contain', width: 50, height: 50 }} />
+              <Image source={newbook} style={StoreStyles.newBookImage} />
             </TouchableOpacity>
           )}
         </View>
-        <ScrollView showsVerticalScrollIndicator={false} style={{ width: '100%', marginTop: 20, marginBottom: 20 }}>
+        <ScrollView showsVerticalScrollIndicator={false} style={StoreStyles.bookListConainer}>
           {bookList.map((book, index) => (
             index < 10 && (
               <BookCard 
