@@ -9,9 +9,9 @@ export const colors = {
 export const generalStyles = StyleSheet.create({
   appHeader: {
     fontFamily: 'cabin',
-    fontSize: 40
+    fontSize: 40,
   },
-  title: {
+  header1: {
     fontFamily: 'worksans-regular',
     fontSize: 18
   },
@@ -22,5 +22,13 @@ export const generalStyles = StyleSheet.create({
   header3: {
     fontFamily: 'worksans-medium',
     fontSize: 18,
-  }
+  },
+  subheader1: {
+    fontFamily: 'worksans-regular',
+    fontSize: 16
+  },
+  subheader2: {
+    fontFamily: 'worksans-light',
+    fontSize: 14
+  },
 })

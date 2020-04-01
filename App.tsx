@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Store from './components/Store/Store';
-import { loadAsync } from 'expo-font';
 import { Image } from 'react-native';
+import { loadAsync } from 'expo-font';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
+import Store from './components/Store/Store';
+import Order from './components/Order/Order';
 import store from './assets/img/store.png';
 import storeActive from './assets/img/storeActive.png';
 import cart from './assets/img/cart.png';
@@ -48,7 +49,7 @@ const App = () => {
             backgroundColor: 'white',
           },
         }} initialRouteName="Store" backBehavior="history" >
-          <Tab.Screen 
+          <Tab.Screen
             options={{
               tabBarLabel: 'Store',
               tabBarIcon: ({ focused }) => (
@@ -66,7 +67,7 @@ const App = () => {
               )
             }} 
             name="Order"
-            component={Store}
+            component={Order}
           />
           <Tab.Screen 
             options={{

@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 
 export default StyleSheet.create({
-  storeContainer: {
+  orderContainer: {
     flex: 1,
     flexDirection: 'column',
     alignContent: 'center',
@@ -24,7 +24,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignContent: 'center',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     // borderColor: 'red',
     // borderWidth: 3
   },
@@ -32,8 +32,6 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignContent: 'center',
     alignItems: 'center',
-    position: 'absolute',
-    right: 0,
     // borderColor: 'pink',
     // borderWidth: 3
   },
@@ -45,19 +43,8 @@ export default StyleSheet.create({
   bookListConainer: {
     width: '100%',
     marginTop: 20,
+    marginBottom: 20,
     // borderColor: 'green',
     // borderWidth: 3
   },
-  searchBox: {
-    marginTop: 20,
-    width: '85%',
-    alignContent: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    borderBottomColor: 'black',
-    borderBottomWidth: 2,
-    // borderColor: 'green',
-    // borderWidth: 3,
-  }
 })

@@ -1,14 +1,15 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
-import newbook from '../../assets/img/newbook.png';
+import { View, Text, Image, TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import { generalStyles } from '../../App.styles';
 import StoreStyles from './Store.styles';
 import books from '../../util/files';
 import BookCard from '../../components/BookCard/BookCard';
-import { generalStyles } from '../../App.styles';
+import { Header } from '../../components/Shared/SharedComponents';
+import newbook from '../../assets/img/newbook.png';
 
 interface StoreState {
   bookList: any,
-  order: string [],
+  order: string[],
   userAdmin: boolean,
 }
 
@@ -39,7 +40,7 @@ export default class Store extends React.Component<StoreProps, StoreState> {
 
     newOrder.splice(newOrder.findIndex((item) => item === target));
 
-    this.setState({order: newOrder})
+    this.setState({ order: newOrder })
   }
 
   render() {
@@ -48,12 +49,10 @@ export default class Store extends React.Component<StoreProps, StoreState> {
     return (
       <View style={StoreStyles.storeContainer}>
         <View style={StoreStyles.headerContainer}>
-          <Text style={generalStyles.appHeader}>
-            Store
-          </Text>
+          <Header title="Store" />
           {userAdmin && (
             <TouchableOpacity style={StoreStyles.newBookButton}>
-              <Text style={[generalStyles.title, { marginRight: 10 }]}>
+              <Text style={[generalStyles.header1, { marginRight: 10 }]}>
                 New
                 {"\n"}
                 Book
@@ -62,21 +61,26 @@ export default class Store extends React.Component<StoreProps, StoreState> {
             </TouchableOpacity>
           )}
         </View>
+        <TextInput
+          style={[generalStyles.header1, StoreStyles.searchBox]}
+          placeholder="search"
+          multiline={true}
+        />
         <ScrollView showsVerticalScrollIndicator={false} style={StoreStyles.bookListConainer}>
           {bookList.map((book, index) => (
-            index < 10 && (
-              <BookCard 
-                key={index}
-                author={book.authors} 
-                title={book.title} 
-                cover={book.thumbnailUrl} 
-                price={book.price} 
-                release={book.publishedDate.date}
-                id={book.id}
-                addBook={this.addToCart}
-                removeBook={this.removeFromCart}
-              />
-            )
+            <BookCard
+              key={index}
+              author={book.authors}
+              title={book.title}
+              cover={book.thumbnailUrl}
+              price={book.price}
+              release={book.publishedDate.date}
+              id={book.id}
+              isbn={book.isbn}
+              genres={book.categories}
+              addBook={this.addToCart}
+              removeBook={this.removeFromCart}
+            />
           ))}
         </ScrollView>
       </View>
