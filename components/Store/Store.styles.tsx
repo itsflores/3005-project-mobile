@@ -14,16 +14,17 @@ export default StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     // borderColor: 'yellow',
-    // borderWidth: 
+    // borderWidth: 3
   },
   headerContainer: {
     width: '100%',
+    height: 60,
     marginTop: 20,
     flexDirection: 'row',
     alignContent: 'center',
     alignItems: 'center',
     justifyContent: 'space-between',
     // borderColor: 'red',
-    // borderWidth: 4
+    // borderWidth: 3
   }
 })
