@@ -8,7 +8,7 @@ export default StyleSheet.create({
     height: 160,
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 0,
     // borderColor: 'orange',
     // borderWidth: 3
   },
@@ -43,5 +43,37 @@ export default StyleSheet.create({
     width: '100%',
     height: '50%',
     resizeMode: 'contain'
-  }
+  },
+  overlayContainer: {
+    width: '100%', 
+    height: '100%', 
+    flexDirection: 'column',
+    position: 'absolute', 
+    padding: 20, 
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  bookOverlayContainer: {
+    width: '100%',
+    borderRadius: 20,
+    backgroundColor: 'white',
+    padding: 60,
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  bookOverlayImage: {
+    height: 120,
+    width: 140, 
+    resizeMode: 'contain'
+  },
+  bookOverlayLabel: { marginTop: 6, marginBottom: -6, textAlign: 'center' },
+  bookOverlayText: { textAlign: 'center' },
+  closeOverlayButton: { 
+    position: 'absolute',
+    bottom: 14,
+    right: 20,
+  },
 })

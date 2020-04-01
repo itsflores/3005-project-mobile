@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import Store from './components/Store/Store';
 import Order from './components/Order/Order';
+import Profile from './components/Profile/Profile';
 import store from './assets/img/store.png';
 import storeActive from './assets/img/storeActive.png';
 import cart from './assets/img/cart.png';
@@ -77,7 +78,7 @@ const App = () => {
               )
             }}  
             name="Profile" 
-            component={Store} 
+            component={Profile} 
           />
         </Tab.Navigator>
       </NavigationContainer>

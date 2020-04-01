@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 
 export default StyleSheet.create({
-  orderContainer: {
+  profileContainer: {
     flex: 1,
     flexDirection: 'column',
     alignContent: 'center',
@@ -26,13 +26,6 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     // borderColor: 'red',
-    // borderWidth: 3
-  },
-  bookListConainer: {
-    width: '100%',
-    marginTop: 20,
-    marginBottom: 20,
-    // borderColor: 'green',
     // borderWidth: 3
   },
 })

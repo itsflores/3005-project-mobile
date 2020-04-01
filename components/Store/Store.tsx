@@ -38,7 +38,7 @@ export default class Store extends React.Component<StoreProps, StoreState> {
     const { order } = this.state;
     const newOrder = order;
 
-    newOrder.splice(newOrder.findIndex((item) => item === target));
+    newOrder.splice(newOrder.findIndex((item) => item === target), 1);
 
     this.setState({ order: newOrder })
   }
@@ -80,6 +80,7 @@ export default class Store extends React.Component<StoreProps, StoreState> {
               genres={book.categories}
               addBook={this.addToCart}
               removeBook={this.removeFromCart}
+              type="store"
             />
           ))}
         </ScrollView>
