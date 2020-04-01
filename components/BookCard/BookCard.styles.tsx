@@ -59,7 +59,7 @@ export default StyleSheet.create({
     width: '100%',
     borderRadius: 20,
     backgroundColor: 'white',
-    padding: 60,
+    padding: 30,
     alignContent: 'center',
     alignItems: 'center',
     justifyContent: 'center'

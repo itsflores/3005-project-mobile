@@ -18,6 +18,8 @@ interface OrderProps {
 
 interface OrderState {
   order: string [],
+  totalPrice: number,
+  booksPrice: number,
 }
 
 export default class Order extends React.Component <OrderProps, OrderState> {
@@ -25,6 +27,8 @@ export default class Order extends React.Component <OrderProps, OrderState> {
     super(props);
     this.state = {
       order: [1,2,3,4].map((book, index) => books[index].id),
+      booksPrice: 0,
+      totalPrice: 0,
     }
   }
 
@@ -37,66 +41,104 @@ export default class Order extends React.Component <OrderProps, OrderState> {
   }
 
   render() {
-    const { order } = this.state;
+    const { order, totalPrice, booksPrice } = this.state;
 
     return (
       <View style={OrderStyles.orderContainer}>
         <View style={OrderStyles.headerContainer}>
           <Header title="Order" />
         </View>
-        <ScrollView showsVerticalScrollIndicator={false} style={OrderStyles.bookListConainer}>
-          {books.map((book, index) => (
-            order.includes(book.id) && (<BookCard
-              key={index}
-              author={book.authors}
-              title={book.title}
-              cover={book.thumbnailUrl}
-              price={book.price}
-              release={book.publishedDate.date}
-              id={book.id}
-              isbn={book.isbn}
-              genres={book.categories}
-              addBook={null}
-              isSelected={true}
-              removeBook={this.removeFromCart}
-              type="order"
-            />)
-          ))}
-          <View style={{ width: '100%', flexDirection: 'row', alignContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
-            <View>
-              <Text>
-                Books
-              </Text>
-              <Text>
-                Shipping
-              </Text>
-              <Text>
-                Total
-              </Text>
-            </View>
-            <View style={{ marginLeft: 20 }}>
-              <Text>
-                Books
-              </Text>
-              <Text>
-                Shipping
-              </Text>
-              <Text>
-                Total
-              </Text>
-            </View>
-          </View>
-          <TouchableOpacity style={{ 
-            width: '80%',
-            padding: 10,
-            borderRadius: 10,
-            backgroundColor: colors.blue
-           }}>
-            <Text>
-              checkout ->
+        {order.length === 0 ? (
+          <View style={{ 
+            flex: 1,
+            flexDirection: 'column',
+            alignContent: 'center',
+            alignItems: 'center',
+            justifyContent: 'center',
+            // borderColor: 'blue',
+            // borderWidth: 3
+          }}>
+            <Text style={generalStyles.header1}>
+              You have no items in your cart!
             </Text>
-          </TouchableOpacity>
-        </ScrollView>
+          </View>
+        ) : (
+          <ScrollView showsVerticalScrollIndicator={false} style={OrderStyles.bookListConainer}>
+            {books.map((book, index) => (
+              order.includes(book.id) && (<BookCard
+                key={index}
+                author={book.authors}
+                title={book.title}
+                cover={book.thumbnailUrl}
+                price={book.price}
+                release={book.publishedDate.date}
+                id={book.id}
+                isbn={book.isbn}
+                genres={book.categories}
+                addBook={null}
+                isSelected={true}
+                removeBook={this.removeFromCart}
+                type="order"
+              />)
+            ))}
+            <View style={{ 
+                width: '100%', 
+                flexDirection: 'row', 
+                alignContent: 'center', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                marginTop: 20,
+              }}>
+              <View>
+                <Text style={generalStyles.header1}>
+                  Books
+                </Text>
+                <Text style={generalStyles.header1}>
+                  Shipping
+                </Text>
+                <Text style={generalStyles.header1Bold}>
+                  Total
+                </Text>
+              </View>
+              <View style={{ marginLeft: 20 }}>
+                <Text style={generalStyles.header1}>
+                  $
+                </Text>
+                <Text style={generalStyles.header1}>
+                  $
+                </Text>
+                <Text style={generalStyles.header1Bold}>
+                  $
+                </Text>
+              </View>
+              <View style={{ marginLeft: 4, flexDirection: 'column', alignContent: 'flex-end', justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+                <Text style={generalStyles.header1}>
+                  {`${booksPrice.toFixed(2)}`}
+                </Text>
+                <Text style={generalStyles.header1}>
+                  {`${pricing.shipping.toFixed(2)}`}
+                </Text>
+                <Text style={generalStyles.header1Bold}>
+                  {`${totalPrice.toFixed(2)}`}
+                </Text>
+              </View>
+            </View>
+            <TouchableOpacity style={{ 
+              alignItems: 'center',
+              padding: 10,
+              borderRadius: 20,
+              backgroundColor: colors.blue,
+              marginTop: 40,
+              marginLeft: 40,
+              marginRight: 40,
+              marginBottom: 40,
+             }}>
+              <Text style={[generalStyles.actionButton]}>
+                checkout ->
+              </Text>
+            </TouchableOpacity>
+          </ScrollView>
+        )}
       </View>
     );
   }

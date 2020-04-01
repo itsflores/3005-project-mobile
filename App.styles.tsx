@@ -15,6 +15,10 @@ export const generalStyles = StyleSheet.create({
     fontFamily: 'worksans-regular',
     fontSize: 18
   },
+  header1Bold: {
+    fontFamily: 'worksans-medium',
+    fontSize: 18,
+  },
   header2: {
     fontFamily: 'worksans-light',
     fontSize: 16
@@ -31,4 +35,14 @@ export const generalStyles = StyleSheet.create({
     fontFamily: 'worksans-light',
     fontSize: 14
   },
+  actionButton: {
+    fontFamily: 'worksans-medium',
+    fontSize: 20,
+    color: 'white'
+  },
+  actionExit: {
+    fontFamily: 'worksans-medium',
+    fontSize: 20,
+    color: colors.blue
+  }
 })

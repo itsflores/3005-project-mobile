@@ -65,11 +65,17 @@ const BookCard = ({ title, author, price, cover, release, id, isbn, genres, addB
             <Text style={[generalStyles.header1, bookStyles.bookOverlayText]}>
               {isbn}
             </Text>
+            <Text style={[generalStyles.subheader2, bookStyles.bookOverlayLabel]}>
+              price
+            </Text>
+            <Text style={[generalStyles.header1, bookStyles.bookOverlayText]}>
+              {`$${price}`}
+            </Text>
             <TouchableOpacity 
               style={bookStyles.closeOverlayButton} 
               onPress={() => setOverlay(!showOverlay)}
              >
-              <Text style={[generalStyles.header1, { color: colors.blue }]}>
+              <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
                 done ->
               </Text>
             </TouchableOpacity>

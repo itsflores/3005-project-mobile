@@ -31,7 +31,6 @@ export default StyleSheet.create({
   bookListConainer: {
     width: '100%',
     marginTop: 20,
-    marginBottom: 20,
     // borderColor: 'green',
     // borderWidth: 3
   },
