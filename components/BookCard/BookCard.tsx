@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView, Modal } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Modal } from 'react-native';
 import selected from '../../assets/img/selected.png';
 import unselected from '../../assets/img/unselected.png';
 import { generalStyles } from '../../App.styles';

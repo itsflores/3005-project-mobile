@@ -62,7 +62,7 @@ export default class Store extends React.Component<StoreProps, StoreState> {
             </TouchableOpacity>
           )}
         </View>
-        <ScrollView style={{ width: '100%', marginTop: 20, marginBottom: 20 }}>
+        <ScrollView showsVerticalScrollIndicator={false} style={{ width: '100%', marginTop: 20, marginBottom: 20 }}>
           {bookList.map((book, index) => (
             index < 10 && (
               <BookCard 
