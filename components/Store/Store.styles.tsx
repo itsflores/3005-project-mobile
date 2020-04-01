@@ -13,6 +13,7 @@ export default StyleSheet.create({
     marginTop: StatusBar.currentHeight,
     paddingLeft: 20,
     paddingRight: 20,
+    backgroundColor: 'white'
     // borderColor: 'yellow',
     // borderWidth: 3
   },
