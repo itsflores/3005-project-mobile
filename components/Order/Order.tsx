@@ -13,7 +13,7 @@ const pricing = {
 }
 
 interface OrderProps {
-
+  
 }
 
 interface OrderState {
@@ -49,15 +49,7 @@ export default class Order extends React.Component <OrderProps, OrderState> {
           <Header title="Order" />
         </View>
         {order.length === 0 ? (
-          <View style={{ 
-            flex: 1,
-            flexDirection: 'column',
-            alignContent: 'center',
-            alignItems: 'center',
-            justifyContent: 'center',
-            // borderColor: 'blue',
-            // borderWidth: 3
-          }}>
+          <View style={OrderStyles.emptyOrderBanner}>
             <Text style={generalStyles.header1}>
               You have no items in your cart!
             </Text>
@@ -81,14 +73,7 @@ export default class Order extends React.Component <OrderProps, OrderState> {
                 type="order"
               />)
             ))}
-            <View style={{ 
-                width: '100%', 
-                flexDirection: 'row', 
-                alignContent: 'center', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
-                marginTop: 20,
-              }}>
+            <View style={OrderStyles.checkoutContainer}>
               <View>
                 <Text style={generalStyles.header1}>
                   Books
@@ -111,7 +96,7 @@ export default class Order extends React.Component <OrderProps, OrderState> {
                   $
                 </Text>
               </View>
-              <View style={{ marginLeft: 4, flexDirection: 'column', alignContent: 'flex-end', justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+              <View style={OrderStyles.checkoutPriceContainer}>
                 <Text style={generalStyles.header1}>
                   {`${booksPrice.toFixed(2)}`}
                 </Text>
@@ -123,16 +108,7 @@ export default class Order extends React.Component <OrderProps, OrderState> {
                 </Text>
               </View>
             </View>
-            <TouchableOpacity style={{ 
-              alignItems: 'center',
-              padding: 10,
-              borderRadius: 20,
-              backgroundColor: colors.blue,
-              marginTop: 40,
-              marginLeft: 40,
-              marginRight: 40,
-              marginBottom: 40,
-             }}>
+            <TouchableOpacity style={OrderStyles.checkoutButton}>
               <Text style={[generalStyles.actionButton]}>
                 checkout ->
               </Text>
