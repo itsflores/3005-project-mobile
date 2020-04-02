@@ -86,8 +86,8 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
           transparent={true}
           visible={showOrders}
         >
-          <View style={ProfileStyles.overlayContainer}>
-            <View style={ProfileStyles.contentOverlayContainer}>
+          <View style={generalStyles.overlayContainer}>
+            <View style={generalStyles.contentOverlayContainer}>
               <Text style={[generalStyles.cardHeader]}>
                 Your order history
               </Text>
@@ -114,7 +114,7 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
                 ))}
               </ScrollView>
               <TouchableOpacity 
-                style={ProfileStyles.closeOverlayButton} 
+                style={generalStyles.closeOverlayButton} 
                 onPress={() => this.setState({ showOrders: false })}
               >
                 <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
@@ -130,34 +130,34 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
           transparent={true}
           visible={updateBilling}
         >
-          <View style={ProfileStyles.overlayContainer}>
-            <View style={ProfileStyles.contentOverlayContainer}>
+          <View style={generalStyles.overlayContainer}>
+            <View style={generalStyles.contentOverlayContainer}>
               <Text style={[generalStyles.cardHeader]}>
                 Your billing information
               </Text>
               <View style={ProfileStyles.billingInfoContainer}>
-                <Text style={[generalStyles.header1, { marginTop: 10 }]}>
+                <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
                   Card number
                 </Text>
-                <TextInput style={[generalStyles.header1Bold, ProfileStyles.billingInfoInputBox]} placeholder={sampleUser.billingInfo.cardNumber.toString()} />
+                <TextInput style={[generalStyles.header1, ProfileStyles.billingInfoInputBox]} placeholder={sampleUser.billingInfo.cardNumber.toString()} />
 
-                <Text style={[generalStyles.header1, { marginTop: 10 }]}>
+                <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
                   Expiry date
                 </Text>
-                <TextInput style={[generalStyles.header1Bold, ProfileStyles.billingInfoInputBox]} placeholder={`${sampleUser.billingInfo.expiryDate.getDate()}/${sampleUser.billingInfo.expiryDate.getMonth()}/${sampleUser.billingInfo.expiryDate.getFullYear()}`} />
+                <TextInput style={[generalStyles.header1, ProfileStyles.billingInfoInputBox]} placeholder={`${sampleUser.billingInfo.expiryDate.getDate()}/${sampleUser.billingInfo.expiryDate.getMonth()}/${sampleUser.billingInfo.expiryDate.getFullYear()}`} />
 
-                <Text style={[generalStyles.header1, { marginTop: 10 }]}>
+                <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
                   Address
                 </Text>
-                <TextInput style={[generalStyles.header1Bold, ProfileStyles.billingInfoInputBox]} placeholder={sampleUser.billingInfo.address} />
+                <TextInput style={[generalStyles.header1, ProfileStyles.billingInfoInputBox]} placeholder={sampleUser.billingInfo.address} />
 
-                <Text style={[generalStyles.header1, { marginTop: 10 }]}>
+                <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
                   Phone number
                 </Text>
-                <TextInput style={[generalStyles.header1Bold, ProfileStyles.billingInfoInputBox]} placeholder={sampleUser.billingInfo.phoneNumber} />
+                <TextInput style={[generalStyles.header1, ProfileStyles.billingInfoInputBox]} placeholder={sampleUser.billingInfo.phoneNumber} />
               </View>
               <TouchableOpacity
-                style={ProfileStyles.closeOverlayButton} 
+                style={generalStyles.closeOverlayButton} 
                 onPress={() => this.setState({ updateBilling: false })}
               >
                 <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
@@ -174,10 +174,10 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
         {currentUser === null ? (
           <View style={[ProfileStyles.loginContainer]}>
             <TextInput style={[generalStyles.header1, ProfileStyles.loginInputBox]} placeholder="username" />
-            <TextInput style={[generalStyles.header1, ProfileStyles.loginInputBox]} placeholder="password" />
+            <TextInput secureTextEntry={true} style={[generalStyles.header1, ProfileStyles.loginInputBox]} placeholder="password" />
             <TouchableOpacity onPress={() => this.setState({ currentUser: 'johnny' })} style={ProfileStyles.loginButton}>
               <Text style={[generalStyles.actionButton]}>
-                login 
+                login
               </Text>
             </TouchableOpacity>
           </View>

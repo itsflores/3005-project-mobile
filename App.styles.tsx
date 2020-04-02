@@ -48,5 +48,31 @@ export const generalStyles = StyleSheet.create({
     fontFamily: 'worksans-medium',
     fontSize: 20,
     color: colors.blue
-  }
+  },
+  overlayContainer: {
+    width: '100%',
+    height: '100%',
+    flexDirection: 'column',
+    position: 'absolute',
+    padding: 35,
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  contentOverlayContainer: {
+    width: '100%',
+    borderRadius: 20,
+    backgroundColor: 'white',
+    padding: 30,
+    alignContent: 'center',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    // position: 'absolute'
+  },
+  closeOverlayButton: {
+    position: 'absolute',
+    bottom: 10,
+    right: 20,
+  },
 })

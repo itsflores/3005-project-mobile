@@ -32,8 +32,8 @@ const BookCard = ({ title, author, price, cover, release, id, isbn, genres, addB
         transparent={true}
         visible={showOverlay}
       >
-        <View style={BookStyles.overlayContainer}>
-          <View style={BookStyles.bookOverlayContainer}>
+        <View style={generalStyles.overlayContainer}>
+          <View style={generalStyles.contentOverlayContainer}>
             <Image source={{ uri: cover }} style={BookStyles.bookOverlayImage}/>
             <Text style={[generalStyles.subheader2, BookStyles.bookOverlayLabel]}>
               title
@@ -72,7 +72,7 @@ const BookCard = ({ title, author, price, cover, release, id, isbn, genres, addB
               {`$${price}`}
             </Text>
             <TouchableOpacity 
-              style={BookStyles.closeOverlayButton} 
+              style={generalStyles.closeOverlayButton} 
               onPress={() => setOverlay(!showOverlay)}
              >
               <Text style={[generalStyles.actionExit, { color: colors.blue }]}>

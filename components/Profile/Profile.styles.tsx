@@ -37,7 +37,7 @@ export default StyleSheet.create({
     borderRadius: 20,
     backgroundColor: colors.blue,
     marginTop: 30,
-    width: '75%'
+    width: '100%'
     // marginLeft: 40,
     // marginRight: 40,
     // marginBottom: 40,
@@ -48,11 +48,12 @@ export default StyleSheet.create({
     flexDirection: 'column',
     alignContent: 'center',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    padding: 60
   },
   loginInputBox: {
     marginTop: 20,
-    width: '75%',
+    width: '100%',
     alignContent: 'center',
     alignItems: 'center',
     justifyContent: 'center',
@@ -61,31 +62,6 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     // borderColor: 'green',
     // borderWidth: 3,
-  },
-  overlayContainer: {
-    width: '100%',
-    height: '100%',
-    flexDirection: 'column',
-    position: 'absolute',
-    padding: 35,
-    backgroundColor: 'rgba(0, 0, 0, 0.25)',
-    alignContent: 'center',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  contentOverlayContainer: {
-    width: '100%',
-    borderRadius: 20,
-    backgroundColor: 'white',
-    padding: 30,
-    alignContent: 'center',
-    alignItems: 'flex-start',
-    justifyContent: 'center'
-  },
-  closeOverlayButton: {
-    position: 'absolute',
-    bottom: 10,
-    right: 20,
   },
   orderHistoryContainer: {
     marginTop: 10,

@@ -59,5 +59,12 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     // borderColor: 'green',
     // borderWidth: 3,
+  },
+  bookInfoInputBox: {
+    width: '100%',
+    textAlign: 'left',
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+    marginTop: 4, 
   }
 })
