@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
-import newbook from '../../assets/img/newbook.png';
 import OrderStyles from './Order.styles';
 import books from '../../util/files';
 import BookCard from '../../components/BookCard/BookCard';
