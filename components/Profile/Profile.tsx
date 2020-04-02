@@ -98,7 +98,7 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
                 width: '100%',
               }}>
                 {sampleOrders.map((order, index) => (
-                  <View style={{ marginTop: 8, flexDirection: 'column' }} key={index}>
+                  <View style={{ marginTop: 10, flexDirection: 'column' }} key={index}>
                     <View style={{ 
                       flexDirection: 'row', 
                       alignItems: 'center', 
@@ -153,34 +153,48 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
                 Your billing information
               </Text>
               <View style={{ 
-                marginTop: 10,
                 marginBottom: 30,
                 width: '100%',
               }}>
-                <Text style={[generalStyles.header1, { marginTop: 8 }]}>
-                  Card number{'\n'}
-                  <Text style={[generalStyles.header1Bold]}>
-                    {sampleUser.billingInfo.cardNumber}
-                  </Text>
+                <Text style={[generalStyles.header1, { marginTop: 10 }]}>
+                  Card number
                 </Text>
-                <Text style={[generalStyles.header1, { marginTop: 8 }]}>
-                  Expiry date{'\n'}
-                  <Text style={[generalStyles.header1Bold]}>
-                    {`${sampleUser.billingInfo.expiryDate.getDate()}/${sampleUser.billingInfo.expiryDate.getMonth()}/${sampleUser.billingInfo.expiryDate.getFullYear()}`}
-                  </Text>
+                <TextInput style={[generalStyles.header1Bold, {
+                  width: '100%',
+                  textAlign: 'left',
+                  borderBottomColor: 'black',
+                  borderBottomWidth: 1
+                }]} placeholder={sampleUser.billingInfo.cardNumber.toString()} />
+
+                <Text style={[generalStyles.header1, { marginTop: 10 }]}>
+                  Expiry date
                 </Text>
-                <Text style={[generalStyles.header1, { marginTop: 8 }]}>
-                  Address{'\n'}
-                  <Text style={[generalStyles.header1Bold]}>
-                    {sampleUser.billingInfo.address}
-                  </Text>
+                <TextInput style={[generalStyles.header1Bold, {
+                  width: '100%',
+                  textAlign: 'left',
+                  borderBottomColor: 'black',
+                  borderBottomWidth: 1
+                }]} placeholder={`${sampleUser.billingInfo.expiryDate.getDate()}/${sampleUser.billingInfo.expiryDate.getMonth()}/${sampleUser.billingInfo.expiryDate.getFullYear()}`} />
+
+                <Text style={[generalStyles.header1, { marginTop: 10 }]}>
+                  Address
                 </Text>
-                <Text style={[generalStyles.header1, { marginTop: 8 }]}>
-                  Phone number{'\n'}
-                  <Text style={[generalStyles.header1Bold]}>
-                    {sampleUser.billingInfo.phoneNumber}
-                  </Text>
+                <TextInput style={[generalStyles.header1Bold, {
+                  width: '100%',
+                  textAlign: 'left',
+                  borderBottomColor: 'black',
+                  borderBottomWidth: 1
+                }]} placeholder={sampleUser.billingInfo.address} />
+
+                <Text style={[generalStyles.header1, { marginTop: 10 }]}>
+                  Phone number
                 </Text>
+                <TextInput style={[generalStyles.header1Bold, {
+                  width: '100%',
+                  textAlign: 'left',
+                  borderBottomColor: 'black',
+                  borderBottomWidth: 1
+                }]} placeholder={sampleUser.billingInfo.phoneNumber} />
               </View>
               <TouchableOpacity 
                 style={ProfileStyles.closeOverlayButton} 
