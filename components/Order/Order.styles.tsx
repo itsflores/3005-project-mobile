@@ -63,5 +63,5 @@ export default StyleSheet.create({
     marginLeft: 40,
     marginRight: 40,
     marginBottom: 40,
-   }
+  }
 })

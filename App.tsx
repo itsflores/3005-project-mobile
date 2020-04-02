@@ -49,6 +49,7 @@ const App = () => {
           style: {
             backgroundColor: 'white',
           },
+          keyboardHidesTabBar: true
         }} initialRouteName="Store" backBehavior="history" >
           <Tab.Screen
             options={{
@@ -76,7 +77,7 @@ const App = () => {
               tabBarIcon: ({ focused }) => (
                 <Image source={focused ? profileActive : profile} style={{ height: 20, resizeMode: 'contain', marginTop: 10 }} />
               )
-            }}  
+            }}
             name="Profile" 
             component={Profile} 
           />

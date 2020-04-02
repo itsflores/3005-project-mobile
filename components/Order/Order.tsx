@@ -85,7 +85,7 @@ export default class Order extends React.Component <OrderProps, OrderState> {
                   Total
                 </Text>
               </View>
-              <View style={{ marginLeft: 20 }}>
+              <View style={{ marginLeft: 40 }}>
                 <Text style={generalStyles.header1}>
                   $
                 </Text>

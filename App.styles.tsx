@@ -11,6 +11,10 @@ export const generalStyles = StyleSheet.create({
     fontFamily: 'cabin',
     fontSize: 40,
   },
+  cardHeader: {
+    fontFamily: 'worksans-regular',
+    fontSize: 20
+  },
   header1: {
     fontFamily: 'worksans-regular',
     fontSize: 18

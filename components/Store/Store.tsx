@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, TextInput } from 'react-native';
-import { generalStyles } from '../../App.styles';
+import { generalStyles, colors } from '../../App.styles';
 import StoreStyles from './Store.styles';
 import books from '../../util/files';
 import BookCard from '../../components/BookCard/BookCard';
@@ -53,9 +53,9 @@ export default class Store extends React.Component<StoreProps, StoreState> {
           {userAdmin && (
             <TouchableOpacity style={StoreStyles.newBookButton}>
               <Text style={[generalStyles.header1, { marginRight: 10 }]}>
-                New
-                {"\n"}
-                Book
+                new
+                {'\n'}
+                book
               </Text>
               <Image source={newbook} style={StoreStyles.newBookImage} />
             </TouchableOpacity>
@@ -64,7 +64,6 @@ export default class Store extends React.Component<StoreProps, StoreState> {
         <TextInput
           style={[generalStyles.header1, StoreStyles.searchBox]}
           placeholder="search"
-          multiline={true}
         />
         <ScrollView showsVerticalScrollIndicator={false} style={StoreStyles.bookListConainer}>
           {bookList.map((book, index) => (

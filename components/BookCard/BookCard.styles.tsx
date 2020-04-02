@@ -45,11 +45,11 @@ export default StyleSheet.create({
     resizeMode: 'contain'
   },
   overlayContainer: {
-    width: '100%', 
-    height: '100%', 
+    width: '100%',
+    height: '100%',
     flexDirection: 'column',
-    position: 'absolute', 
-    padding: 20, 
+    position: 'absolute',
+    padding: 35,
     backgroundColor: 'rgba(0, 0, 0, 0.25)',
     alignContent: 'center',
     alignItems: 'center',
@@ -73,7 +73,7 @@ export default StyleSheet.create({
   bookOverlayText: { textAlign: 'center' },
   closeOverlayButton: { 
     position: 'absolute',
-    bottom: 14,
+    bottom: 10,
     right: 20,
   },
 })

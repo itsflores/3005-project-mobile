@@ -56,7 +56,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     textAlign: 'center',
     borderBottomColor: 'black',
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
     // borderColor: 'green',
     // borderWidth: 3,
   }
