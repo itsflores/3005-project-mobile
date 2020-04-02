@@ -15,19 +15,9 @@ interface newBook {
   title: string | null,
   authors: string | null,
   release: string | null,
-  catergories: string | null, 
+  categories: string | null, 
   isbn: string | null,
   price: string | null,
-}
-
-const newBookInit = {
-  uri: null,
-  title: null,
-  authors: null,
-  release: null,
-  catergories: null, 
-  isbn: null,
-  price: null,
 }
 
 interface StoreState {
@@ -40,6 +30,16 @@ interface StoreState {
 }
 
 interface StoreProps {
+}
+
+const newBookInit = {
+  uri: null,
+  title: null,
+  authors: null,
+  release: null,
+  categories: null, 
+  isbn: null,
+  price: null,
 }
 
 export default class Store extends React.Component<StoreProps, StoreState> {
@@ -128,8 +128,42 @@ export default class Store extends React.Component<StoreProps, StoreState> {
   }
 
   saveNewBook = () => {
-    this.setState({ showNewBook: false, newBook: newBookInit })
+    const { newBook } = this.state;
+    let verified = true;
+
+    Object.keys(newBook).forEach((entry) => {
+      if (entry === null) {
+        verified = false;
+      }
+    })
+
+    if (verified) {
+
+      this.setState({ showNewBook: false, newBook: newBookInit })
+    } else {
+      Alert.alert(
+        'LookinnaBook',
+        `That image didn't work, please try again!`,
+        [{
+          text: 'Done',
+          style: 'default'
+        }], {
+          cancelable: true
+        }
+      );
+    }
+
   }
+
+  newBookInput = (content, target, placeholder, type?) => (
+    <TextInput 
+      value={content}
+      onChangeText={(input) => this.updateNewBook(input, target)}
+      style={[generalStyles.header1, StoreStyles.bookInfoInputBox]} 
+      placeholder={placeholder}
+      keyboardType={type || "default"}
+    />
+  )
 
   render() {
     const { bookList, userAdmin, order, search, showNewBook, newBook } = this.state;
@@ -147,43 +181,12 @@ export default class Store extends React.Component<StoreProps, StoreState> {
                 <TouchableOpacity onPress={() => this.uploadImage()} style={{ alignSelf: 'center' }}>
                   <Image source={newBook.uri ? {uri: newBook.uri} : emptyCover} style={BookStyles.bookOverlayImage}/>
                 </TouchableOpacity>
-                <TextInput 
-                  value={newBook.title}
-                  onChangeText={(input) => this.updateNewBook(input, 'title')}
-                  style={[generalStyles.header1, StoreStyles.bookInfoInputBox]} 
-                  placeholder="title" 
-                />
-                <TextInput 
-                  value={newBook.authors}
-                  onChangeText={(input) => this.updateNewBook(input, 'authors')}
-                  style={[generalStyles.header1, StoreStyles.bookInfoInputBox]} 
-                  placeholder="authors"
-                />
-                <TextInput 
-                  value={newBook.release}
-                  onChangeText={(input) => this.updateNewBook(input, 'release')}
-                  style={[generalStyles.header1, StoreStyles.bookInfoInputBox]} 
-                  placeholder="release date" 
-                />
-                <TextInput 
-                  value={newBook.catergories}
-                  onChangeText={(input) => this.updateNewBook(input, 'categories')}
-                  style={[generalStyles.header1, StoreStyles.bookInfoInputBox]} 
-                  placeholder="categories"
-                />
-                <TextInput 
-                  value={newBook.isbn}
-                  onChangeText={(input) => this.updateNewBook(input, 'isbn')}
-                  style={[generalStyles.header1, StoreStyles.bookInfoInputBox]} 
-                  placeholder="ISBN" 
-                />
-                <TextInput 
-                  value={newBook.price}
-                  onChangeText={(input) => this.updateNewBook(input, 'price')}
-                  style={[generalStyles.header1, StoreStyles.bookInfoInputBox]} 
-                  placeholder="price"
-                  keyboardType='number-pad'
-                />
+                {this.newBookInput(newBook.title, 'title', "title")}
+                {this.newBookInput(newBook.authors, 'authors', "authors")}
+                {this.newBookInput(newBook.release, 'release', "release date")}
+                {this.newBookInput(newBook.categories, 'categories', "categories")}
+                {this.newBookInput(newBook.isbn, 'isbn', "ISBN")}
+                {this.newBookInput(newBook.price, 'price', "price", "number-pad")}
               </ScrollView>
               <TouchableOpacity 
                 style={generalStyles.closeOverlayButton} 
@@ -191,6 +194,14 @@ export default class Store extends React.Component<StoreProps, StoreState> {
               >
                 <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
                   add book 
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={generalStyles.exitOverlayButton} 
+                onPress={() => this.setState({ showNewBook: false, newBook: newBookInit })}
+              >
+                <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
+                  close
                 </Text>
               </TouchableOpacity>
             </View>

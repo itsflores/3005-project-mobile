@@ -11,7 +11,7 @@ interface OrderProps {
 interface OrderState {
   currentUser: any | null,
   showOrders: boolean,
-  updateBilling: boolean
+  showBilling: boolean
 }
 
 const sampleUser = {
@@ -72,12 +72,12 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
     this.state = {
       currentUser: 'johnny',
       showOrders: false,
-      updateBilling: false,
+      showBilling: false,
     }
   }
 
   render() {
-    const { currentUser, showOrders, updateBilling } = this.state;
+    const { currentUser, showOrders, showBilling } = this.state;
 
     return (
       <View style={ProfileStyles.profileContainer}>
@@ -128,7 +128,7 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
         <Modal 
           animationType='fade'
           transparent={true}
-          visible={updateBilling}
+          visible={showBilling}
         >
           <View style={generalStyles.overlayContainer}>
             <View style={generalStyles.contentOverlayContainer}>
@@ -158,10 +158,18 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
               </View>
               <TouchableOpacity
                 style={generalStyles.closeOverlayButton} 
-                onPress={() => this.setState({ updateBilling: false })}
+                onPress={() => this.setState({ showBilling: false })}
               >
                 <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
                   close & save
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={generalStyles.exitOverlayButton} 
+                onPress={() => this.setState({ showBilling: false })}
+              >
+                <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
+                  close
                 </Text>
               </TouchableOpacity>
             </View>
@@ -194,7 +202,7 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
                 orders 
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.setState({ updateBilling: true })} style={{ marginTop: 20 }}>
+            <TouchableOpacity onPress={() => this.setState({ showBilling: true })} style={{ marginTop: 20 }}>
               <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
                 billing information 
               </Text>

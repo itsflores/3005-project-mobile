@@ -75,4 +75,9 @@ export const generalStyles = StyleSheet.create({
     bottom: 10,
     right: 20,
   },
+  exitOverlayButton: {
+    position: 'absolute',
+    bottom: 10,
+    left: 20,
+  }
 })
