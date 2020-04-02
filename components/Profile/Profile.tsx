@@ -85,7 +85,12 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
               <Text style={[generalStyles.cardHeader]}>
                 Your order history
               </Text>
-              <ScrollView style={{ marginTop: 10, height: 240, width: '100%' }}>
+              <ScrollView style={{ 
+                marginTop: 10, 
+                marginBottom: 30, 
+                height: 260,
+                width: '100%',
+              }}>
                 {sampleOrders.map((order, index) => (
                   <View style={{ marginTop: 8, flexDirection: 'column' }} key={index}>
                     <View style={{ 
@@ -109,11 +114,11 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
                       // borderColor: 'red', 
                       // borderWidth: 3 
                     }}>
-                      <Text>
-                        {}
+                      <Text style={[generalStyles.header2]}>
+                        {`${order.date.getDate()}/${order.date.getMonth()}/${order.date.getFullYear()}`}
                       </Text>
-                      <Text>
-                        
+                      <Text style={[generalStyles.header2]}>
+                        {`tracking #${order.tracking}`}
                       </Text>
                     </View>
                   </View>
@@ -166,10 +171,13 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
           </View>
         ) : (
           <View style={{ flex: 1, width: '100%', flexDirection: 'column', alignContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={[generalStyles.header2, { fontSize: 40 }]}>
-              {`Hello, ${currentUser}`}
+            <Text style={[generalStyles.header2, { fontSize: 40, textAlign: 'center' }]}>
+              {`Hello, ${currentUser}\n`}
+              <Text style={[generalStyles.subheader1]}>
+                glad to see you again
+              </Text>
             </Text>
-            <TouchableOpacity onPress={() => this.setState({ showOrders: true })} style={{ marginTop: 40 }}>
+            <TouchableOpacity onPress={() => this.setState({ showOrders: true })} style={{ marginTop: 60 }}>
               <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
                 orders ->
               </Text>
