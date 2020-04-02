@@ -17,7 +17,7 @@ const books = [{
     "isbn": "1935182722",
     "pageCount": 592,
     "publishedDate": {
-      "date": "2011-01-14T00:00:00.000-0800"
+      "year": "2011"
     },
     "thumbnailUrl": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/ableson2.jpg",
     "authors": ["W. Frank Ableson", "Robi Sen"],

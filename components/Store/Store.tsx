@@ -11,13 +11,14 @@ import newbook from '../../assets/img/newbook.png';
 import emptyCover from '../../assets/img/emptyCover.png';
 
 interface newBook {
-  uri: string | null,
+  thumbnailUrl: string | null,
   title: string | null,
   authors: string | null,
   release: string | null,
   categories: string | null, 
   isbn: string | null,
   price: string | null,
+  pageCount: string | null,
 }
 
 interface StoreState {
@@ -26,20 +27,21 @@ interface StoreState {
   userAdmin: boolean,
   search: null | string,
   showNewBook: boolean,
-  newBook: newBook
+  newBook: newBook,
 }
 
 interface StoreProps {
 }
 
 const newBookInit = {
-  uri: null,
+  thumbnailUrl: null,
   title: null,
   authors: null,
   release: null,
   categories: null, 
   isbn: null,
   price: null,
+  pageCount: null,
 }
 
 export default class Store extends React.Component<StoreProps, StoreState> {
@@ -111,7 +113,7 @@ export default class Store extends React.Component<StoreProps, StoreState> {
         this.setState((prevState) => ({
           newBook: {
             ...prevState.newBook,
-            uri: upload.uri
+            thumbnailUrl: upload.uri
           }
         }));
       }
@@ -128,22 +130,35 @@ export default class Store extends React.Component<StoreProps, StoreState> {
   }
 
   saveNewBook = () => {
-    const { newBook } = this.state;
+    const { newBook, bookList } = this.state;
     let verified = true;
 
     Object.keys(newBook).forEach((entry) => {
-      if (entry === null) {
+      if (newBook[entry] === null || parseInt(newBook['price']) === NaN) {
         verified = false;
       }
     })
 
     if (verified) {
+      const newList = bookList.push({
+        ...newbook,
+        id: `b-${bookList.length + 1}`,
+        publishedDate: {
+          year: newBook.release
+        },
+        authors: [...newBook.authors.split(',')],
+        categories: [...newBook.authors.split(',')]
+      })
 
-      this.setState({ showNewBook: false, newBook: newBookInit })
+      this.setState((prevState) => ({
+        showNewBook: false, 
+        newBook: newBookInit, 
+        bookList: newList
+      }))
     } else {
       Alert.alert(
         'LookinnaBook',
-        `That image didn't work, please try again!`,
+        `Please verify your information and try again!`,
         [{
           text: 'Done',
           style: 'default'
@@ -179,12 +194,13 @@ export default class Store extends React.Component<StoreProps, StoreState> {
             <View style={generalStyles.contentOverlayContainer}>
               <ScrollView style={{ width: '100%', marginBottom: 20 }}>
                 <TouchableOpacity onPress={() => this.uploadImage()} style={{ alignSelf: 'center' }}>
-                  <Image source={newBook.uri ? {uri: newBook.uri} : emptyCover} style={BookStyles.bookOverlayImage}/>
+                  <Image source={newBook.thumbnailUrl ? {uri: newBook.thumbnailUrl} : emptyCover} style={BookStyles.bookOverlayImage}/>
                 </TouchableOpacity>
                 {this.newBookInput(newBook.title, 'title', "title")}
                 {this.newBookInput(newBook.authors, 'authors', "authors")}
                 {this.newBookInput(newBook.release, 'release', "release date")}
                 {this.newBookInput(newBook.categories, 'categories', "categories")}
+                {this.newBookInput(newBook.pageCount, 'pageCount', "page count")}
                 {this.newBookInput(newBook.isbn, 'isbn', "ISBN")}
                 {this.newBookInput(newBook.price, 'price', "price", "number-pad")}
               </ScrollView>
