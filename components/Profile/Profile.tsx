@@ -18,7 +18,13 @@ const sampleUser = {
   id: 'usr-01',
   name: 'john',
   userame: 'johnny',
-  password: 'luvbooks'
+  password: 'luvbooks',
+  billingInfo: {
+    cardNumber: 123456789,
+    expiryDate: new Date(),
+    address: '246 Maple Street, Ottawa, ON',
+    phoneNumber: '613 XXX XXXX'
+  }
 }
 
 const sampleOrders = [
@@ -129,7 +135,7 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
                 onPress={() => this.setState({ showOrders: false })}
               >
                 <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
-                  done ->
+                  done 
                 </Text>
               </TouchableOpacity>
             </View>
@@ -143,13 +149,45 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
         >
           <View style={ProfileStyles.overlayContainer}>
             <View style={ProfileStyles.contentOverlayContainer}>
-              
+              <Text style={[generalStyles.cardHeader]}>
+                Your billing information
+              </Text>
+              <View style={{ 
+                marginTop: 10,
+                marginBottom: 30,
+                width: '100%',
+              }}>
+                <Text style={[generalStyles.header1, { marginTop: 8 }]}>
+                  Card number{'\n'}
+                  <Text style={[generalStyles.header1Bold]}>
+                    {sampleUser.billingInfo.cardNumber}
+                  </Text>
+                </Text>
+                <Text style={[generalStyles.header1, { marginTop: 8 }]}>
+                  Expiry date{'\n'}
+                  <Text style={[generalStyles.header1Bold]}>
+                    {`${sampleUser.billingInfo.expiryDate.getDate()}/${sampleUser.billingInfo.expiryDate.getMonth()}/${sampleUser.billingInfo.expiryDate.getFullYear()}`}
+                  </Text>
+                </Text>
+                <Text style={[generalStyles.header1, { marginTop: 8 }]}>
+                  Address{'\n'}
+                  <Text style={[generalStyles.header1Bold]}>
+                    {sampleUser.billingInfo.address}
+                  </Text>
+                </Text>
+                <Text style={[generalStyles.header1, { marginTop: 8 }]}>
+                  Phone number{'\n'}
+                  <Text style={[generalStyles.header1Bold]}>
+                    {sampleUser.billingInfo.phoneNumber}
+                  </Text>
+                </Text>
+              </View>
               <TouchableOpacity 
                 style={ProfileStyles.closeOverlayButton} 
                 onPress={() => this.setState({ updateBilling: false })}
               >
                 <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
-                  done ->
+                  close & save
                 </Text>
               </TouchableOpacity>
             </View>
@@ -165,7 +203,7 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
             <TextInput style={[generalStyles.header1, ProfileStyles.loginBox]} placeholder="password" />
             <TouchableOpacity onPress={() => this.setState({ currentUser: 'johnny' })} style={ProfileStyles.loginButton}>
               <Text style={[generalStyles.actionButton]}>
-                login ->
+                login 
               </Text>
             </TouchableOpacity>
           </View>
@@ -174,22 +212,22 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
             <Text style={[generalStyles.header2, { fontSize: 40, textAlign: 'center' }]}>
               {`Hello, ${currentUser}\n`}
               <Text style={[generalStyles.subheader1]}>
-                glad to see you again
+                good to see you again
               </Text>
             </Text>
             <TouchableOpacity onPress={() => this.setState({ showOrders: true })} style={{ marginTop: 60 }}>
               <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
-                orders ->
+                orders 
               </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => this.setState({ updateBilling: true })} style={{ marginTop: 20 }}>
               <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
-                billing information ->
+                billing information 
               </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => this.setState({ currentUser: null })} style={ProfileStyles.loginButton}>
               <Text style={[generalStyles.actionButton]}>
-                log out ->
+                log out 
               </Text>
             </TouchableOpacity>
           </View>

@@ -110,7 +110,7 @@ export default class Order extends React.Component <OrderProps, OrderState> {
             </View>
             <TouchableOpacity style={OrderStyles.checkoutButton}>
               <Text style={[generalStyles.actionButton]}>
-                checkout ->
+                checkout 
               </Text>
             </TouchableOpacity>
           </ScrollView>

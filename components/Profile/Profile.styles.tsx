@@ -34,7 +34,7 @@ export default StyleSheet.create({
     padding: 10,
     borderRadius: 20,
     backgroundColor: colors.blue,
-    marginTop: 40,
+    marginTop: 30,
     width: '75%'
     // marginLeft: 40,
     // marginRight: 40,

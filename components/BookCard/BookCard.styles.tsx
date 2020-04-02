@@ -61,17 +61,23 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     padding: 30,
     alignContent: 'center',
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: 'flex-start',
+    justifyContent: 'center',
   },
   bookOverlayImage: {
     height: 120,
-    width: 140, 
+    width: 140,
+    alignSelf: 'center',
     resizeMode: 'contain'
   },
-  bookOverlayLabel: { marginTop: 6, marginBottom: -6, textAlign: 'center' },
-  bookOverlayText: { textAlign: 'center' },
-  closeOverlayButton: { 
+  bookOverlayLabel: {
+    marginTop: 4,
+    textAlign: 'left',
+  },
+  bookOverlayText: {
+    textAlign: 'left'
+  },
+  closeOverlayButton: {
     position: 'absolute',
     bottom: 10,
     right: 20,

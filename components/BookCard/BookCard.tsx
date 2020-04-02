@@ -76,7 +76,7 @@ const BookCard = ({ title, author, price, cover, release, id, isbn, genres, addB
               onPress={() => setOverlay(!showOverlay)}
              >
               <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
-                done ->
+                done 
               </Text>
             </TouchableOpacity>
           </View>
