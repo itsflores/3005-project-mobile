@@ -39,6 +39,10 @@ export const generalStyles = StyleSheet.create({
     fontFamily: 'worksans-light',
     fontSize: 14
   },
+  subheader3: {
+    fontFamily: 'worksans-medium',
+    fontSize: 12
+  },
   actionButton: {
     fontFamily: 'worksans-medium',
     fontSize: 20,

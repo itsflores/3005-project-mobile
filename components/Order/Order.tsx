@@ -57,21 +57,23 @@ export default class Order extends React.Component <OrderProps, OrderState> {
         ) : (
           <ScrollView showsVerticalScrollIndicator={false} style={OrderStyles.bookListConainer}>
             {books.map((book, index) => (
-              order.includes(book.id) && (<BookCard
-                key={index}
-                author={book.authors}
-                title={book.title}
-                cover={book.thumbnailUrl}
-                price={book.price}
-                release={book.publishedDate.date}
-                id={book.id}
-                isbn={book.isbn}
-                genres={book.categories}
-                addBook={null}
-                isSelected={true}
-                removeBook={this.removeFromCart}
-                type="order"
-              />)
+              order.includes(book.id) && (
+                <BookCard
+                  key={index}
+                  author={book.authors}
+                  title={book.title}
+                  cover={book.thumbnailUrl}
+                  price={book.price}
+                  release={book.publishedYear}
+                  id={book.id}
+                  isbn={book.isbn}
+                  genres={book.categories}
+                  addBook={null}
+                  isSelected={true}
+                  removeBook={this.removeFromCart}
+                  numPages={book.pageCount}
+                  type="order"                  
+                />)
             ))}
             <View style={OrderStyles.checkoutContainer}>
               <View>

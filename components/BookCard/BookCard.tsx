@@ -5,7 +5,7 @@ import unselected from '../../assets/img/unselected.png';
 import { generalStyles, colors } from '../../App.styles';
 import BookStyles from './BookCard.styles';
 
-const BookCard = ({ title, author, price, cover, release, id, isbn, genres, addBook, removeBook, isSelected = false, type }) => {
+const BookCard = ({ title, author, price, cover, release, id, isbn, genres, addBook, removeBook, numPages, isSelected = false, type }) => {
   const [bookSelected, setSelection] = useState(isSelected)
   const [showOverlay, setOverlay] = useState(false)
 
@@ -51,7 +51,7 @@ const BookCard = ({ title, author, price, cover, release, id, isbn, genres, addB
               release
             </Text>
             <Text style={[generalStyles.header1, BookStyles.bookOverlayText]}>
-              {release.slice(0, 4)}
+              {release}
             </Text>
             <Text style={[generalStyles.subheader2, BookStyles.bookOverlayLabel]}>
               categories
@@ -93,7 +93,10 @@ const BookCard = ({ title, author, price, cover, release, id, isbn, genres, addB
             {author.join(', ')}
           </Text>
           <Text style={[generalStyles.subheader2, { marginBottom: 4 }]}>
-            {release.slice(0, 4)}
+            {release}
+          </Text>
+          <Text style={[generalStyles.subheader3, { marginBottom: 4 }]}>
+            {`${numPages} pages`}
           </Text>
           <Text style={[generalStyles.header3, { bottom: 0, right: 14, position: 'absolute'}]}>
             {`$${price}`}

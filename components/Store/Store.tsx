@@ -14,7 +14,7 @@ interface newBook {
   thumbnailUrl: string | null,
   title: string | null,
   authors: string | null,
-  release: string | null,
+  publishedYear: string | null,
   categories: string | null, 
   isbn: string | null,
   price: string | null,
@@ -37,7 +37,7 @@ const newBookInit = {
   thumbnailUrl: null,
   title: null,
   authors: null,
-  release: null,
+  publishedYear: null,
   categories: null, 
   isbn: null,
   price: null,
@@ -134,27 +134,34 @@ export default class Store extends React.Component<StoreProps, StoreState> {
     let verified = true;
 
     Object.keys(newBook).forEach((entry) => {
-      if (newBook[entry] === null || parseInt(newBook['price']) === NaN) {
+      if (newBook[entry] === null 
+        || parseInt(newBook['price']) === NaN
+        || newBook['price'].length > 4
+        || parseInt(newBook['publishedYear']) === NaN
+        || parseInt(newBook['pageCount']) === NaN) {
         verified = false;
       }
     })
 
+    console.log(newBook);
+
     if (verified) {
-      const newList = bookList.push({
-        ...newbook,
+      const newList = bookList;
+      newList.push({
+        ...newBook,
         id: `b-${bookList.length + 1}`,
-        publishedDate: {
-          year: newBook.release
-        },
+        publishedYear: parseInt(newBook.publishedYear),
         authors: [...newBook.authors.split(',')],
-        categories: [...newBook.authors.split(',')]
+        categories: [...newBook.authors.split(',')],
+        pageCount: parseInt(newBook.pageCount),
+        price: parseInt(newBook.price)
       })
 
-      this.setState((prevState) => ({
+      this.setState({
         showNewBook: false, 
         newBook: newBookInit, 
         bookList: newList
-      }))
+      })
     } else {
       Alert.alert(
         'LookinnaBook',
@@ -198,7 +205,7 @@ export default class Store extends React.Component<StoreProps, StoreState> {
                 </TouchableOpacity>
                 {this.newBookInput(newBook.title, 'title', "title")}
                 {this.newBookInput(newBook.authors, 'authors', "authors")}
-                {this.newBookInput(newBook.release, 'release', "release date")}
+                {this.newBookInput(newBook.publishedYear, 'publishedYear', "release year")}
                 {this.newBookInput(newBook.categories, 'categories', "categories")}
                 {this.newBookInput(newBook.pageCount, 'pageCount', "page count")}
                 {this.newBookInput(newBook.isbn, 'isbn', "ISBN")}
@@ -251,13 +258,14 @@ export default class Store extends React.Component<StoreProps, StoreState> {
               title={book.title}
               cover={book.thumbnailUrl}
               price={book.price}
-              release={book.publishedDate.date}
+              release={book.publishedYear}
               id={book.id}
               isbn={book.isbn}
               genres={book.categories}
               addBook={this.addToCart}
               removeBook={this.removeFromCart}
               type="store"
+              numPages={book.pageCount}
             />
           ))}
         </ScrollView>
