@@ -2,7 +2,9 @@ import {
   StyleSheet,
   StatusBar
 } from 'react-native';
-import { colors } from '../../App.styles';
+import {
+  colors
+} from '../../App.styles';
 
 export default StyleSheet.create({
   profileContainer: {
@@ -29,7 +31,7 @@ export default StyleSheet.create({
     // borderColor: 'red',
     // borderWidth: 3
   },
-  loginButton: { 
+  loginButton: {
     alignItems: 'center',
     padding: 10,
     borderRadius: 20,
@@ -40,7 +42,15 @@ export default StyleSheet.create({
     // marginRight: 40,
     // marginBottom: 40,
   },
-  loginBox: {
+  loginContainer: {
+    flex: 1,
+    width: '100%',
+    flexDirection: 'column',
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  loginInputBox: {
     marginTop: 20,
     width: '75%',
     alignContent: 'center',
@@ -67,14 +77,41 @@ export default StyleSheet.create({
     width: '100%',
     borderRadius: 20,
     backgroundColor: 'white',
-    padding: 20,
+    padding: 30,
     alignContent: 'center',
     alignItems: 'flex-start',
     justifyContent: 'center'
   },
-  closeOverlayButton: { 
+  closeOverlayButton: {
     position: 'absolute',
     bottom: 10,
     right: 20,
   },
+  orderHistoryContainer: {
+    marginTop: 10,
+    marginBottom: 30,
+    height: 260,
+    width: '100%',
+  },
+  orderContainer: {
+    marginTop: 10,
+    flexDirection: 'column'
+  },
+  orderDescriptionContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    // borderColor: 'red', 
+    // borderWidth: 3 
+  },
+  billingInfoContainer: {
+    marginBottom: 30,
+    width: '100%',
+  },
+  billingInfoInputBox: {
+    width: '100%',
+    textAlign: 'left',
+    borderBottomColor: 'black',
+    borderBottomWidth: 1
+  }
 })

@@ -91,21 +91,10 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
               <Text style={[generalStyles.cardHeader]}>
                 Your order history
               </Text>
-              <ScrollView style={{ 
-                marginTop: 10, 
-                marginBottom: 30, 
-                height: 260,
-                width: '100%',
-              }}>
+              <ScrollView style={ProfileStyles.orderHistoryContainer}>
                 {sampleOrders.map((order, index) => (
-                  <View style={{ marginTop: 10, flexDirection: 'column' }} key={index}>
-                    <View style={{ 
-                      flexDirection: 'row', 
-                      alignItems: 'center', 
-                      justifyContent: 'space-between', 
-                      // borderColor: 'red', 
-                      // borderWidth: 3 
-                    }}>
+                  <View style={ProfileStyles.orderContainer} key={index}>
+                    <View style={ProfileStyles.orderDescriptionContainer}>
                       <Text style={[generalStyles.header1, { textAlign: 'left' }]}>
                         {`#${order.id}`}
                       </Text>
@@ -113,13 +102,7 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
                         {`$${order.price.toFixed(2)}`}
                       </Text>
                     </View>
-                    <View style={{ 
-                      flexDirection: 'row', 
-                      alignItems: 'center', 
-                      justifyContent: 'space-between', 
-                      // borderColor: 'red', 
-                      // borderWidth: 3 
-                    }}>
+                    <View style={ProfileStyles.orderDescriptionContainer}>
                       <Text style={[generalStyles.header2]}>
                         {`${order.date.getDate()}/${order.date.getMonth()}/${order.date.getFullYear()}`}
                       </Text>
@@ -152,51 +135,28 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
               <Text style={[generalStyles.cardHeader]}>
                 Your billing information
               </Text>
-              <View style={{ 
-                marginBottom: 30,
-                width: '100%',
-              }}>
+              <View style={ProfileStyles.billingInfoContainer}>
                 <Text style={[generalStyles.header1, { marginTop: 10 }]}>
                   Card number
                 </Text>
-                <TextInput style={[generalStyles.header1Bold, {
-                  width: '100%',
-                  textAlign: 'left',
-                  borderBottomColor: 'black',
-                  borderBottomWidth: 1
-                }]} placeholder={sampleUser.billingInfo.cardNumber.toString()} />
+                <TextInput style={[generalStyles.header1Bold, ProfileStyles.billingInfoInputBox]} placeholder={sampleUser.billingInfo.cardNumber.toString()} />
 
                 <Text style={[generalStyles.header1, { marginTop: 10 }]}>
                   Expiry date
                 </Text>
-                <TextInput style={[generalStyles.header1Bold, {
-                  width: '100%',
-                  textAlign: 'left',
-                  borderBottomColor: 'black',
-                  borderBottomWidth: 1
-                }]} placeholder={`${sampleUser.billingInfo.expiryDate.getDate()}/${sampleUser.billingInfo.expiryDate.getMonth()}/${sampleUser.billingInfo.expiryDate.getFullYear()}`} />
+                <TextInput style={[generalStyles.header1Bold, ProfileStyles.billingInfoInputBox]} placeholder={`${sampleUser.billingInfo.expiryDate.getDate()}/${sampleUser.billingInfo.expiryDate.getMonth()}/${sampleUser.billingInfo.expiryDate.getFullYear()}`} />
 
                 <Text style={[generalStyles.header1, { marginTop: 10 }]}>
                   Address
                 </Text>
-                <TextInput style={[generalStyles.header1Bold, {
-                  width: '100%',
-                  textAlign: 'left',
-                  borderBottomColor: 'black',
-                  borderBottomWidth: 1
-                }]} placeholder={sampleUser.billingInfo.address} />
+                <TextInput style={[generalStyles.header1Bold, ProfileStyles.billingInfoInputBox]} placeholder={sampleUser.billingInfo.address} />
 
                 <Text style={[generalStyles.header1, { marginTop: 10 }]}>
                   Phone number
                 </Text>
-                <TextInput style={[generalStyles.header1Bold, {
-                  width: '100%',
-                  textAlign: 'left',
-                  borderBottomColor: 'black',
-                  borderBottomWidth: 1
-                }]} placeholder={sampleUser.billingInfo.phoneNumber} />
+                <TextInput style={[generalStyles.header1Bold, ProfileStyles.billingInfoInputBox]} placeholder={sampleUser.billingInfo.phoneNumber} />
               </View>
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={ProfileStyles.closeOverlayButton} 
                 onPress={() => this.setState({ updateBilling: false })}
               >
@@ -212,9 +172,9 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
           <Header title="Profile" />
         </View>
         {currentUser === null ? (
-          <View style={{ flex: 1, width: '100%', flexDirection: 'column', alignContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
-            <TextInput style={[generalStyles.header1, ProfileStyles.loginBox]} placeholder="username" />
-            <TextInput style={[generalStyles.header1, ProfileStyles.loginBox]} placeholder="password" />
+          <View style={[ProfileStyles.loginContainer]}>
+            <TextInput style={[generalStyles.header1, ProfileStyles.loginInputBox]} placeholder="username" />
+            <TextInput style={[generalStyles.header1, ProfileStyles.loginInputBox]} placeholder="password" />
             <TouchableOpacity onPress={() => this.setState({ currentUser: 'johnny' })} style={ProfileStyles.loginButton}>
               <Text style={[generalStyles.actionButton]}>
                 login 
@@ -222,7 +182,7 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
             </TouchableOpacity>
           </View>
         ) : (
-          <View style={{ flex: 1, width: '100%', flexDirection: 'column', alignContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
+          <View style={[ProfileStyles.loginContainer]}>
             <Text style={[generalStyles.header2, { fontSize: 40, textAlign: 'center' }]}>
               {`Hello, ${currentUser}\n`}
               <Text style={[generalStyles.subheader1]}>

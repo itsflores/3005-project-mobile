@@ -11,6 +11,7 @@ interface StoreState {
   bookList: any,
   order: string[],
   userAdmin: boolean,
+  search: null | string
 }
 
 interface StoreProps {
@@ -23,6 +24,7 @@ export default class Store extends React.Component<StoreProps, StoreState> {
       bookList: books,
       order: [],
       userAdmin: true,
+      search: null
     }
   }
 
@@ -42,9 +44,28 @@ export default class Store extends React.Component<StoreProps, StoreState> {
 
     this.setState({ order: newOrder })
   }
+  
+  updateBookList = (input) => {
+    const { bookList } = this.state;
+    this.setState({ search: input })
+
+    if (input) {
+      const currList = bookList.filter((book) => {
+        return book.title.toUpperCase().includes(input.toUpperCase())
+      });
+    
+      if (currList.length > 0) {
+        this.setState({ bookList: currList });
+      } else {
+        this.setState({ bookList: books });
+      }
+    } else {
+      this.setState({ bookList: books });
+    }
+  }
 
   render() {
-    const { bookList, userAdmin, order } = this.state;
+    const { bookList, userAdmin, order, search } = this.state;
 
     return (
       <View style={StoreStyles.storeContainer}>
@@ -62,8 +83,10 @@ export default class Store extends React.Component<StoreProps, StoreState> {
           )}
         </View>
         <TextInput
+          onChangeText={(e) => this.updateBookList(e)}
           style={[generalStyles.header1, StoreStyles.searchBox]}
           placeholder="search"
+          value={search}
         />
         <ScrollView showsVerticalScrollIndicator={false} style={StoreStyles.bookListConainer}>
           {bookList.map((book, index) => (
