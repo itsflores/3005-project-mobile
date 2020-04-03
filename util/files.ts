@@ -1,4 +1,5 @@
 const books = [{
+    "stock": 25,
     "id": "b-01",
     "title": "Unlocking Android",
     "isbn": "1933988673",
@@ -10,6 +11,7 @@ const books = [{
     "categories": ["Open Source", "Mobile"]
   },
   {
+    "stock": 25,
     "id": "b-02",
     "title": "Android in Action, Second Edition",
     "isbn": "1935182722",
@@ -21,6 +23,7 @@ const books = [{
     "categories": ["Java"]
   },
   {
+    "stock": 25,
     "id": "b-03",
     "title": "Specification by Example",
     "isbn": "1617290084",
@@ -32,6 +35,7 @@ const books = [{
     "categories": ["Software Engineering"]
   },
   {
+    "stock": 25,
     "id": "b-04",
     "title": "Flex 3 in Action",
     "isbn": "1933988746",
@@ -43,6 +47,7 @@ const books = [{
     "categories": ["Internet"]
   },
   {
+    "stock": 25,
     "id": "b-05",
     "title": "Flex 4 in Action",
     "isbn": "1935182420",
@@ -54,6 +59,7 @@ const books = [{
     "categories": ["Internet"]
   },
   {
+    "stock": 25,
     "id": "b-06",
     "title": "Collective Intelligence in Action",
     "isbn": "1933988312",
@@ -65,6 +71,7 @@ const books = [{
     "categories": ["Internet"]
   },
   {
+    "stock": 25,
     "id": "b-07",
     "title": "Zend Framework in Action",
     "isbn": "1933988320",
@@ -76,6 +83,7 @@ const books = [{
     "categories": ["Web Development"]
   },
   {
+    "stock": 25,
     "id": "b-08",
     "title": "Flex on Java",
     "isbn": "1933988797",
@@ -87,17 +95,19 @@ const books = [{
     "categories": ["Internet"]
   },
   {
+    "stock": 25,
     "id": "b-09",
     "title": "Griffon in Action",
     "isbn": "1935182234",
     "pageCount": 375,
     "publishedYear": 2012,
     "thumbnailUrl": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/almiray.jpg",
-    "authors": ["Andres Almiray", "Danno Ferrin", "", "James Shingler"],
+    "authors": ["Andres Almiray", "Danno Ferrin", "James Shingler"],
     "price": 24,
     "categories": ["Java"]
   },
   {
+    "stock": 25,
     "id": "b-10",
     "title": "OSGi in Depth",
     "isbn": "193518217X",
@@ -109,6 +119,7 @@ const books = [{
     "categories": ["Java"]
   },
   {
+    "stock": 25,
     "id": "b-11",
     "title": "Flexible Rails",
     "isbn": "1933988509",
@@ -120,6 +131,7 @@ const books = [{
     "categories": ["Web Development"]
   },
   {
+    "stock": 25,
     "id": "b-12",
     "title": "Hello! Flex 4",
     "isbn": "1933988762",
@@ -131,6 +143,7 @@ const books = [{
     "categories": ["Internet"]
   },
   {
+    "stock": 25,
     "id": "b-13",
     "title": "Coffeehouse",
     "isbn": "1884777384",
@@ -142,6 +155,7 @@ const books = [{
     "categories": ["Miscellaneous"]
   },
   {
+    "stock": 25,
     "id": "b-14",
     "title": "Brownfield Application Development in .NET",
     "isbn": "1933988711",
@@ -153,6 +167,7 @@ const books = [{
     "categories": ["Microsoft"]
   },
   {
+    "stock": 25,
     "id": "b-15",
     "title": "MongoDB in Action",
     "isbn": "1935182870",
@@ -164,6 +179,7 @@ const books = [{
     "categories": ["Next Generation Databases"]
   },
   {
+    "stock": 25,
     "id": "b-16",
     "title": "Jaguar Development with PowerBuilder 7",
     "isbn": "1884777864",
@@ -175,6 +191,7 @@ const books = [{
     "categories": ["PowerBuilder", "Client-Server"]
   },
   {
+    "stock": 25,
     "id": "b-17",
     "title": "Taming Jaguar",
     "isbn": "1884777686",
@@ -186,6 +203,7 @@ const books = [{
     "categories": ["PowerBuilder"]
   },
   {
+    "stock": 25,
     "id": "b-18",
     "title": "3D User Interfaces with Java 3D",
     "isbn": "1884777902",
@@ -197,6 +215,7 @@ const books = [{
     "categories": ["Java", "Computer Graphics"]
   },
   {
+    "stock": 25,
     "id": "b-19",
     "title": "Hibernate in Action",
     "isbn": "193239415X",
@@ -208,6 +227,7 @@ const books = [{
     "categories": ["Java"]
   },
   {
+    "stock": 25,
     "id": "b-20",
     "title": "Hibernate in Action (Chinese Edition)",
     "isbn": "9781932394575",

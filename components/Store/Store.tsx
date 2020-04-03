@@ -10,17 +10,6 @@ import { Header } from '../../components/Shared/SharedComponents';
 import newbook from '../../assets/img/newbook.png';
 import emptyCover from '../../assets/img/emptyCover.png';
 
-interface newBook {
-  thumbnailUrl: string | null,
-  title: string | null,
-  authors: string | null,
-  publishedYear: string | null,
-  categories: string | null, 
-  isbn: string | null,
-  price: string | null,
-  pageCount: string | null,
-}
-
 interface StoreState {
   bookList: any,
   order: string[],
@@ -33,6 +22,18 @@ interface StoreState {
 interface StoreProps {
 }
 
+interface newBook {
+  thumbnailUrl: string | null,
+  title: string | null,
+  authors: string | null,
+  publishedYear: string | null,
+  categories: string | null, 
+  isbn: string | null,
+  price: string | null,
+  pageCount: string | null,
+  stock: string | null
+}
+
 const newBookInit = {
   thumbnailUrl: null,
   title: null,
@@ -42,6 +43,7 @@ const newBookInit = {
   isbn: null,
   price: null,
   pageCount: null,
+  stock: null
 }
 
 const bookInputInfo = {
@@ -51,7 +53,8 @@ const bookInputInfo = {
   categories: 'categories',
   pageCount: 'number of pages',
   isbn: 'ISBN',
-  price: 'price'
+  price: 'price',
+  stock: 'stock (> 20)'
 }
 
 export default class Store extends React.Component<StoreProps, StoreState> {
@@ -82,6 +85,15 @@ export default class Store extends React.Component<StoreProps, StoreState> {
     newOrder.splice(newOrder.findIndex((item) => item === target), 1);
 
     this.setState({ order: newOrder })
+  }
+
+  removeFromStore = (targetId) => {
+    const { bookList } = this.state;
+    const newList = bookList;
+
+    newList.splice(newList.findIndex((item) => item.id === targetId), 1);
+
+    this.setState({ bookList: newList })
   }
   
   updateBookList = (input) => {
@@ -154,7 +166,9 @@ export default class Store extends React.Component<StoreProps, StoreState> {
         || parseInt(newBook['price']) === NaN
         || newBook['price'].length > 4
         || parseInt(newBook['publishedYear']) === NaN
-        || parseInt(newBook['pageCount']) === NaN) {
+        || parseInt(newBook['pageCount']) === NaN
+        || parseInt(newBook['stock']) === NaN
+        || parseInt(newBook['stock']) < 20) {
         verified = false;
       }
     })
@@ -192,7 +206,6 @@ export default class Store extends React.Component<StoreProps, StoreState> {
         }
       );
     }
-
   }
 
   render() {
@@ -265,21 +278,29 @@ export default class Store extends React.Component<StoreProps, StoreState> {
         />
         <ScrollView showsVerticalScrollIndicator={false} style={StoreStyles.bookListConainer}>
           {bookList.map((book, index) => (
-            <BookCard
-              key={index}
-              author={book.authors}
-              title={book.title}
-              cover={book.thumbnailUrl}
-              price={book.price}
-              release={book.publishedYear}
-              id={book.id}
-              isbn={book.isbn}
-              genres={book.categories}
-              addBook={this.addToCart}
-              removeBook={this.removeFromCart}
-              type="store"
-              numPages={book.pageCount}
-            />
+            <View key={index}>
+              <BookCard
+                author={book.authors}
+                title={book.title}
+                cover={book.thumbnailUrl}
+                price={book.price}
+                release={book.publishedYear}
+                id={book.id}
+                isbn={book.isbn}
+                genres={book.categories}
+                addBook={this.addToCart}
+                removeBook={this.removeFromCart}
+                type="store"
+                numPages={book.pageCount}
+              />
+              {userAdmin && (
+                <TouchableOpacity onPress={() => this.removeFromStore(book.id)}>
+                  <Text style={[generalStyles.actionExit, { color: colors.blue, marginBottom: 20, textAlign: 'center' }]}>
+                    remove
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
           ))}
         </ScrollView>
       </View>

@@ -5,7 +5,7 @@ import unselected from '../../assets/img/unselected.png';
 import { generalStyles, colors } from '../../App.styles';
 import BookStyles from './BookCard.styles';
 
-const BookCard = ({ title, author, price, cover, release, id, isbn, genres, addBook, removeBook, numPages, isSelected = false, type }) => {
+const BookCard = ({ title, author, price, cover, release, id, isbn, genres, addBook = null, removeBook, numPages, isSelected = false, type }) => {
   const [bookSelected, setSelection] = useState(isSelected)
   const [showOverlay, setOverlay] = useState(false)
 
@@ -17,7 +17,7 @@ const BookCard = ({ title, author, price, cover, release, id, isbn, genres, addB
         removeBook(id);
       }
     }
-    
+
     if (type === 'order') {
       if (!bookSelected) {
         removeBook(id);
@@ -83,7 +83,7 @@ const BookCard = ({ title, author, price, cover, release, id, isbn, genres, addB
         </View>
       </Modal>
 
-      <TouchableOpacity onPress={() => setOverlay(!showOverlay)} style={BookStyles.descriptionContainer}>
+      <TouchableOpacity onPress={() => setOverlay(!showOverlay)} style={[BookStyles.descriptionContainer, (type === 'order' && { width: '100%' })]}>
         <Image source={{uri: cover}} style={BookStyles.bookCover} />
         <View style={BookStyles.textContainer}>
           <Text style={generalStyles.header1}>
@@ -103,9 +103,11 @@ const BookCard = ({ title, author, price, cover, release, id, isbn, genres, addB
           </Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity style={BookStyles.bookmarkButton} onPress={() => setSelection(!bookSelected)}>
-        <Image style={BookStyles.bookmarkImage} source={bookSelected ? selected : unselected} />
-      </TouchableOpacity>
+      {type !== 'order' && (
+        <TouchableOpacity style={BookStyles.bookmarkButton} onPress={() => setSelection(!bookSelected)}>
+          <Image style={BookStyles.bookmarkImage} source={bookSelected ? selected : unselected} />
+        </TouchableOpacity>
+      )}
     </View>
   )
 }
