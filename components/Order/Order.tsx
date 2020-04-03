@@ -47,6 +47,8 @@ export default class Order extends React.Component <OrderProps, OrderState> {
   render() {
     const { order, totalPrice, booksPrice } = this.state;
 
+    console.log(order);
+
     return (
       <View style={OrderStyles.orderContainer}>
         <View style={OrderStyles.headerContainer}>
@@ -72,8 +74,6 @@ export default class Order extends React.Component <OrderProps, OrderState> {
                   isbn={currItem.book.isbn}
                   genres={currItem.book.categories}
                   numPages={currItem.book.pageCount}
-                  isSelected={true}
-                  removeBook={this.removeFromCart}
                   type="order"
                 />
                 <View style={{ 

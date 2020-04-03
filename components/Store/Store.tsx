@@ -12,7 +12,7 @@ import emptyCover from '../../assets/img/emptyCover.png';
 
 interface StoreState {
   bookList: any,
-  order: string[],
+  order: bookUnit [],
   userAdmin: boolean,
   search: null | string,
   showNewBook: boolean,
@@ -32,6 +32,11 @@ interface newBook {
   price: string | null,
   pageCount: string | null,
   stock: string | null
+}
+
+interface bookUnit {
+  book: any,
+  quantity: number
 }
 
 const newBookInit = {
@@ -71,9 +76,9 @@ export default class Store extends React.Component<StoreProps, StoreState> {
   }
 
   addToCart = (newId) => {
-    const { order } = this.state;
+    const { order, bookList } = this.state;
     const newOrder = order;
-    newOrder.push(newId);
+    newOrder.push({ book: bookList[bookList.findIndex((currBook) => currBook.id === newId)], quantity: 1 });
 
     this.setState({ order: newOrder })
   }
@@ -81,16 +86,14 @@ export default class Store extends React.Component<StoreProps, StoreState> {
   removeFromCart = (target) => {
     const { order } = this.state;
     const newOrder = order;
-
-    newOrder.splice(newOrder.findIndex((item) => item === target), 1);
-
+    
+    newOrder.splice(order.findIndex((currItem) => currItem.book.id === target), 1);
     this.setState({ order: newOrder })
   }
 
   removeFromStore = (targetId) => {
     const { bookList } = this.state;
     const newList = bookList;
-
     newList.splice(newList.findIndex((item) => item.id === targetId), 1);
 
     this.setState({ bookList: newList })
@@ -210,6 +213,8 @@ export default class Store extends React.Component<StoreProps, StoreState> {
 
   render() {
     const { bookList, userAdmin, order, search, showNewBook, newBook } = this.state;
+
+    // console.log(order);
 
     return (
       <View style={StoreStyles.storeContainer}>

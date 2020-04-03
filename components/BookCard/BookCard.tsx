@@ -1,29 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, Image, TouchableOpacity, Button, Modal } from 'react-native';
 import selected from '../../assets/img/selected.png';
 import unselected from '../../assets/img/unselected.png';
 import { generalStyles, colors } from '../../App.styles';
 import BookStyles from './BookCard.styles';
 
-const BookCard = ({ title, author, price, cover, release, id, isbn, genres, addBook = null, removeBook, numPages, isSelected = false, type }) => {
-  const [bookSelected, setSelection] = useState(isSelected)
+const BookCard = ({ title, author, price, cover, release, id, isbn, genres, addBook = null, removeBook = null, numPages, type }) => {
+  const [bookSelected, setSelection] = useState(false)
   const [showOverlay, setOverlay] = useState(false)
+  const componentDidMount = useRef(false);
 
   useEffect(() => {
-    if (type === 'store') {
-      if (!bookSelected) {
+    if (componentDidMount.current) {
+      if (bookSelected) {
         addBook(id);
       } else {
         removeBook(id);
       }
+    } else {
+      componentDidMount.current = true;
     }
-
-    if (type === 'order') {
-      if (!bookSelected) {
-        removeBook(id);
-      }
-    }
-  }, [bookSelected]);
+  }, [componentDidMount, bookSelected])
 
   return (
     <View style={BookStyles.cardContainer}>
