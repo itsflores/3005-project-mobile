@@ -7,7 +7,7 @@ import { generalStyles, colors } from '../../App.styles';
 import { Header } from '../Shared/SharedComponents';
 
 const pricing = {
-  shipping: 24,
+  shipping: 12,
   tax: 0.13
 }
 
@@ -23,7 +23,9 @@ interface bookUnit {
 interface OrderState {
   order: bookUnit [],
   totalPrice: number,
-  booksPrice: number,
+  totalBooks: number,
+  totalTax: number,
+  totalShipping: number,
 }
 
 export default class Order extends React.Component <OrderProps, OrderState> {
@@ -31,9 +33,25 @@ export default class Order extends React.Component <OrderProps, OrderState> {
     super(props);
     this.state = {
       order: [{book: books[0], quantity: 1}, {book: books[1], quantity: 1}, {book: books[2], quantity: 1}, {book: books[3], quantity: 1}],
-      booksPrice: 0,
+      totalBooks: 0,
       totalPrice: 0,
+      totalTax: 0,
+      totalShipping: 0,
     }
+  }
+
+  componentDidMount() {
+    this.updatePricing();    
+  }
+
+  updatePricing = () => {
+    const { order } = this.state;
+    const newBooksPrice = order.reduce((acc, currBook) => acc += currBook.quantity * currBook.book.price, 0);
+    const newTax = newBooksPrice * pricing.tax;
+    const newShipping = order.reduce((acc, currBook) => acc += currBook.quantity, 0) % 3 * pricing.shipping + pricing.shipping;
+    const newTotal = newBooksPrice + newTax + newShipping;
+
+    this.setState({ totalBooks: newBooksPrice, totalShipping: newShipping, totalTax: newTax, totalPrice: newTotal });
   }
 
   removeFromCart = (target) => {
@@ -45,9 +63,9 @@ export default class Order extends React.Component <OrderProps, OrderState> {
   }
 
   render() {
-    const { order, totalPrice, booksPrice } = this.state;
+    const { order, totalPrice, totalBooks, totalShipping, totalTax } = this.state;
 
-    console.log(order);
+    // console.log(order);
 
     return (
       <View style={OrderStyles.orderContainer}>
@@ -89,7 +107,8 @@ export default class Order extends React.Component <OrderProps, OrderState> {
                     } else if (currItem.quantity > 0) {
                       const newOrder = order;
                       newOrder[order.findIndex((curr) => curr.book.id === currItem.book.id)].quantity--;
-                      this.setState({ order: newOrder })
+                      this.setState({ order: newOrder });
+                      this.updatePricing();
                     }
                   }}>
                     <Text style={[generalStyles.actionExit, { color: colors.blue, fontSize: 30, lineHeight: 40 }]}>
@@ -103,7 +122,8 @@ export default class Order extends React.Component <OrderProps, OrderState> {
                     if (currItem.quantity < 25) {
                       const newOrder = order;
                       newOrder[order.findIndex((curr) => curr.book.id === currItem.book.id)].quantity++;
-                      this.setState({ order: newOrder })
+                      this.setState({ order: newOrder });
+                      this.updatePricing();
                     }
                   }}>
                     <Text style={[generalStyles.actionExit, { color: colors.blue, fontSize: 30, lineHeight: 40 }]}>
@@ -122,11 +142,17 @@ export default class Order extends React.Component <OrderProps, OrderState> {
                 <Text style={generalStyles.header1}>
                   Shipping
                 </Text>
+                <Text style={generalStyles.header1}>
+                  Tax
+                </Text>
                 <Text style={generalStyles.header1Bold}>
                   Total
                 </Text>
               </View>
               <View style={{ marginLeft: 40 }}>
+                <Text style={generalStyles.header1}>
+                  $
+                </Text>
                 <Text style={generalStyles.header1}>
                   $
                 </Text>
@@ -139,10 +165,13 @@ export default class Order extends React.Component <OrderProps, OrderState> {
               </View>
               <View style={OrderStyles.checkoutPriceContainer}>
                 <Text style={generalStyles.header1}>
-                  {`${booksPrice.toFixed(2)}`}
+                  {`${totalBooks.toFixed(2)}`}
                 </Text>
                 <Text style={generalStyles.header1}>
-                  {`${pricing.shipping.toFixed(2)}`}
+                  {`${totalShipping.toFixed(2)}`}
+                </Text>
+                <Text style={generalStyles.header1}>
+                  {`${totalTax.toFixed(2)}`}
                 </Text>
                 <Text style={generalStyles.header1Bold}>
                   {`${totalPrice.toFixed(2)}`}
