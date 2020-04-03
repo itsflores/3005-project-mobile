@@ -48,7 +48,7 @@ export default class Store extends React.Component<StoreProps, StoreState> {
   constructor(props) {
     super(props);
     this.state = {
-      bookList: books,
+      bookList: books.sort((a: any, b: any) => parseInt(b.publishedYear) - parseInt(a.publishedYear)),
       order: [],
       userAdmin: true,
       search: null,
@@ -143,7 +143,7 @@ export default class Store extends React.Component<StoreProps, StoreState> {
       }
     })
 
-    console.log(newBook);
+    // console.log(newBook);
 
     if (verified) {
       const newList = bookList;
@@ -155,7 +155,7 @@ export default class Store extends React.Component<StoreProps, StoreState> {
         categories: [...newBook.authors.split(',')],
         pageCount: parseInt(newBook.pageCount),
         price: parseInt(newBook.price)
-      })
+      }).sort((a, b) => parseInt(b.publishedYear) - parseInt(a.publishedYear))
 
       this.setState({
         showNewBook: false, 
