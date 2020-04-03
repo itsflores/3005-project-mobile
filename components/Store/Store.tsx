@@ -44,6 +44,16 @@ const newBookInit = {
   pageCount: null,
 }
 
+const bookInputInfo = {
+  title: 'title',
+  authors: 'authors',
+  publishedYear: 'year published',
+  categories: 'categories',
+  pageCount: 'number of pages',
+  isbn: 'ISBN',
+  price: 'price'
+}
+
 export default class Store extends React.Component<StoreProps, StoreState> {
   constructor(props) {
     super(props);
@@ -153,7 +163,7 @@ export default class Store extends React.Component<StoreProps, StoreState> {
 
     if (verified) {
       const newList = bookList;
-      
+
       newList.push({
         ...newBook,
         id: `b-${bookList.length + 1}`,
@@ -185,16 +195,6 @@ export default class Store extends React.Component<StoreProps, StoreState> {
 
   }
 
-  newBookInput = (content, target, placeholder, type?) => (
-    <TextInput 
-      value={content}
-      onChangeText={(input) => this.updateNewBook(input, target)}
-      style={[generalStyles.header1, StoreStyles.bookInfoInputBox]} 
-      placeholder={placeholder}
-      keyboardType={type || "default"}
-    />
-  )
-
   render() {
     const { bookList, userAdmin, order, search, showNewBook, newBook } = this.state;
 
@@ -211,13 +211,18 @@ export default class Store extends React.Component<StoreProps, StoreState> {
                 <TouchableOpacity onPress={() => this.uploadImage()} style={{ alignSelf: 'center' }}>
                   <Image source={newBook.thumbnailUrl ? {uri: newBook.thumbnailUrl} : emptyCover} style={BookStyles.bookOverlayImage}/>
                 </TouchableOpacity>
-                {this.newBookInput(newBook.title, 'title', "title")}
-                {this.newBookInput(newBook.authors, 'authors', "authors")}
-                {this.newBookInput(newBook.publishedYear, 'publishedYear', "release year")}
-                {this.newBookInput(newBook.categories, 'categories', "categories")}
-                {this.newBookInput(newBook.pageCount, 'pageCount', "page count")}
-                {this.newBookInput(newBook.isbn, 'isbn', "ISBN")}
-                {this.newBookInput(newBook.price, 'price', "price", "number-pad")}
+                <View>
+                  {Object.keys(bookInputInfo).map((key, index) => (
+                    <TextInput 
+                      key={index}
+                      value={newBook[key]}
+                      onChangeText={(input) => this.updateNewBook(input, key)}
+                      style={[generalStyles.header1, StoreStyles.bookInfoInputBox]} 
+                      placeholder={bookInputInfo[key]}
+                      keyboardType={key === 'price' ? 'number-pad' : 'default'}
+                    />
+                  ))}
+                </View>
               </ScrollView>
               <TouchableOpacity 
                 style={generalStyles.closeOverlayButton} 
