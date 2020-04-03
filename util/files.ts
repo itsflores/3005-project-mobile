@@ -210,6 +210,7 @@ const books = [{
   {
     "id": "b-20",
     "title": "Hibernate in Action (Chinese Edition)",
+    "isbn": "9781932394575",
     "pageCount": 400,
     "publishedYear": 1999,
     "thumbnailUrl": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/bauer-cn.jpg",

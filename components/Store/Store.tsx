@@ -59,10 +59,10 @@ export default class Store extends React.Component<StoreProps, StoreState> {
 
   addToCart = (newId) => {
     const { order } = this.state;
-    const newORder = order;
-    newORder.push(newId);
+    const newOrder = order;
+    newOrder.push(newId);
 
-    this.setState({ order: newORder })
+    this.setState({ order: newOrder })
   }
 
   removeFromCart = (target) => {
@@ -80,13 +80,19 @@ export default class Store extends React.Component<StoreProps, StoreState> {
 
     if (input) {
       const currList = bookList.filter((book) => {
-        return book.title.toUpperCase().includes(input.toUpperCase())
+        return (book.title.toUpperCase().includes(input.toUpperCase()))
+        || (book.authors.join(' ').toUpperCase().includes(input.toUpperCase()))
+        || (book.categories.join(' ').toUpperCase().includes(input.toUpperCase()))
+        || (book.publishedYear.toString().includes(input.toUpperCase()))
+        || (book.pageCount.toString().includes(input.toUpperCase()))
+        || (book.price.toString().includes(input.toUpperCase()))
+        || (book.isbn.includes(input.toUpperCase()))
       });
     
       if (currList.length > 0) {
         this.setState({ bookList: currList });
       } else {
-        this.setState({ bookList: books });
+        this.setState({ bookList: [] });
       }
     } else {
       this.setState({ bookList: books });
