@@ -165,14 +165,19 @@ export default class Store extends React.Component<StoreProps, StoreState> {
     let verified = true;
 
     Object.keys(newBook).forEach((entry) => {
-      if (newBook[entry] === null 
-        || parseInt(newBook['price']) === NaN
-        || newBook['price'].length > 4
-        || parseInt(newBook['publishedYear']) === NaN
-        || parseInt(newBook['pageCount']) === NaN
-        || parseInt(newBook['stock']) === NaN
-        || parseInt(newBook['stock']) < 20) {
-        verified = false;
+      try {
+        if (newBook[entry] === null 
+          || parseInt(newBook['price']) === NaN
+          || newBook['price'].length > 4
+          || parseInt(newBook['publishedYear']) === NaN
+          || parseInt(newBook['publishedYear']) > new Date().getFullYear()
+          || parseInt(newBook['pageCount']) === NaN
+          || parseInt(newBook['stock']) === NaN
+          || parseInt(newBook['stock']) < 20) {
+          verified = false;
+        }
+      } catch {
+        
       }
     })
 
@@ -186,7 +191,7 @@ export default class Store extends React.Component<StoreProps, StoreState> {
         id: `b-${bookList.length + 1}`,
         publishedYear: parseInt(newBook.publishedYear),
         authors: [...newBook.authors.split(',')],
-        categories: [...newBook.authors.split(',')],
+        categories: [...newBook.categories.split(', ')],
         pageCount: parseInt(newBook.pageCount),
         price: parseInt(newBook.price)
       })
