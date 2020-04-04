@@ -3,9 +3,9 @@ export const addBookToOrder = newBook => ({
     payload: newBook,
 });
 
-export const removeBookFromOrder = targetBook => ({
+export const removeBookFromOrder = targetIndex => ({
   type: 'REMOVE_BOOK',
-  payload: targetBook,
+  payload: targetIndex,
 });
 
 export const addBookToStore = newBook => ({
@@ -13,12 +13,17 @@ export const addBookToStore = newBook => ({
   payload: newBook,
 });
 
-export const removeBookFromStore = targetBook => ({
+export const removeBookFromStore = targetIndex => ({
   type: 'REMOVE_BOOK_STORE',
-  payload: targetBook,
+  payload: targetIndex,
 });
 
-export const increaseBookORder = targetBook => ({
+export const increaseBookOrder = targetIndex => ({
   type: 'INCREASE_BOOK',
-  payload: targetBook,
+  payload: targetIndex,
+});
+
+export const decreaseBookOrder = targetIndex => ({
+  type: 'DECREASE_BOOK',
+  payload: targetIndex,
 });

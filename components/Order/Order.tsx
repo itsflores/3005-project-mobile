@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addBookToOrder, removeBookFromOrder, addBookToStore, removeBookFromStore } from '../../util/actions';
+import { removeBookFromOrder, increaseBookOrder, decreaseBookOrder } from '../../util/actions';
 import OrderStyles from './Order.styles';
 import books from '../../data/starterData';
 import BookCard from '../../components/BookCard/BookCard';
@@ -15,7 +15,10 @@ const pricing = {
 }
 
 interface OrderProps {
-  
+  bookAppStore: any,
+	removeBookFromOrder: Function,
+  increaseBookOrder: Function, 
+  decreaseBookOrder: Function
 }
 
 interface bookUnit {
@@ -24,7 +27,6 @@ interface bookUnit {
 }
 
 interface OrderState {
-  order: bookUnit [],
   totalPrice: number,
   totalBooks: number,
   totalTax: number,
@@ -35,7 +37,6 @@ class Order extends React.Component <OrderProps, OrderState> {
   constructor(props) {
     super(props);
     this.state = {
-      order: [{book: books[0], quantity: 1}, {book: books[1], quantity: 1}, {book: books[2], quantity: 1}, {book: books[3], quantity: 1}],
       totalBooks: 0,
       totalPrice: 0,
       totalTax: 0,
@@ -48,7 +49,7 @@ class Order extends React.Component <OrderProps, OrderState> {
   }
 
   updatePricing = () => {
-    const { order } = this.state;
+    const { order } = this.props.bookAppStore;
     const newBooksPrice = order.reduce((acc, currBook) => acc += currBook.quantity * currBook.book.price, 0);
     const newTax = newBooksPrice * pricing.tax;
     const newShipping = order.reduce((acc, currBook) => acc += currBook.quantity, 0) % 3 * pricing.shipping + pricing.shipping;
@@ -57,16 +58,9 @@ class Order extends React.Component <OrderProps, OrderState> {
     this.setState({ totalBooks: newBooksPrice, totalShipping: newShipping, totalTax: newTax, totalPrice: newTotal });
   }
 
-  removeFromCart = (target) => {
-    const { order } = this.state;
-    const newOrder = order;
-    
-    newOrder.splice(order.findIndex((currItem) => currItem.book.id === target), 1);
-    this.setState({ order: newOrder })
-  }
-
   render() {
-    const { order, totalPrice, totalBooks, totalShipping, totalTax } = this.state;
+    const { order } = this.props.bookAppStore;
+    const { totalPrice, totalBooks, totalShipping, totalTax } = this.state;
 
     // console.log(order);
 
@@ -106,11 +100,9 @@ class Order extends React.Component <OrderProps, OrderState> {
                 }}>
                   <TouchableOpacity onPress={() => {
                     if (currItem.quantity === 1) {
-                      this.removeFromCart(currItem.book.id)
+                      this.props.removeBookFromOrder(order.findIndex((curr) => curr.book.id === currItem.book.id));
                     } else if (currItem.quantity > 0) {
-                      const newOrder = order;
-                      newOrder[order.findIndex((curr) => curr.book.id === currItem.book.id)].quantity--;
-                      this.setState({ order: newOrder });
+                      this.props.decreaseBookOrder(order.findIndex((curr) => curr.book.id === currItem.book.id));
                       this.updatePricing();
                     }
                   }}>
@@ -123,9 +115,7 @@ class Order extends React.Component <OrderProps, OrderState> {
                   </Text>
                   <TouchableOpacity onPress={() => {
                     if (currItem.quantity < 25) {
-                      const newOrder = order;
-                      newOrder[order.findIndex((curr) => curr.book.id === currItem.book.id)].quantity++;
-                      this.setState({ order: newOrder });
+                      this.props.increaseBookOrder(order.findIndex((curr) => curr.book.id === currItem.book.id));
                       this.updatePricing();
                     }
                   }}>
@@ -195,10 +185,9 @@ class Order extends React.Component <OrderProps, OrderState> {
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
-		addBookToOrder,
 		removeBookFromOrder,
-		addBookToStore,
-		removeBookFromStore
+    increaseBookOrder,
+    decreaseBookOrder
   }, dispatch)
 );
 

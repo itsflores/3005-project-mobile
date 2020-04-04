@@ -32,6 +32,14 @@ const sampleReducer = (state = INITIAL_STATE, action) => {
       newBookList.sort((a: any, b: any) => parseInt(b.publishedYear) - parseInt(a.publishedYear))
 
       return { ...prevState, bookList: newBookList, order: [] }
+    case 'INCREASE_BOOK':
+      newOrder[action.payload].quantity++;
+
+      return { ...prevState, order: newOrder };
+    case 'DECREASE_BOOK':
+      newOrder[action.payload].quantity--;
+
+      return { ...prevState, order: newOrder };
     default:
       return state
   }
