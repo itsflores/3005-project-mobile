@@ -10,6 +10,7 @@
   "dependencies": {
     "@react-navigation/bottom-tabs": "^5.2.5",
     "@react-navigation/native": "^5.1.4",
+    "@types/react-redux": "^7.1.7",
     "expo": "~36.0.0",
     "expo-image-picker": "~8.0.1",
     "react": "~16.9.0",

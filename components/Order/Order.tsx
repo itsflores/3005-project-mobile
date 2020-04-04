@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import OrderStyles from './Order.styles';
-import books from '../../util/files';
+import books from '../../data/starterData';
 import BookCard from '../../components/BookCard/BookCard';
 import { generalStyles, colors } from '../../App.styles';
 import { Header } from '../Shared/SharedComponents';

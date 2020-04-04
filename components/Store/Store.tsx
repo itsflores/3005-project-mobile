@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, TextInput, Modal, Alert } from 'react-native';
 import * as imagePicker from 'expo-image-picker';
+import { connect } from 'react-redux';
 import { generalStyles, colors } from '../../App.styles';
 import StoreStyles from './Store.styles';
 import BookStyles from '../BookCard/BookCard.styles';
-import books from '../../util/files';
+import books from '../../data/starterData';
 import BookCard from '../../components/BookCard/BookCard';
 import { Header } from '../../components/Shared/SharedComponents';
 import newbook from '../../assets/img/newbook.png';
@@ -21,6 +22,7 @@ interface StoreState {
 }
 
 interface StoreProps {
+	bookAppStore: any
 }
 
 interface newBook {
@@ -63,18 +65,20 @@ const bookInputInfo = {
 	stock: 'stock (> 20)'
 }
 
-export default class Store extends React.Component<StoreProps, StoreState> {
+class Store extends React.Component<StoreProps, StoreState> {
 	constructor(props) {
 		super(props);
 		this.state = {
 			bookList: books.sort((a: any, b: any) => parseInt(b.publishedYear) - parseInt(a.publishedYear)),
 			searchList: [],
 			order: [],
-			userAdmin: true,
+			userAdmin: this.props.bookAppStore.userAdmin,
 			search: null,
 			showNewBook: false,
 			newBook: newBookInit,
 		}
+
+		console.log(this.props.bookAppStore.userAdmin);
 	}
 
 	addToCart = (newId) => {
@@ -326,3 +330,10 @@ export default class Store extends React.Component<StoreProps, StoreState> {
 		)
 	}
 }
+
+const mapStateToProps = (state) => {
+  const { bookAppStore } = state
+  return { bookAppStore }
+};
+
+export default connect(mapStateToProps)(Store);
