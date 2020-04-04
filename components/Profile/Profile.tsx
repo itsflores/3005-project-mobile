@@ -185,7 +185,7 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
             <TextInput secureTextEntry={true} style={[generalStyles.header1, ProfileStyles.loginInputBox]} placeholder="password" />
             <TouchableOpacity onPress={() => this.setState({ currentUser: 'johnny' })} style={ProfileStyles.loginButton}>
               <Text style={[generalStyles.actionButton]}>
-                login
+                log in / register
               </Text>
             </TouchableOpacity>
           </View>

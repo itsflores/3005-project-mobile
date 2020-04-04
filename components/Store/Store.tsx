@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, TextInput, Modal, Alert } from 'react-native';
 import * as imagePicker from 'expo-image-picker';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { addBookToOrder, removeBookFromOrder, addBookToStore, removeBookFromStore } from '../../util/actions';
 import { generalStyles, colors } from '../../App.styles';
 import StoreStyles from './Store.styles';
 import BookStyles from '../BookCard/BookCard.styles';
@@ -13,7 +15,6 @@ import emptyCover from '../../assets/img/emptyCover.png';
 interface StoreState {
 	bookList: any,
 	order: bookUnit [],
-	userAdmin: boolean,
 	search: null | string,
 	showNewBook: boolean,
 	newBook: newBook,
@@ -21,7 +22,11 @@ interface StoreState {
 }
 
 interface StoreProps {
-	bookAppStore: any
+	bookAppStore: any,
+	addBookToOrder: Function,
+	removeBookFromOrder: Function,
+	addBookToStore: Function,
+	removeBookFromStore: Function,
 }
 
 interface newBook {
@@ -68,10 +73,11 @@ class Store extends React.Component<StoreProps, StoreState> {
 	constructor(props) {
 		super(props);
 		this.state = {
-			bookList: this.props.bookAppStore.bookList,
+			// bookList: this.props.bookAppStore.bookList,
+			// order: this.props.bookAppStore.order,
+			// userAdmin: this.props.bookAppStore.userAdmin,
+			...this.props.bookAppStore,
 			searchList: [],
-			order: [],
-			userAdmin: this.props.bookAppStore.userAdmin,
 			search: null,
 			showNewBook: false,
 			newBook: newBookInit,
@@ -79,19 +85,21 @@ class Store extends React.Component<StoreProps, StoreState> {
 	}
 
 	addToCart = (newId) => {
-		const { order, bookList } = this.state;
-		const newOrder = order;
-		newOrder.push({ book: bookList[bookList.findIndex((currBook) => currBook.id === newId)], quantity: 1 });
+		const { order, bookList } = this.props.bookAppStore;
+		// const newOrder = order;
+		// newOrder.push({ book: bookList[bookList.findIndex((currBook) => currBook.id === newId)], quantity: 1 });
+		// this.setState({ order: newOrder })
 
-		this.setState({ order: newOrder })
+		this.props.addBookToOrder({ book: bookList[bookList.findIndex((currBook) => currBook.id === newId)], quantity: 1 })
 	}
 
 	removeFromCart = (target) => {
-		const { order } = this.state;
-		const newOrder = order;
-		
-		newOrder.splice(order.findIndex((currItem) => currItem.book.id === target), 1);
-		this.setState({ order: newOrder })
+		const { order } = this.props.bookAppStore;
+		// const newOrder = order;
+		// newOrder.splice(order.findIndex((currItem) => currItem.book.id === target), 1);
+		// this.setState({ order: newOrder })
+
+		this.props.removeBookFromOrder(order.findIndex((currItem) => currItem.book.id === target), 1)
 	}
 
 	removeFromStore = (targetId) => {
@@ -103,8 +111,7 @@ class Store extends React.Component<StoreProps, StoreState> {
 	}
 	
 	generateSearchList = (input) => {
-		const { bookList } = this.state;
-		// this.setState({ search: input })
+		const { bookList } = this.props.bookAppStore;
 
 		if (input) {
 			const searchResults = bookList.filter((book) => {
@@ -118,10 +125,8 @@ class Store extends React.Component<StoreProps, StoreState> {
 			});
 		
 			if (searchResults.length > 0) {
-				// this.setState({ bookList: currList });
 				return searchResults;
 			} else {
-				// this.setState({ bookList: [] });
 				return null;
 			}
 		} else {
@@ -166,7 +171,8 @@ class Store extends React.Component<StoreProps, StoreState> {
 	}
 
 	saveNewBook = () => {
-		const { newBook, bookList } = this.state;
+		const { bookList } = this.props.bookAppStore;
+		const { newBook } = this.state;
 		let verified = true;
 
 		Object.keys(newBook).forEach((entry) => {
@@ -189,9 +195,7 @@ class Store extends React.Component<StoreProps, StoreState> {
 		// console.log(newBook);
 
 		if (verified) {
-			const newList = bookList;
-
-			newList.push({
+			this.props.addBookToStore({
 				...newBook,
 				id: `b-${bookList.length + 1}`,
 				publishedYear: parseInt(newBook.publishedYear),
@@ -200,12 +204,10 @@ class Store extends React.Component<StoreProps, StoreState> {
 				pageCount: parseInt(newBook.pageCount),
 				price: parseInt(newBook.price)
 			})
-			newList.sort((a, b) => parseInt(b.publishedYear) - parseInt(a.publishedYear))
 
 			this.setState({
 				showNewBook: false, 
 				newBook: newBookInit, 
-				bookList: newList
 			})
 		} else {
 			Alert.alert(
@@ -222,7 +224,8 @@ class Store extends React.Component<StoreProps, StoreState> {
 	}
 
 	render() {
-		const { bookList, searchList, userAdmin, order, search, showNewBook, newBook } = this.state;
+		const { searchList, search, showNewBook, newBook } = this.state;
+		const { bookList, order, userStatus, currUser } = this.props.bookAppStore;
 
 		// console.log(order);
 
@@ -274,12 +277,7 @@ class Store extends React.Component<StoreProps, StoreState> {
 
 				<View style={StoreStyles.headerContainer}>
 					<Header title="Store" />
-					<TouchableOpacity style={{ backgroundColor: colors.blue, padding: 6, borderRadius: 4 }} onPress={() => this.setState({ userAdmin: !userAdmin })}>
-						<Text style={[generalStyles.header3, { textDecorationLine: 'underline', color: 'white' }]}>
-							{userAdmin ? 'admin' : 'user'}
-						</Text>
-					</TouchableOpacity>
-					{userAdmin && (
+					{userStatus && currUser.admin && (
 						<TouchableOpacity onPress={() => this.setState({ showNewBook: true })} style={StoreStyles.newBookButton}>
 							<Text style={[generalStyles.header1, { marginRight: 10 }]}>
 								new
@@ -300,6 +298,7 @@ class Store extends React.Component<StoreProps, StoreState> {
 					{searchList && (searchList.length > 0 ? searchList : bookList).map((book, index) => (
 						<View key={index}>
 							<BookCard
+								key={index}
 								author={book.authors}
 								title={book.title}
 								cover={book.thumbnailUrl}
@@ -313,7 +312,7 @@ class Store extends React.Component<StoreProps, StoreState> {
 								type="store"
 								numPages={book.pageCount}
 							/>
-							{userAdmin && (
+							{userStatus && currUser.admin && (
 								<TouchableOpacity onPress={() => this.removeFromStore(book.id)}>
 									<Text style={[generalStyles.actionExit, { color: colors.blue, marginBottom: 20, textAlign: 'center' }]}>
 										remove
@@ -328,9 +327,18 @@ class Store extends React.Component<StoreProps, StoreState> {
 	}
 }
 
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+		addBookToOrder,
+		removeBookFromOrder,
+		addBookToStore,
+		removeBookFromStore
+  }, dispatch)
+);
+
 const mapStateToProps = (state) => {
   const { bookAppStore } = state
   return { bookAppStore }
 };
 
-export default connect(mapStateToProps)(Store);
+export default connect(mapStateToProps, mapDispatchToProps)(Store);
