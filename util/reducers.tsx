@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
+import books from '../data/starterData';
 
 const INITIAL_STATE = {
-  orders: [],
-  bookList: [],
+  books: books,
+  bookList: books.sort((a: any, b: any) => parseInt(b.publishedYear) - parseInt(a.publishedYear)),
+  order: [],
   currUser: null,
   userAdmin: true,
 };

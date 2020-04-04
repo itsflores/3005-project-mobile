@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { generalStyles, colors } from '../../App.styles';
 import StoreStyles from './Store.styles';
 import BookStyles from '../BookCard/BookCard.styles';
-import books from '../../data/starterData';
 import BookCard from '../../components/BookCard/BookCard';
 import { Header } from '../../components/Shared/SharedComponents';
 import newbook from '../../assets/img/newbook.png';
@@ -69,7 +68,7 @@ class Store extends React.Component<StoreProps, StoreState> {
 	constructor(props) {
 		super(props);
 		this.state = {
-			bookList: books.sort((a: any, b: any) => parseInt(b.publishedYear) - parseInt(a.publishedYear)),
+			bookList: this.props.bookAppStore.bookList,
 			searchList: [],
 			order: [],
 			userAdmin: this.props.bookAppStore.userAdmin,
@@ -77,8 +76,6 @@ class Store extends React.Component<StoreProps, StoreState> {
 			showNewBook: false,
 			newBook: newBookInit,
 		}
-
-		console.log(this.props.bookAppStore.userAdmin);
 	}
 
 	addToCart = (newId) => {
