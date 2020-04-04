@@ -19,14 +19,10 @@ const sampleReducer = (state = INITIAL_STATE, action) => {
 
   switch (action.type) {
     case 'ADD_BOOK':
-      // const prevState = state;
-      // const { order } = state;
-      // newOrder = order;
       newOrder.push(action.payload);
 
       return { ...prevState, order: newOrder };
     case 'REMOVE_BOOK':
-      // let newOrder = order;
       newOrder.splice(action.payload, 1);
 
       return { ...prevState, order: newOrder };
