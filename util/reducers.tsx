@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import books from '../data/starterData';
+import users from '../data/starterUsers';
 
 const INITIAL_STATE = {
   books: books,

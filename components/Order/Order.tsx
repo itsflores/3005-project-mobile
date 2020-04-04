@@ -1,5 +1,8 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { addBookToOrder, removeBookFromOrder, addBookToStore, removeBookFromStore } from '../../util/actions';
 import OrderStyles from './Order.styles';
 import books from '../../data/starterData';
 import BookCard from '../../components/BookCard/BookCard';
@@ -28,7 +31,7 @@ interface OrderState {
   totalShipping: number,
 }
 
-export default class Order extends React.Component <OrderProps, OrderState> {
+class Order extends React.Component <OrderProps, OrderState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -189,3 +192,19 @@ export default class Order extends React.Component <OrderProps, OrderState> {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+		addBookToOrder,
+		removeBookFromOrder,
+		addBookToStore,
+		removeBookFromStore
+  }, dispatch)
+);
+
+const mapStateToProps = (state) => {
+  const { bookAppStore } = state
+  return { bookAppStore }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Order);
