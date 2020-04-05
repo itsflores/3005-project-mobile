@@ -209,7 +209,7 @@ class Profile extends React.Component <OrderProps, OrderState> {
                 log in
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={ProfileStyles.loginButton}>
+            <TouchableOpacity onPress={() => this.props.newUser({ inputUsername, inputPassword })} style={ProfileStyles.loginButton}>
               <Text style={[generalStyles.actionButton]}>
                 register
               </Text>

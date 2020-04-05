@@ -85,8 +85,8 @@ const sampleReducer = (state = INITIAL_STATE, action) => {
       const newUser = {
         ...initialUser,
         id: (`u-${appUsers.length + 1}`),
-        username: action.payload.username,
-        password: action.payload.username
+        username: action.payload.inputUsername,
+        password: action.payload.inputPassword
       }
       newUsers.push(newUser);
       
