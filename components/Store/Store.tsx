@@ -82,21 +82,18 @@ class Store extends React.Component<StoreProps, StoreState> {
 	}
 
 	addToCart = (newId) => {
-		const { order, bookList } = this.props.bookAppStore;
-		this.props.addBookToOrder({ book: bookList[bookList.findIndex((currBook) => currBook.id === newId)], quantity: 1 })
+		const { bookList } = this.props.bookAppStore;
+		this.props.addBookToOrder({ book: bookList[bookList.findIndex((currBook) => currBook.id === newId)], quantity: 1 });
 	}
 
 	removeFromCart = (target) => {
 		const { order } = this.props.bookAppStore;
-		this.props.removeBookFromOrder(order.findIndex((currItem) => currItem.book.id === target), 1)
+		this.props.removeBookFromOrder(order.findIndex((currItem) => currItem.book.id === target), 1);
 	}
 
 	removeFromStore = (targetId) => {
-		const { bookList } = this.state;
-		const newList = bookList;
-		newList.splice(newList.findIndex((item) => item.id === targetId), 1);
-
-		this.setState({ bookList: newList })
+		const { bookList } = this.props.bookAppStore;
+		this.props.removeBookFromStore(bookList.findIndex((item) => item.id === targetId));
 	}
 	
 	generateSearchList = (input) => {

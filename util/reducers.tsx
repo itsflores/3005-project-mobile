@@ -32,6 +32,10 @@ const sampleReducer = (state = INITIAL_STATE, action) => {
       newBookList.sort((a: any, b: any) => parseInt(b.publishedYear) - parseInt(a.publishedYear))
 
       return { ...prevState, bookList: newBookList, order: [] }
+    case 'REMOVE_BOOK_STORE':
+      newBookList.splice(action.payload, 1);
+
+      return { ...prevState, bookList: newBookList, order: [] }
     case 'INCREASE_BOOK':
       newOrder[action.payload].quantity++;
 
