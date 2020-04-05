@@ -1,7 +1,7 @@
 export default [
   {
     id: 'u-01',
-    userame: 'omar',
+    username: 'omar',
     password: 'omar',
     admin: true,
     billingInfo: {
@@ -16,7 +16,7 @@ export default [
   },
   {
     id: 'u-02',
-    userame: 'jeremy',
+    username: 'jeremy',
     password: 'jeremy',
     admin: true,
     billingInfo: {
@@ -31,7 +31,7 @@ export default [
   },
   {
     id: 'u-03',
-    userame: 'ahmed',
+    username: 'ahmed',
     password: 'ahmed',
     admin: false,
     billingInfo: {

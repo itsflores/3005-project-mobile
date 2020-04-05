@@ -263,7 +263,7 @@ class Store extends React.Component<StoreProps, StoreState> {
 
 				<View style={StoreStyles.headerContainer}>
 					<Header title="Store" />
-					{userStatus && currUser.admin && (
+					{userStatus && currUser && currUser.admin && (
 						<TouchableOpacity onPress={() => this.setState({ showNewBook: true })} style={StoreStyles.newBookButton}>
 							<Text style={[generalStyles.header1, { marginRight: 10 }]}>
 								new
@@ -298,7 +298,7 @@ class Store extends React.Component<StoreProps, StoreState> {
 								type="store"
 								numPages={book.pageCount}
 							/>
-							{userStatus && currUser.admin && (
+							{userStatus && currUser && currUser.admin && (
 								<TouchableOpacity onPress={() => this.removeFromStore(book.id)}>
 									<Text style={[generalStyles.actionExit, { color: colors.blue, marginBottom: 20, textAlign: 'center' }]}>
 										remove

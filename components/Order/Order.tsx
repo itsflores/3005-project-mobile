@@ -21,16 +21,12 @@ interface OrderProps {
   decreaseBookOrder: Function
 }
 
-interface bookUnit {
-  book: any,
-  quantity: number
-}
-
 interface OrderState {
   totalPrice: number,
   totalBooks: number,
   totalTax: number,
   totalShipping: number,
+  currOrder: [],
 }
 
 class Order extends React.Component <OrderProps, OrderState> {
@@ -41,11 +37,12 @@ class Order extends React.Component <OrderProps, OrderState> {
       totalPrice: 0,
       totalTax: 0,
       totalShipping: 0,
+      currOrder: this.props.bookAppStore.order
     }
   }
 
   componentDidMount() {
-    this.updatePricing();    
+    this.updatePricing(); 
   }
 
   updatePricing = () => {
@@ -61,7 +58,6 @@ class Order extends React.Component <OrderProps, OrderState> {
   render() {
     const { order } = this.props.bookAppStore;
     const { totalPrice, totalBooks, totalShipping, totalTax } = this.state;
-
     // console.log(order);
 
     return (

@@ -1,23 +1,30 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, TextInput, Modal, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Modal, ScrollView } from 'react-native';
 import ProfileStyles from './Profile.styles';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { logIn, logOut, newUser } from '../../util/actions';
 import { generalStyles, colors } from '../../App.styles';
 import { Header } from '../Shared/SharedComponents';
 
 interface OrderProps {
-
+  bookAppStore: any,
+	logIn: Function,
+	logOut: Function,
+	newUser: Function,
 }
 
 interface OrderState {
-  currentUser: any | null,
   showOrders: boolean,
-  showBilling: boolean
+  showBilling: boolean,
+  inputUsername: null | string,
+  inputPassword: null | string,
 }
 
 const sampleUser = {
   id: 'usr-01',
   name: 'john',
-  userame: 'johnny',
+  username: 'johnny',
   password: 'luvbooks',
   billingInfo: {
     cardNumber: 123456789,
@@ -66,18 +73,20 @@ const sampleOrders = [
   }
 ]
 
-export default class Profile extends React.Component <OrderProps, OrderState> {
+class Profile extends React.Component <OrderProps, OrderState> {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: 'johnny',
       showOrders: false,
       showBilling: false,
+      inputUsername: null,
+      inputPassword: null,
     }
   }
 
   render() {
-    const { currentUser, showOrders, showBilling } = this.state;
+    const { currUser } = this.props.bookAppStore;
+    const { showOrders, showBilling, inputPassword, inputUsername } = this.state;
 
     return (
       <View style={ProfileStyles.profileContainer}>
@@ -179,20 +188,37 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
         <View style={ProfileStyles.headerContainer}>
           <Header title="Profile" />
         </View>
-        {currentUser === null ? (
+        {currUser === null ? (
           <View style={[ProfileStyles.loginContainer]}>
-            <TextInput style={[generalStyles.header1, ProfileStyles.loginInputBox]} placeholder="username" />
-            <TextInput secureTextEntry={true} style={[generalStyles.header1, ProfileStyles.loginInputBox]} placeholder="password" />
-            <TouchableOpacity onPress={() => this.setState({ currentUser: 'johnny' })} style={ProfileStyles.loginButton}>
+            <TextInput 
+              style={[generalStyles.header1, ProfileStyles.loginInputBox]} 
+              placeholder="username"
+              value={inputUsername}
+              onChangeText={(input) => this.setState({ inputUsername: input })}
+              autoCapitalize="none"
+            />
+            <TextInput 
+              secureTextEntry={true} 
+              style={[generalStyles.header1, ProfileStyles.loginInputBox]} 
+              placeholder="password"
+              value={inputPassword}
+              onChangeText={(input) => this.setState({ inputPassword: input })}
+            />
+            <TouchableOpacity onPress={() => this.props.logIn({ inputUsername, inputPassword })} style={ProfileStyles.loginButton}>
               <Text style={[generalStyles.actionButton]}>
-                log in / register
+                log in
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={ProfileStyles.loginButton}>
+              <Text style={[generalStyles.actionButton]}>
+                register
               </Text>
             </TouchableOpacity>
           </View>
         ) : (
           <View style={[ProfileStyles.loginContainer]}>
             <Text style={[generalStyles.header2, { fontSize: 40, textAlign: 'center' }]}>
-              {`Hello, ${currentUser}\n`}
+              {`Hello, ${currUser.username}\n`}
               <Text style={[generalStyles.subheader1]}>
                 good to see you again
               </Text>
@@ -207,7 +233,7 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
                 billing information 
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.setState({ currentUser: null })} style={ProfileStyles.loginButton}>
+            <TouchableOpacity onPress={() => this.props.logOut()} style={ProfileStyles.loginButton}>
               <Text style={[generalStyles.actionButton]}>
                 log out 
               </Text>
@@ -218,3 +244,18 @@ export default class Profile extends React.Component <OrderProps, OrderState> {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    logIn,
+    logOut,
+    newUser
+  }, dispatch)
+);
+
+const mapStateToProps = (state) => {
+  const { bookAppStore } = state
+  return { bookAppStore }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
