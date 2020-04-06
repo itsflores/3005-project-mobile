@@ -23,7 +23,8 @@ interface OrderProps {
 
 interface OrderState {
   totalPrice: number,
-  totalBooks: number,
+  totalBooksPrice: number,
+  totalBooks: number
   totalTax: number,
   totalShipping: number,
   currOrder: [],
@@ -33,11 +34,12 @@ class Order extends React.Component <OrderProps, OrderState> {
   constructor(props) {
     super(props);
     this.state = {
+      totalBooksPrice: 0,
       totalBooks: 0,
       totalPrice: 0,
       totalTax: 0,
       totalShipping: 0,
-      currOrder: this.props.bookAppStore.order
+      currOrder: []
     }
   }
 
@@ -47,17 +49,24 @@ class Order extends React.Component <OrderProps, OrderState> {
 
   updatePricing = () => {
     const { order } = this.props.bookAppStore;
+    const newBooks = order.reduce((acc, currBook) => acc += currBook.quantity, 0)
     const newBooksPrice = order.reduce((acc, currBook) => acc += currBook.quantity * currBook.book.price, 0);
     const newTax = newBooksPrice * pricing.tax;
     const newShipping = order.reduce((acc, currBook) => acc += currBook.quantity, 0) % 3 * pricing.shipping + pricing.shipping;
     const newTotal = newBooksPrice + newTax + newShipping;
 
-    this.setState({ totalBooks: newBooksPrice, totalShipping: newShipping, totalTax: newTax, totalPrice: newTotal });
+    this.setState({ 
+      totalBooksPrice: newBooksPrice, 
+      totalShipping: newShipping, 
+      totalTax: newTax, 
+      totalPrice: newTotal, 
+      totalBooks: newBooks 
+    });
   }
 
   render() {
     const { order } = this.props.bookAppStore;
-    const { totalPrice, totalBooks, totalShipping, totalTax } = this.state;
+    const { totalPrice, totalBooksPrice, totalShipping, totalTax } = this.state;
     // console.log(order);
 
     return (
@@ -154,7 +163,7 @@ class Order extends React.Component <OrderProps, OrderState> {
               </View>
               <View style={OrderStyles.checkoutPriceContainer}>
                 <Text style={generalStyles.header1}>
-                  {`${totalBooks.toFixed(2)}`}
+                  {`${totalBooksPrice.toFixed(2)}`}
                 </Text>
                 <Text style={generalStyles.header1}>
                   {`${totalShipping.toFixed(2)}`}

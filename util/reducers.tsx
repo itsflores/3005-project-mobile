@@ -27,7 +27,7 @@ const initialUser = {
   }
 }
 
-const sampleReducer = (state = INITIAL_STATE, action) => {
+const bookStoreReducer = (state = INITIAL_STATE, action) => {
   const { order, bookList, appUsers } = state;
   const newOrder = order;
   const newBookList = bookList;
@@ -66,10 +66,6 @@ const sampleReducer = (state = INITIAL_STATE, action) => {
 
     case 'LOG_IN': 
       const validateUser = appUsers.findIndex((user) => user.password === action.payload.inputPassword && user.username === action.payload.inputUsername);
-      
-      console.log(action.payload);
-
-      console.log(appUsers[validateUser]);
 
       if (validateUser > -1) {
         return { ...state, currUser: appUsers[validateUser] };
@@ -81,7 +77,7 @@ const sampleReducer = (state = INITIAL_STATE, action) => {
 
       return { ...state, currUser: null };
 
-    case 'NEW_USER': 
+    case 'NEW_USER':
       const newUser = {
         ...initialUser,
         id: (`u-${appUsers.length + 1}`),
@@ -98,5 +94,5 @@ const sampleReducer = (state = INITIAL_STATE, action) => {
 };
 
 export default combineReducers({
-  bookAppStore: sampleReducer,
+  bookAppStore: bookStoreReducer,
 });

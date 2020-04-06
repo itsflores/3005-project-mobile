@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, TextInput, Modal, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Modal, ScrollView, Alert } from 'react-native';
 import ProfileStyles from './Profile.styles';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -81,6 +81,25 @@ class Profile extends React.Component <OrderProps, OrderState> {
       showBilling: false,
       inputUsername: null,
       inputPassword: null,
+    }
+  }
+
+  registerUser = () => {
+    const { inputUsername, inputPassword } = this.state;
+
+    if (inputUsername && inputPassword) {
+      this.props.newUser({ inputUsername, inputPassword })
+    } else {
+      Alert.alert(
+        'LookinnaBook',
+        `Please enter a valid username and password`,
+        [{
+          text: 'Done',
+          style: 'default'
+        }], {
+          cancelable: true
+        }
+      );
     }
   }
 
@@ -209,7 +228,7 @@ class Profile extends React.Component <OrderProps, OrderState> {
                 log in
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.props.newUser({ inputUsername, inputPassword })} style={ProfileStyles.loginButton}>
+            <TouchableOpacity onPress={() => this.registerUser()} style={ProfileStyles.loginButton}>
               <Text style={[generalStyles.actionButton]}>
                 register
               </Text>
