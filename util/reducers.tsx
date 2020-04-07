@@ -8,7 +8,9 @@ const INITIAL_STATE = {
   bookList: books.sort((a: any, b: any) => parseInt(b.publishedYear) - parseInt(a.publishedYear)),
   order: [],
   userStatus: true,
-  currUser: null,
+  currUser: {
+    admin: true
+  },
 };
 
 const initialUser = {

@@ -3,7 +3,8 @@ import {
 } from 'react-native';
 
 export const colors = {
-  blue: '#1A91FF'
+  blue: '#1A91FF',
+  red: '#FF2E00'
 }
 
 export const generalStyles = StyleSheet.create({

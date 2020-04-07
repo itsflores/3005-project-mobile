@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, TextInput, Modal, ScrollView, Alert } from 'react-native';
-import ProfileStyles from './Profile.styles';
+import AccountStyles from './Account.styles';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { logIn, logOut, newUser } from '../../util/actions';
@@ -73,7 +73,7 @@ const sampleOrders = [
   }
 ]
 
-class Profile extends React.Component <OrderProps, OrderState> {
+class Account extends React.Component <OrderProps, OrderState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -103,12 +103,16 @@ class Profile extends React.Component <OrderProps, OrderState> {
     }
   }
 
+  deleteAccount = () => {
+    
+  }
+
   render() {
     const { currUser } = this.props.bookAppStore;
     const { showOrders, showBilling, inputPassword, inputUsername } = this.state;
 
     return (
-      <View style={ProfileStyles.profileContainer}>
+      <View style={AccountStyles.accountContainer}>
         <Modal 
           animationType='fade'
           transparent={true}
@@ -119,10 +123,10 @@ class Profile extends React.Component <OrderProps, OrderState> {
               <Text style={[generalStyles.cardHeader]}>
                 Your order history
               </Text>
-              <ScrollView style={ProfileStyles.orderHistoryContainer}>
+              <ScrollView style={AccountStyles.orderHistoryContainer}>
                 {sampleOrders.map((order, index) => (
-                  <View style={ProfileStyles.orderContainer} key={index}>
-                    <View style={ProfileStyles.orderDescriptionContainer}>
+                  <View style={AccountStyles.orderContainer} key={index}>
+                    <View style={AccountStyles.orderDescriptionContainer}>
                       <Text style={[generalStyles.header1, { textAlign: 'left' }]}>
                         {`#${order.id}`}
                       </Text>
@@ -130,7 +134,7 @@ class Profile extends React.Component <OrderProps, OrderState> {
                         {`$${order.price.toFixed(2)}`}
                       </Text>
                     </View>
-                    <View style={ProfileStyles.orderDescriptionContainer}>
+                    <View style={AccountStyles.orderDescriptionContainer}>
                       <Text style={[generalStyles.header2]}>
                         {`${order.date.getDate()}/${order.date.getMonth()}/${order.date.getFullYear()}`}
                       </Text>
@@ -163,26 +167,26 @@ class Profile extends React.Component <OrderProps, OrderState> {
               <Text style={[generalStyles.cardHeader]}>
                 Your billing information
               </Text>
-              <View style={ProfileStyles.billingInfoContainer}>
+              <View style={AccountStyles.billingInfoContainer}>
                 <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
                   Card number
                 </Text>
-                <TextInput style={[generalStyles.header1, ProfileStyles.billingInfoInputBox]} placeholder={sampleUser.billingInfo.cardNumber.toString()} />
+                <TextInput style={[generalStyles.header1, AccountStyles.billingInfoInputBox]} placeholder={sampleUser.billingInfo.cardNumber.toString()} />
 
                 <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
                   Expiry date
                 </Text>
-                <TextInput style={[generalStyles.header1, ProfileStyles.billingInfoInputBox]} placeholder={`${sampleUser.billingInfo.expiryDate.getDate()}/${sampleUser.billingInfo.expiryDate.getMonth()}/${sampleUser.billingInfo.expiryDate.getFullYear()}`} />
+                <TextInput style={[generalStyles.header1, AccountStyles.billingInfoInputBox]} placeholder={`${sampleUser.billingInfo.expiryDate.getDate()}/${sampleUser.billingInfo.expiryDate.getMonth()}/${sampleUser.billingInfo.expiryDate.getFullYear()}`} />
 
                 <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
                   Address
                 </Text>
-                <TextInput style={[generalStyles.header1, ProfileStyles.billingInfoInputBox]} placeholder={sampleUser.billingInfo.address} />
+                <TextInput style={[generalStyles.header1, AccountStyles.billingInfoInputBox]} placeholder={sampleUser.billingInfo.address} />
 
                 <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
                   Phone number
                 </Text>
-                <TextInput style={[generalStyles.header1, ProfileStyles.billingInfoInputBox]} placeholder={sampleUser.billingInfo.phoneNumber} />
+                <TextInput style={[generalStyles.header1, AccountStyles.billingInfoInputBox]} placeholder={sampleUser.billingInfo.phoneNumber} />
               </View>
               <TouchableOpacity
                 style={generalStyles.closeOverlayButton} 
@@ -204,13 +208,13 @@ class Profile extends React.Component <OrderProps, OrderState> {
           </View>
         </Modal>
 
-        <View style={ProfileStyles.headerContainer}>
-          <Header title="Profile" />
+        <View style={AccountStyles.headerContainer}>
+          <Header title="Account" />
         </View>
         {currUser === null ? (
-          <View style={[ProfileStyles.loginContainer]}>
+          <View style={[AccountStyles.loginContainer]}>
             <TextInput 
-              style={[generalStyles.header1, ProfileStyles.loginInputBox]} 
+              style={[generalStyles.header1, AccountStyles.loginInputBox]} 
               placeholder="username"
               value={inputUsername}
               onChangeText={(input) => this.setState({ inputUsername: input })}
@@ -218,45 +222,67 @@ class Profile extends React.Component <OrderProps, OrderState> {
             />
             <TextInput 
               secureTextEntry={true} 
-              style={[generalStyles.header1, ProfileStyles.loginInputBox]} 
+              style={[generalStyles.header1, AccountStyles.loginInputBox]} 
               placeholder="password"
               value={inputPassword}
               onChangeText={(input) => this.setState({ inputPassword: input })}
             />
-            <TouchableOpacity onPress={() => this.props.logIn({ inputUsername, inputPassword })} style={ProfileStyles.loginButton}>
+            <TouchableOpacity onPress={() => this.props.logIn({ inputUsername, inputPassword })} style={AccountStyles.loginButton}>
               <Text style={[generalStyles.actionButton]}>
                 log in
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.registerUser()} style={ProfileStyles.loginButton}>
+            <TouchableOpacity onPress={() => this.registerUser()} style={AccountStyles.loginButton}>
               <Text style={[generalStyles.actionButton]}>
                 register
               </Text>
             </TouchableOpacity>
           </View>
         ) : (
-          <View style={[ProfileStyles.loginContainer]}>
-            <Text style={[generalStyles.header2, { fontSize: 40, textAlign: 'center' }]}>
-              {`Hello, ${currUser.username}\n`}
-              <Text style={[generalStyles.subheader1]}>
-                good to see you again
+          <View style={[AccountStyles.loginContainer]}>
+            {/* <ScrollView style={{ flex: 1 }}> */}
+              <Text style={[generalStyles.header2, { fontSize: 36, textAlign: 'center' }]}>
+                {`Hello, ${currUser.username}\n`}
+                <Text style={[generalStyles.subheader1]}>
+                  good to see you again
+                </Text>
               </Text>
-            </Text>
-            <TouchableOpacity onPress={() => this.setState({ showOrders: true })} style={{ marginTop: 60 }}>
-              <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
-                orders 
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.setState({ showBilling: true })} style={{ marginTop: 20 }}>
-              <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
-                billing information 
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.props.logOut()} style={ProfileStyles.loginButton}>
-              <Text style={[generalStyles.actionButton]}>
-                log out 
-              </Text>
-            </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.setState({ showOrders: true })} style={{ marginTop: 30 }}>
+                <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
+                  order history
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.setState({ showBilling: true })} style={{ marginTop: 10 }}>
+                <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
+                  billing information 
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.setState({ showBilling: true })} style={{ marginTop: 10 }}>
+                <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
+                  new author
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.setState({ showBilling: true })} style={{ marginTop: 10 }}>
+                <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
+                  new admin 
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.setState({ showBilling: true })} style={{ marginTop: 10 }}>
+                <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
+                  sales reports 
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.props.logOut()} style={AccountStyles.loginButton}>
+                <Text style={[generalStyles.actionButton]}>
+                  log out 
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.deleteAccount()} style={{ marginTop: 10 }}>
+                <Text style={[generalStyles.subheader1, { color: colors.red }]}>
+                  delete account 
+                </Text>
+              </TouchableOpacity>
+            {/* </ScrollView> */}
           </View>
         )}
       </View>
@@ -277,4 +303,4 @@ const mapStateToProps = (state) => {
   return { bookAppStore }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(Account);

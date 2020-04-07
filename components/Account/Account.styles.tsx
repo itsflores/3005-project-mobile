@@ -7,7 +7,7 @@ import {
 } from '../../App.styles';
 
 export default StyleSheet.create({
-  profileContainer: {
+  accountContainer: {
     flex: 1,
     flexDirection: 'column',
     alignContent: 'center',

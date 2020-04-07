@@ -8,7 +8,7 @@ import { createStore } from 'redux';
 import appBookReducer from './util/reducers';
 import Store from './components/Store/Store';
 import Order from './components/Order/Order';
-import Profile from './components/Profile/Profile';
+import Account from './components/Account/Account';
 import store from './assets/img/store.png';
 import storeActive from './assets/img/storeActive.png';
 import cart from './assets/img/cart.png';
@@ -78,13 +78,13 @@ const App = () => {
             />
             <Tab.Screen 
               options={{
-                tabBarLabel: 'Profile',
+                tabBarLabel: 'Account',
                 tabBarIcon: ({ focused }) => (
                   <Image source={focused ? profileActive : profile} style={{ height: 20, resizeMode: 'contain', marginTop: 10 }} />
                 )
               }}
-              name="Profile" 
-              component={Profile} 
+              name="Account" 
+              component={Account} 
             />
           </Tab.Navigator>
         </Provider>
