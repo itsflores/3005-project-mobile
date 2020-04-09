@@ -1,13 +1,26 @@
 import { combineReducers } from 'redux';
 import books from '../data/starterData';
 import users from '../data/starterUsers';
+import * as SQLite from 'expo-sqlite';
+import { Database } from 'expo-sqlite';
 
-const INITIAL_STATE = {
+interface INITIAL_STATE_INTERFACE {
+  database: Database,
+  books: any,
+  appUsers: any [],
+  bookList: any [],
+  order: any [],
+  userStatus: boolean,
+  currUser: any
+}
+
+const INITIAL_STATE: INITIAL_STATE_INTERFACE = {
   books,
   appUsers: users,
   bookList: books.sort((a: any, b: any) => parseInt(b.publishedYear) - parseInt(a.publishedYear)),
   order: [],
-  userStatus: true,
+  database: SQLite.openDatabase('lookinnabook.db', '1.0', 'LookinnaBook Database', 20000), 
+  userStatus: false,
   currUser: {
     admin: true
   },
