@@ -89,36 +89,13 @@ class Store extends React.Component<StoreProps, StoreState> {
 		db = SQLite.openDatabase('lookinnabook.db', '1.0', 'LookinnaBook Database', 20000);
 		db.transaction((tx) => {
 			tx.executeSql(`
-				drop table student;
-
 				create table student (
 					ID			varchar(5), 
 					name			varchar(20), 
 					dept_name		varchar(20), 
 					primary key (ID)
 				);
-
-				insert into student values ('00128', 'Zhang', 'Comp. Sci.');
-				insert into student values ('12345', 'Shankar', 'Comp. Sci.');
-				insert into student values ('19991', 'Brandt', 'History');
-				insert into student values ('23121', 'Chavez', 'Finance');
-				insert into student values ('44553', 'Peltier', 'Physics');
-				insert into student values ('45678', 'Levy', 'Physics');
-				insert into student values ('54321', 'Williams', 'Comp. Sci.');
-				insert into student values ('55739', 'Sanchez', 'Music');
-				insert into student values ('70557', 'Snow', 'Physics');
-				insert into student values ('76543', 'Brown', 'Comp. Sci.');
-				insert into student values ('76653', 'Aoi', 'Elec. Eng.');
-				insert into student values ('98765', 'Bourikas', 'Elec. Eng.');
-				insert into student values ('98988', 'Tanaka', 'Biology');
-
-				select * from student
-			`, [], (stuff, { rows }) => {
-				console.log(console.log(rows));
-			}, (err, random) => {
-				console.log(random);
-				return true;
-			})
+			`)
     });
 	}
 
