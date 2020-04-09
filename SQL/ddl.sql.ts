@@ -14,7 +14,7 @@ export const ddl = `
     year int,
     month int,
     address varchar(30),
-    phone_number int,
+    phone_number varchar(10),
     primary key (user_ID),
     foreign key (role_ID) references roles(role_ID)
   );
@@ -35,7 +35,7 @@ export const ddl = `
     name varchar (20),
     bank_number int,
     address varchar (30),
-    phone_num int,
+    phone_num varchar(10),
     sale int,
     primary key (publisher_ID)
   );
