@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { removeBookFromOrder, increaseBookOrder, decreaseBookOrder } from '../../util/actions';
 import OrderStyles from './Order.styles';
-import books from '../../data/starterData';
 import BookCard from '../../components/BookCard/BookCard';
 import { generalStyles, colors } from '../../App.styles';
 import { Header } from '../Shared/SharedComponents';
