@@ -3,9 +3,9 @@ import { View, Text, Image, TouchableOpacity, ScrollView, TextInput, Modal, Aler
 import * as imagePicker from 'expo-image-picker';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as SQLite from 'expo-sqlite';
 import { Database } from 'expo-sqlite';
 import { addBookToOrder, removeBookFromOrder, addBookToStore, removeBookFromStore } from '../../util/actions';
+import { ddl } from '../../SQL/ddl.sql';
 import { generalStyles, colors } from '../../App.styles';
 import StoreStyles from './Store.styles';
 import BookStyles from '../BookCard/BookCard.styles';
@@ -13,8 +13,6 @@ import BookCard from '../../components/BookCard/BookCard';
 import { Header } from '../../components/Shared/SharedComponents';
 import newbook from '../../assets/img/newbook.png';
 import emptyCover from '../../assets/img/emptyCover.png';
-
-let db: Database;
 
 interface StoreState {
 	bookList: any,
@@ -86,17 +84,23 @@ class Store extends React.Component<StoreProps, StoreState> {
 	}
 
 	componentDidMount() {
-		db = SQLite.openDatabase('lookinnabook.db', '1.0', 'LookinnaBook Database', 20000);
-		db.transaction((tx) => {
-			tx.executeSql(`
-				create table student (
-					ID			varchar(5), 
-					name			varchar(20), 
-					dept_name		varchar(20), 
-					primary key (ID)
-				);
+		const { database } = this.props.bookAppStore;
+		const db: Database = database;
+
+		db.transaction((transaction) => {
+			// transaction.executeSql(ddl);
+
+			transaction.executeSql(`
+				insert into roles
+				values("12345", "thisisarole"); 
 			`)
-    });
+
+			transaction.executeSql(`
+				select * from roles;
+			`, [], (_, { rows }) => console.log(rows)),
+			() => console.log("")	
+			
+		}, (err) => console.log(err));
 	}
 
 	addToCart = (newId) => {
