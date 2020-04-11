@@ -1,67 +1,64 @@
-export const ddl = `
+export const createRoles = `
+
   create table roles(
-    role_ID varchar(8),
-    role_name varchar(20),
-    primary key (role_ID)
-  );
+    role_ID text primary key,
+    role_name text
+  );`
+
+ export const createUsers=`
 
   create table users(
-    user_ID varchar(8),
-    role_ID varchar(8),
-    username varchar(20),
-    password varchar(20),
+    user_ID text primary key,
+    role_ID text,
+    username text,
+    password text,
     card_number int,
     year int,
     month int,
-    address varchar(30),
-    phone_number varchar(10),
-    primary key (user_ID),
+    address text,
+    phone_number text,
     foreign key (role_ID) references roles(role_ID)
-  );
-
+  );`
+export const createOrders=`
   create table orders(
-    tracking_num varchar(8),
-    user_ID varchar(8),
-    price decimal(10, 2),
+    tracking_num text primary key,
+    user_ID text,
+    price text,
     year int,
     day int,
     month int,
-    primary key (tracking_num),
     foreign key (user_ID) references users(user_ID)
-  );
-
+  );`
+export const createPub=`
   create table publisher(
-    publisher_ID varchar(8),
-    name varchar (20),
+    publisher_ID text primary key,
+    name text,
     bank_number int,
-    address varchar (30),
-    phone_num varchar(10),
-    sale int,
-    primary key (publisher_ID)
-  );
-
+    address text,
+    phone_num text,
+    sale int
+  );`
+export const createBook=`
   create table book(
-    book_ID varchar(8),
-    publisher_ID varchar(8),
+    book_ID text primary key,
+    publisher_ID text,
     stock int,
-    title varchar(20),
-    isbn varchar(17),
+    title text,
+    isbn text,
     page_count int,
     published_year int,
-    thumbnail_url varchar(800),
-    authors varchar(100),
-    price decimal(10,2),
-    category varchar(100),
-    genre varchar(20),
-    primary key (book_ID),
+    thumbnail_url text,
+    authors text,
+    price text,
+    category text,
+    genre text,
     foreign key (publisher_ID) references publisher(publisher_ID)
-  );
-
+  );`
+export const createItem=`
   create table item(
-    item_ID varchar(8),
-    order_ID varchar(8),
-    book_ID varchar(8),
-    primary key (item_ID),
+    item_ID text primary key,
+    order_ID text,
+    book_ID text,
     foreign key (order_ID) references orders(tracking_num),
     foreign key (book_ID) references book(book_ID)
   );
