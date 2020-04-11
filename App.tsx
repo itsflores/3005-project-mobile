@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import { initializeDb, populateDb, clearDb } from './database';
+import * as Db from './database';
 import appBookReducer from './util/reducers';
 import Store from './components/Store/Store';
 import Order from './components/Order/Order';
@@ -20,7 +20,11 @@ import profileActive from './assets/img/profileActive.png';
 const appStore = createStore(appBookReducer);
 const Tab = createBottomTabNavigator();
 
-initializeDb();
+
+Db.initializeDb();
+Db.clearDb();
+Db.createDb();
+Db.populateDb();
 
 const App = () => {
   const [fontsLoaded, fontStatus] = useState(false)
