@@ -28,3 +28,13 @@ export const populateUsers = `
         'u-04', 'r-01', 'david', 'password', 19819, 1999, 12, '555 Carling', '6136008906'
     );
 `;
+
+export const clearTables = `
+    drop table item;
+    drop table book;
+    drop table publisher;
+    drop table orders;
+    drop table users;
+    drop table roles;
+    `;
+
