@@ -3,9 +3,7 @@ import { View, Text, Image, TouchableOpacity, ScrollView, TextInput, Modal, Aler
 import * as imagePicker from 'expo-image-picker';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Database } from 'expo-sqlite';
 import { addBookToOrder, removeBookFromOrder, addBookToStore, removeBookFromStore } from '../../util/actions';
-import { ddl } from '../../SQL/ddl.sql';
 import { generalStyles, colors } from '../../App.styles';
 import StoreStyles from './Store.styles';
 import BookStyles from '../BookCard/BookCard.styles';
@@ -81,26 +79,6 @@ class Store extends React.Component<StoreProps, StoreState> {
 			showNewBook: false,
 			newBook: newBookInit,
 		}
-	}
-
-	componentDidMount() {
-		const { database } = this.props.bookAppStore;
-		const db: Database = database;
-
-		db.transaction((transaction) => {
-			// transaction.executeSql(ddl);
-
-			transaction.executeSql(`
-				insert into roles
-				values("12345", "thisisarole"); 
-			`)
-
-			transaction.executeSql(`
-				select * from roles;
-			`, [], (_, { rows }) => console.log(rows)),
-			() => console.log("")	
-			
-		}, (err) => console.log(err));
 	}
 
 	addToCart = (newId) => {
