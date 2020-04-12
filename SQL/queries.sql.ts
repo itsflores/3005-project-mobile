@@ -29,6 +29,47 @@ export const populateUsers = `
     );
 `;
 
+
+export const populatePubs = `
+    insert into publisher (
+      publisher_ID, name, bank_number, address, phone_num, sale
+    )
+    values (
+        'p-01', 'cheap', 123456, '123 fake', '6137371111', 10
+    ),
+    (
+        'p-02', 'medium', 999999, '578 crestahven', '6131111111', 20
+    ),
+    (
+        'p-03', 'expensive', 890712, '99 carleton', '6199998888', 50
+    ),
+    (
+        'p-04', 'free', 789324, '123 pizza', '6138907654',0
+    );
+`;
+
+export const bookAmount = `
+    select count(book_ID) from book;`;
+
+export const sales = `
+    select sum(price) from orders`;
+
+export const salesPerGenre = `
+    select sum(book.price), genre
+    from book 
+        inner join item on book.book_ID = item.book_ID,
+        inner join order on order_Id = item.order_id
+    group by
+        genre;`;
+
+export const salesPerAuthor = `
+    select sum(book.price), author
+    from book 
+        inner join item on book.book_ID = item.book_ID,
+        inner join order on order_Id = item.order_id
+    group by
+        author;`;
+
 export const clearItem = `
     drop table item;
     `;
@@ -46,4 +87,10 @@ export const clearUser= `
     `;
 export const clearRoles = `
     drop table roles;
+    `;
+export const clearAuthors = `
+    drop table author;
+    `;
+export const clearGenres = `
+    drop table genre;
     `;
