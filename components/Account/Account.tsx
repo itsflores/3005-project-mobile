@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, TextInput, Modal, ScrollView, Alert } fro
 import AccountStyles from './Account.styles';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { runQuery } from '../../database';
 import { logIn, logOut, newUser } from '../../util/actions';
 import { generalStyles, colors } from '../../App.styles';
 import { Header } from '../Shared/SharedComponents';
@@ -105,6 +106,15 @@ class Account extends React.Component <OrderProps, OrderState> {
 
   deleteAccount = () => {
     
+  }
+
+  userLogin = () => {
+    const { inputPassword, inputUsername } = this.state;
+
+    if (inputPassword && inputUsername) {
+      runQuery('select * from users')
+      // console.log(runQuery('select * from users'));
+    }
   }
 
   render() {
@@ -227,7 +237,7 @@ class Account extends React.Component <OrderProps, OrderState> {
               value={inputPassword}
               onChangeText={(input) => this.setState({ inputPassword: input })}
             />
-            <TouchableOpacity onPress={() => this.props.logIn({ inputUsername, inputPassword })} style={AccountStyles.loginButton}>
+            <TouchableOpacity onPress={() => this.userLogin()} style={AccountStyles.loginButton}>
               <Text style={[generalStyles.actionButton]}>
                 log in
               </Text>

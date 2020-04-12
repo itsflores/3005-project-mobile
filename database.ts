@@ -156,3 +156,17 @@ export const obtainFullDb = () => {
   return 'something';
 }
 
+export const runQuery = (query) => {
+  let queryResult: any;
+
+  db.transaction((transaction) => {
+    transaction.executeSql(query, [], (_, { rows }) => {
+      // console.log(rows);
+      queryResult = rows;
+    })
+  })
+
+  console.log(queryResult);
+  return queryResult;
+}
+

@@ -17,9 +17,7 @@ const INITIAL_STATE: INITIAL_STATE_INTERFACE = {
   bookList: books.sort((a: any, b: any) => parseInt(b.publishedYear) - parseInt(a.publishedYear)),
   order: [],
   userStatus: false,
-  currUser: {
-    admin: true
-  },
+  currUser: null
 };
 
 const initialUser = {
