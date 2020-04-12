@@ -15,7 +15,11 @@ This project is a mobile app built with **React Native** with an [SQLite](https:
 
 ### Design process 
 
-This application was first designed and prototyped using [Figma](https://figma.com). You may find the prototype [here](https://www.figma.com/proto/VA3LQFYdFW0mpyqoXBKwQ3/Look-Inna-Book?node-id=18%3A2&viewport=498%2C395%2C0.2058638036251068&scaling=min-zoom).
+This application was first designed and prototyped using [Figma](https://figma.com). 
+
+<iframe style="border: none;" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FVA3LQFYdFW0mpyqoXBKwQ3%2FLook-Inna-Book%3Fnode-id%3D0%253A1" allowfullscreen></iframe>
+
+You may find try out the prototype [here](https://www.figma.com/proto/VA3LQFYdFW0mpyqoXBKwQ3/Look-Inna-Book?node-id=18%3A2&viewport=498%2C395%2C0.2058638036251068&scaling=min-zoom).
 
 ---
 
