@@ -48,17 +48,32 @@ export const createBook=`
     page_count int,
     published_year int,
     thumbnail_url text,
-    authors text,
     price text,
-    category text,
-    genre text,
     foreign key (publisher_ID) references publisher(publisher_ID)
   );`
+
+export const createAuthor=`
+  create table author(
+    book_ID text,
+    name text,
+    primary key (book_ID, name),
+    foreign key (book_ID) references book(book_ID)
+  );`
+
+export const createGenre=`
+  create table genre(
+    book_ID text,
+    genre_name text,
+    primary key (book_ID, genre_name),
+    foreign key (book_ID) references book(book_ID)
+  );`
+
 export const createItem=`
   create table item(
     item_ID text primary key,
     order_ID text,
     book_ID text,
+    quantity int,
     foreign key (order_ID) references orders(tracking_num),
     foreign key (book_ID) references book(book_ID)
   );
