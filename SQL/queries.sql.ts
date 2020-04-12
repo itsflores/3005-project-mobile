@@ -29,7 +29,6 @@ export const populateUsers = `
     );
 `;
 
-
 export const populatePubs = `
     insert into publisher (
       publisher_ID, name, bank_number, address, phone_num, sale
@@ -70,27 +69,11 @@ export const salesPerAuthor = `
     group by
         author;`;
 
-export const clearItem = `
-    drop table item;
-    `;
-
-export const clearBook = `
-    drop table book;
-    `;
-export const clearPub = `
-    drop table publisher;
-    `;
-export const clearOrder = `
-    drop table orders;    `;
-export const clearUser= `
-    drop table users;
-    `;
-export const clearRoles = `
-    drop table roles;
-    `;
-export const clearAuthors = `
-    drop table author;
-    `;
-export const clearGenres = `
-    drop table genre;
-    `;
+export const clearItem = `drop table item;`;
+export const clearBook = `drop table book;`;
+export const clearPub = `drop table publisher;`;
+export const clearOrder = `drop table orders;`;
+export const clearUser= `drop table users;`;
+export const clearRoles = `drop table roles;`;
+export const clearAuthors = `drop table author;`;
+export const clearGenres = `drop table genre;`;

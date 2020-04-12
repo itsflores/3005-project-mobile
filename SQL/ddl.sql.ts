@@ -1,12 +1,10 @@
 export const createRoles = `
-
   create table roles(
     role_ID text primary key,
     role_name text
   );`
 
- export const createUsers=`
-
+export const createUsers=`
   create table users(
     user_ID text primary key,
     role_ID text,
@@ -19,6 +17,7 @@ export const createRoles = `
     phone_number text,
     foreign key (role_ID) references roles(role_ID)
   );`
+
 export const createOrders=`
   create table orders(
     tracking_num text primary key,
@@ -29,6 +28,7 @@ export const createOrders=`
     month int,
     foreign key (user_ID) references users(user_ID)
   );`
+
 export const createPub=`
   create table publisher(
     publisher_ID text primary key,
@@ -38,6 +38,7 @@ export const createPub=`
     phone_num text,
     sale int
   );`
+
 export const createBook=`
   create table book(
     book_ID text primary key,

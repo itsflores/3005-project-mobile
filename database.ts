@@ -131,3 +131,13 @@ export const obtainFullDb = () => {
   return 'something';
 }
 
+export const runQuery = (query: string) => {
+  return new Promise((resolve) => {
+    db.transaction((transaction) => {
+      transaction.executeSql(query, [], (_, { rows }) => {
+        resolve(rows);
+      });
+    }, (err) => console.log(err))
+  });
+}
+
