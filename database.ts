@@ -14,52 +14,44 @@ export const initializeDb = () => {
 
 export const clearDb = () => {
   db.transaction((transaction) => {
-    transaction.executeSql(Q.clearItem, [], (_, { rows }) => {
-      console.log(`cleared tables:`)
-      console.log(rows);
-    })
+    transaction.executeSql(Q.clearItem, [], (_, { rows }) => {})
   }, (err) => {
     console.log(`Error with clearing ${err}`)
   })
   db.transaction((transaction) => {
-    transaction.executeSql(Q.clearBook, [], (_, { rows }) => {
-      console.log(`cleared tables:`)
-      console.log(rows);
-    })
+    transaction.executeSql(Q.clearBook, [], (_, { rows }) => {})
   }, (err) => {
     console.log(`Error with clearing ${err}`)
   })
   db.transaction((transaction) => {
-    transaction.executeSql(Q.clearPub, [], (_, { rows }) => {
-      console.log(`cleared tables:`)
-      console.log(rows);
-    })
+    transaction.executeSql(Q.clearPub, [], (_, { rows }) => {})
   }, (err) => {
     console.log(`Error with clearing ${err}`)
   })
   db.transaction((transaction) => {
-    transaction.executeSql(Q.clearOrder, [], (_, { rows }) => {
-      console.log(`cleared tables:`)
-      console.log(rows);
-    })
+    transaction.executeSql(Q.clearOrder, [], (_, { rows }) => {})
   }, (err) => {
     console.log(`Error with clearing ${err}`)
   })  
 
   db.transaction((transaction) => {
-    transaction.executeSql(Q.clearUser, [], (_, { rows }) => {
-      console.log(`cleared tables:`)
-      console.log(rows);
-    })
+    transaction.executeSql(Q.clearUser, [], (_, { rows }) => {})
   }, (err) => {
     console.log(`Error with clearing ${err}`)
   })  
 
   db.transaction((transaction) => {
-    transaction.executeSql(Q.clearRoles, [], (_, { rows }) => {
-      console.log(`cleared tables:`)
-      console.log(rows);
-    })
+    transaction.executeSql(Q.clearRoles, [], (_, { rows }) => {})
+  }, (err) => {
+    console.log(`Error with clearing ${err}`)
+  })  
+ db.transaction((transaction) => {
+    transaction.executeSql(Q.clearAuthors, [], (_, { rows }) => {})
+  }, (err) => {
+    console.log(`Error with clearing ${err}`)
+  })  
+ db.transaction((transaction) => {
+    transaction.executeSql(Q.clearGenres, [], (_, { rows }) => {})
   }, (err) => {
     console.log(`Error with clearing ${err}`)
   })  
@@ -68,54 +60,46 @@ export const clearDb = () => {
 export const createDb = () => {
 
   db.transaction((transaction) => {
-    transaction.executeSql(D.createRoles, [], (_, { rows }) => {
-      console.log(`created roles:`)
-      console.log(rows);
-    })
+    transaction.executeSql(D.createRoles, [], (_, { rows }) => {})
   }, (err) => {
     console.log(`Error with creating ${err}`)
   })
   db.transaction((transaction) => {
-    transaction.executeSql(D.createUsers, [], (_, { rows }) => {
-      console.log(`created users:`)
-      console.log(rows);
-    })
+    transaction.executeSql(D.createUsers, [], (_, { rows }) => {})
   }, (err) => {
     console.log(`Error with creating ${err}`)
   })
   db.transaction((transaction) => {
-    transaction.executeSql(D.createOrders, [], (_, { rows }) => {
-      console.log(`created orders:`)
-      console.log(rows);
-    })
+    transaction.executeSql(D.createOrders, [], (_, { rows }) => {})
   }, (err) => {
     console.log(`Error with creating ${err}`)
   })  
   db.transaction((transaction) => {
-    transaction.executeSql(D.createPub, [], (_, { rows }) => {
-      console.log(`created Pub:`)
-      console.log(rows);
-    })
+    transaction.executeSql(D.createPub, [], (_, { rows }) => {})
   }, (err) => {
     console.log(`Error with creating ${err}`)
   })
 
   db.transaction((transaction) => {
-    transaction.executeSql(D.createBook, [], (_, { rows }) => {
-      console.log(`created book:`)
-      console.log(rows);
-    })
+    transaction.executeSql(D.createBook, [], (_, { rows }) => {})
   }, (err) => {
     console.log(`Error with creating ${err}`)
   }) 
   db.transaction((transaction) => {
-    transaction.executeSql(D.createItem, [], (_, { rows }) => {
-      console.log(`created item:`)
-      console.log(rows);
-    })
+    transaction.executeSql(D.createItem, [], (_, { rows }) => {})
   }, (err) => {
     console.log(`Error with creating ${err}`)
   })  
+  db.transaction((transaction) => {
+    transaction.executeSql(D.createAuthor, [], (_, { rows }) => {})
+  }, (err) => {
+    console.log(`Error with creating ${err}`)
+  }) 
+  db.transaction((transaction) => {
+    transaction.executeSql(D.createGenre, [], (_, { rows }) => {})
+  }, (err) => {
+    console.log(`Error with creating ${err}`)
+  }) 
 
 }
 export const populateDb = () => {
@@ -123,33 +107,24 @@ export const populateDb = () => {
   db.transaction((transaction) => {
     transaction.executeSql(`
       ${Q.populateRoles}
-      `, [], (_, { rows }) => {
-        console.log(`populated:`)
-        console.log(rows);
-      })
-    transaction.executeSql(Q.populateUsers, [], (_, { rows }) => {
-      console.log(`users:`)
-      console.log(rows);
-    })
+      `, [], (_, { rows }) => {})
+    transaction.executeSql(Q.populateUsers, [], (_, { rows }) => {})
+  }, (err) => {
+    console.log(`Error with populating users or roles ${err}`)
+  })
 
+  db.transaction((transaction) => {
+    transaction.executeSql(Q.populatePubs, [], (_, { rows }) => {})
 
-    transaction.executeSql(`select * from book`, [], (_, { rows }) => {
-      console.log(`users:`)
-      console.log(rows);
-    })
+    transaction.executeSql(Q.bookAmount, [], (_, { rows }) => {console.log(rows)})
 
-    transaction.executeSql(`select * from roles`, [], (_, { rows }) => {
-      console.log(`users:`)
-      console.log(rows);
-    })
-
-    transaction.executeSql(`select * from users`, [], (_, { rows }) => {
+    transaction.executeSql(`select * from publisher`, [], (_, { rows }) => {
       console.log(`users:`)
       console.log(rows);
     })
   }, (err) => {
-    console.log(`Error with transaction ${err}`)
-  })
+    console.log(`Error with popuating publishers ${err}`)
+  })  
 }
 
 export const obtainFullDb = () => {
