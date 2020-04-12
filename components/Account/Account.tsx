@@ -112,8 +112,30 @@ class Account extends React.Component <OrderProps, OrderState> {
     const { inputPassword, inputUsername } = this.state;
 
     if (inputPassword && inputUsername) {
-      runQuery('select * from users')
-      // console.log(runQuery('select * from users'));
+      runQuery(`
+        select *
+        from users
+        where password = '${inputPassword}' 
+        and username = '${inputUsername}';
+      `).then((result: any) => {
+        const results = result._array;
+
+        if (result.length > 0) {
+          // !check if they're admin then login
+          console.log(results);
+        } else {
+          Alert.alert(
+            'LookinnaBook',
+            `Those credentials didn't seem to work, please verify your username and password`,
+            [{
+              text: 'Done',
+              style: 'default'
+            }], {
+              cancelable: true
+            }
+          );
+        }
+      })
     }
   }
 
