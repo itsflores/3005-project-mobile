@@ -29,21 +29,9 @@ export const populateUsers = `
     );
 `;
 
-export const clearItem = `
-    drop table item;
-    `;
-
-export const clearBook = `
-    drop table book;
-    `;
-export const clearPub = `
-    drop table publisher;
-    `;
-export const clearOrder = `
-    drop table orders;    `;
-export const clearUser= `
-    drop table users;
-    `;
-export const clearRoles = `
-    drop table roles;
-    `;
+export const clearItem = `drop table item;`;
+export const clearBook = `drop table book;`;
+export const clearPub = `drop table publisher;`;
+export const clearOrder = `drop table orders;`;
+export const clearUser= `drop table users;`;
+export const clearRoles = `drop table roles;`;

@@ -211,7 +211,7 @@ class Store extends React.Component<StoreProps, StoreState> {
 
 	render() {
 		const { searchList, search, showNewBook, newBook } = this.state;
-		const { bookList, order, userStatus, currUser } = this.props.bookAppStore;
+		const { bookList, order, currUser } = this.props.bookAppStore;
 
 		// console.log(order);
 
@@ -263,7 +263,7 @@ class Store extends React.Component<StoreProps, StoreState> {
 
 				<View style={StoreStyles.headerContainer}>
 					<Header title="Store" />
-					{userStatus && currUser && currUser.admin && (
+					{currUser !== null && currUser.admin && (
 						<TouchableOpacity onPress={() => this.setState({ showNewBook: true })} style={StoreStyles.newBookButton}>
 							<Text style={[generalStyles.header1, { marginRight: 10 }]}>
 								new
@@ -298,7 +298,7 @@ class Store extends React.Component<StoreProps, StoreState> {
 								type="store"
 								numPages={book.pageCount}
 							/>
-							{userStatus && currUser && currUser.admin && (
+							{currUser !== null && currUser.admin && (
 								<TouchableOpacity onPress={() => this.removeFromStore(book.id)}>
 									<Text style={[generalStyles.actionExit, { color: colors.blue, marginBottom: 20, textAlign: 'center' }]}>
 										remove

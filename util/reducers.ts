@@ -1,21 +1,26 @@
 import { combineReducers } from 'redux';
 import books from '../data/starterData';
-import users from '../data/starterUsers';
-import { User } from './Schemas';
 
 interface INITIAL_STATE_INTERFACE {
-  books: any,
   bookList: any [],
   order: any [],
-  userStatus: boolean,
   currUser: any
 }
 
+interface USER {
+  userId: string,
+  admin: boolean,
+  username: string,
+  cardNumber: number,
+  expiryYear: number,
+  expiryMonth: number,
+  address: string,
+  phoneNumber: string
+}
+
 const INITIAL_STATE: INITIAL_STATE_INTERFACE = {
-  books,
   bookList: books.sort((a: any, b: any) => parseInt(b.publishedYear) - parseInt(a.publishedYear)),
   order: [],
-  userStatus: false,
   currUser: null
 };
 
@@ -55,14 +60,21 @@ const bookStoreReducer = (state = INITIAL_STATE, action) => {
 
       return { ...state, order: newOrder };
 
-    // case 'LOG_IN': 
-    //   const validateUser = appUsers.findIndex((user) => user.password === action.payload.inputPassword && user.username === action.payload.inputUsername);
+    case 'LOG_IN': 
+      const newInfo = action.payload;
 
-    //   if (validateUser > -1) {
-    //     return { ...state, currUser: appUsers[validateUser] };
-    //   } else {
-    //     return { ...state };
-    //   }
+      const newUser: USER = {
+        userId: newInfo.user_ID,
+        admin: (newInfo.role_ID === 'r-00' ? true : false),
+        username: newInfo.username,
+        cardNumber: newInfo.card_number,
+        expiryYear: newInfo.year,
+        expiryMonth: newInfo.month,
+        address: newInfo.address, 
+        phoneNumber: newInfo.phone_number
+      }
+
+      return { ...state, currUser: newUser };
 
     case 'LOG_OUT': 
 

@@ -121,8 +121,8 @@ class Account extends React.Component <OrderProps, OrderState> {
         const results = result._array;
 
         if (result.length > 0) {
-          // !check if they're admin then login
-          console.log(results);
+          const user = results[0];
+          this.props.logIn(user);
         } else {
           Alert.alert(
             'LookinnaBook',
