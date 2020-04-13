@@ -61,11 +61,11 @@ export const createAuthor=`
     foreign key (book_ID) references book(book_ID)
   );`
 
-export const createGenre=`
-  create table genre(
+export const createCategory=`
+  create table category(
     book_ID text,
-    genre_name text,
-    primary key (book_ID, genre_name),
+    category_name text,
+    primary key (book_ID, category_name),
     foreign key (book_ID) references book(book_ID)
   );`
 

@@ -86,6 +86,17 @@ class Account extends React.Component <OrderProps, OrderState> {
           );
         }
       })
+    } else {
+      Alert.alert(
+        'LookinnaBook',
+        `Please enter valid credentials!`,
+        [{
+          text: 'Done',
+          style: 'default',
+        }], {
+          cancelable: true,
+        }
+      );
     }
   }
 
@@ -240,16 +251,18 @@ class Account extends React.Component <OrderProps, OrderState> {
               value={inputPassword}
               onChangeText={(input) => this.setState({ inputPassword: input })}
             />
-            <TouchableOpacity onPress={() => this.userLogin()} style={AccountStyles.loginButton}>
-              <Text style={[generalStyles.actionButton]}>
-                log in
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.registerUser()} style={AccountStyles.loginButton}>
-              <Text style={[generalStyles.actionButton]}>
-                register
-              </Text>
-            </TouchableOpacity>
+            <View style={{ width: '100%', marginTop: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
+              <TouchableOpacity onPress={() => this.registerUser()} style={[AccountStyles.loginButton, { width: '47%' }]}>
+                <Text style={[generalStyles.actionButton]}>
+                  register
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.userLogin()} style={[AccountStyles.loginButton, { width: '47%' }]}>
+                <Text style={[generalStyles.actionButton]}>
+                  log in
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         ) : (
           <View style={[AccountStyles.loginContainer]}>

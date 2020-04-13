@@ -97,7 +97,7 @@ export const createDb = () => {
     console.log(`Error with creating ${err}`)
   }) 
   db.transaction((transaction) => {
-    transaction.executeSql(D.createGenre, [], (_, { rows }) => {})
+    transaction.executeSql(D.createCategory, [], (_, { rows }) => {})
   }, (err) => {
     console.log(`Error with creating ${err}`)
   }) 
