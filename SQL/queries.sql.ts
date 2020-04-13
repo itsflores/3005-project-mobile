@@ -31,27 +31,25 @@ export const populateUsers = `
 
 export const populatePubs = `
     insert into publisher (
-      publisher_ID, name, bank_number, address, phone_num, sale
+      publisher_ID, name, bank_number, address, phone_num
     )
     values (
-        'p-01', 'cheap', 123456, '123 fake', '6137371111', 10
+        'p-01', 'cheap', 123456, '123 fake', '6137371111'
     ),
     (
-        'p-02', 'medium', 999999, '578 crestahven', '6131111111', 20
+        'p-02', 'medium', 999999, '578 crestahven', '6131111111'
     ),
     (
-        'p-03', 'expensive', 890712, '99 carleton', '6199998888', 50
+        'p-03', 'expensive', 890712, '99 carleton', '6199998888'
     ),
     (
-        'p-04', 'free', 789324, '123 pizza', '6138907654',0
+        'p-04', 'free', 789324, '123 pizza', '6138907654'
     );
 `;
 
-export const bookAmount = `
-    select count(book_ID) from book;`;
+export const bookAmount = `select count(book_ID) from book;`;
 
-export const sales = `
-    select sum(price) from orders`;
+export const sales = `select sum(price) from orders`;
 
 export const salesPerGenre = `
     select sum(book.price), genre
