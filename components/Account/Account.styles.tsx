@@ -66,7 +66,7 @@ export default StyleSheet.create({
   orderHistoryContainer: {
     marginTop: 10,
     marginBottom: 30,
-    height: 260,
+    // height: 300,
     width: '100%',
   },
   orderContainer: {

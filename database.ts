@@ -3,6 +3,8 @@ import { Database } from 'expo-sqlite';
 import * as D from './SQL/ddl.sql';
 import * as Q from './SQL/queries.sql';
 import {  } from './SQL/triggers.sql';
+import initialBooks from './data/starterData';
+import books from './data/starterData';
 
 let db: Database = null;
 
@@ -51,10 +53,10 @@ export const clearDb = () => {
     console.log(`Error with clearing ${err}`)
   })  
  db.transaction((transaction) => {
-    transaction.executeSql(Q.clearGenres, [], (_, { rows }) => {})
+    transaction.executeSql(Q.clearCategories, [], (_, { rows }) => {})
   }, (err) => {
     console.log(`Error with clearing ${err}`)
-  })  
+  })
 }
 
 export const createDb = () => {
@@ -96,7 +98,7 @@ export const createDb = () => {
     console.log(`Error with creating ${err}`)
   }) 
   db.transaction((transaction) => {
-    transaction.executeSql(D.createGenre, [], (_, { rows }) => {})
+    transaction.executeSql(D.createCategory, [], (_, { rows }) => {})
   }, (err) => {
     console.log(`Error with creating ${err}`)
   }) 
@@ -141,3 +143,38 @@ export const runQuery = (query: string) => {
   });
 }
 
+export const populateBooks = () => {
+  books.forEach((book) => {
+    runQuery(`
+      insert into book (
+        book_ID, publisher_ID, stock, title, isbn, page_count, published_year, thumbnail_url, price, publisher_fee
+      )
+      values (
+        '${book.book_ID}', '${book.publisher_ID}', ${book.stock}, '${book.title}', '${book.isbn}', ${book.page_count}, ${book.published_year}, '${book.thumbnail_url}', '${book.price}', ${book.publisher_fee}
+      );
+    `);
+
+    book.authors.forEach((author) => {
+      runQuery(`
+        insert into author (
+          book_ID, name
+        )
+        values (
+          '${book.book_ID}', '${author}'
+        )
+      `)
+    });
+
+    book.categories.forEach((category) => {
+      runQuery(`
+        insert into category (
+          book_ID, category_name
+        )
+        values(
+          '${book.book_ID}', '${category}'
+        )
+      `)
+    });
+
+  })
+}

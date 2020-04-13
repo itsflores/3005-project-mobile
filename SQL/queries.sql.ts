@@ -10,10 +10,9 @@ export const populateRoles = `
     );
 `;
 
-
 export const populateUsers = `
     insert into users (
-        user_ID, role_id, username, password, card_number, year, month, address, phone_number
+        user_ID, role_ID, username, password, card_number, year, month, address, phone_number
     )
     values (
         'u-01', 'r-00', 'jeremy', 'password', 123456, 2021, 4, '123 Carleton', '6131111235'
@@ -52,12 +51,12 @@ export const bookAmount = `select count(book_ID) from book;`;
 export const sales = `select sum(price) from orders`;
 
 export const salesPerGenre = `
-    select sum(book.price), genre
+    select sum(book.price), category
     from book 
         inner join item on book.book_ID = item.book_ID,
         inner join order on order_Id = item.order_id
     group by
-        genre;`;
+        category;`;
 
 export const salesPerAuthor = `
     select sum(book.price), author
@@ -74,4 +73,4 @@ export const clearOrder = `drop table orders;`;
 export const clearUser= `drop table users;`;
 export const clearRoles = `drop table roles;`;
 export const clearAuthors = `drop table author;`;
-export const clearGenres = `drop table genre;`;
+export const clearCategories = `drop table category;`;
