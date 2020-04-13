@@ -34,7 +34,7 @@ export const generalStyles = StyleSheet.create({
   },
   subheader1: {
     fontFamily: 'worksans-regular',
-    fontSize: 16
+    fontSize: 15
   },
   subheader2: {
     fontFamily: 'worksans-light',

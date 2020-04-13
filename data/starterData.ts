@@ -1,6 +1,7 @@
 const books = [{
+    "publisher_fee": 10,
     "stock": 25,
-    "id": "b-01",
+    "book_ID": "b-01",
     "title": "Unlocking Android",
     "isbn": "1933988673",
     "pageCount": 416,
@@ -11,8 +12,9 @@ const books = [{
     "categories": ["Open Source", "Mobile"]
   },
   {
+    "publisher_fee": 10,
     "stock": 25,
-    "id": "b-02",
+    "book_ID": "b-02",
     "title": "Android in Action, Second Edition",
     "isbn": "1935182722",
     "pageCount": 592,
@@ -23,8 +25,9 @@ const books = [{
     "categories": ["Java"]
   },
   {
+    "publisher_fee": 10,
     "stock": 25,
-    "id": "b-03",
+    "book_ID": "b-03",
     "title": "Specification by Example",
     "isbn": "1617290084",
     "pageCount": 0,
@@ -35,8 +38,9 @@ const books = [{
     "categories": ["Software Engineering"]
   },
   {
+    "publisher_fee": 10,
     "stock": 25,
-    "id": "b-04",
+    "book_ID": "b-04",
     "title": "Flex 3 in Action",
     "isbn": "1933988746",
     "pageCount": 576,
@@ -47,8 +51,9 @@ const books = [{
     "categories": ["Internet"]
   },
   {
+    "publisher_fee": 10,
     "stock": 25,
-    "id": "b-05",
+    "book_ID": "b-05",
     "title": "Flex 4 in Action",
     "isbn": "1935182420",
     "pageCount": 600,
@@ -59,8 +64,9 @@ const books = [{
     "categories": ["Internet"]
   },
   {
+    "publisher_fee": 10,
     "stock": 25,
-    "id": "b-06",
+    "book_ID": "b-06",
     "title": "Collective Intelligence in Action",
     "isbn": "1933988312",
     "pageCount": 425,
@@ -71,8 +77,9 @@ const books = [{
     "categories": ["Internet"]
   },
   {
+    "publisher_fee": 10,
     "stock": 25,
-    "id": "b-07",
+    "book_ID": "b-07",
     "title": "Zend Framework in Action",
     "isbn": "1933988320",
     "pageCount": 432,
@@ -83,8 +90,9 @@ const books = [{
     "categories": ["Web Development"]
   },
   {
+    "publisher_fee": 10,
     "stock": 25,
-    "id": "b-08",
+    "book_ID": "b-08",
     "title": "Flex on Java",
     "isbn": "1933988797",
     "pageCount": 265,
@@ -95,8 +103,9 @@ const books = [{
     "categories": ["Internet"]
   },
   {
+    "publisher_fee": 10,
     "stock": 25,
-    "id": "b-09",
+    "book_ID": "b-09",
     "title": "Griffon in Action",
     "isbn": "1935182234",
     "pageCount": 375,
@@ -107,8 +116,9 @@ const books = [{
     "categories": ["Java"]
   },
   {
+    "publisher_fee": 10,
     "stock": 25,
-    "id": "b-10",
+    "book_ID": "b-10",
     "title": "OSGi in Depth",
     "isbn": "193518217X",
     "pageCount": 325,
@@ -119,8 +129,9 @@ const books = [{
     "categories": ["Java"]
   },
   {
+    "publisher_fee": 10,
     "stock": 25,
-    "id": "b-11",
+    "book_ID": "b-11",
     "title": "Flexible Rails",
     "isbn": "1933988509",
     "pageCount": 592,
@@ -131,8 +142,9 @@ const books = [{
     "categories": ["Web Development"]
   },
   {
+    "publisher_fee": 10,
     "stock": 25,
-    "id": "b-12",
+    "book_ID": "b-12",
     "title": "Hello! Flex 4",
     "isbn": "1933988762",
     "pageCount": 258,
@@ -143,8 +155,9 @@ const books = [{
     "categories": ["Internet"]
   },
   {
+    "publisher_fee": 10,
     "stock": 25,
-    "id": "b-13",
+    "book_ID": "b-13",
     "title": "Coffeehouse",
     "isbn": "1884777384",
     "pageCount": 316,
@@ -155,8 +168,9 @@ const books = [{
     "categories": ["Miscellaneous"]
   },
   {
+    "publisher_fee": 10,
     "stock": 25,
-    "id": "b-14",
+    "book_ID": "b-14",
     "title": "Brownfield Application Development in .NET",
     "isbn": "1933988711",
     "pageCount": 550,
@@ -167,8 +181,9 @@ const books = [{
     "categories": ["Microsoft"]
   },
   {
+    "publisher_fee": 10,
     "stock": 25,
-    "id": "b-15",
+    "book_ID": "b-15",
     "title": "MongoDB in Action",
     "isbn": "1935182870",
     "pageCount": 0,
@@ -179,8 +194,9 @@ const books = [{
     "categories": ["Next Generation Databases"]
   },
   {
+    "publisher_fee": 10,
     "stock": 25,
-    "id": "b-16",
+    "book_ID": "b-16",
     "title": "Jaguar Development with PowerBuilder 7",
     "isbn": "1884777864",
     "pageCount": 550,
@@ -191,8 +207,9 @@ const books = [{
     "categories": ["PowerBuilder", "Client-Server"]
   },
   {
+    "publisher_fee": 10,
     "stock": 25,
-    "id": "b-17",
+    "book_ID": "b-17",
     "title": "Taming Jaguar",
     "isbn": "1884777686",
     "pageCount": 362,
@@ -203,8 +220,9 @@ const books = [{
     "categories": ["PowerBuilder"]
   },
   {
+    "publisher_fee": 10,
     "stock": 25,
-    "id": "b-18",
+    "book_ID": "b-18",
     "title": "3D User Interfaces with Java 3D",
     "isbn": "1884777902",
     "pageCount": 520,
@@ -215,8 +233,9 @@ const books = [{
     "categories": ["Java", "Computer Graphics"]
   },
   {
+    "publisher_fee": 10,
     "stock": 25,
-    "id": "b-19",
+    "book_ID": "b-19",
     "title": "Hibernate in Action",
     "isbn": "193239415X",
     "pageCount": 400,
@@ -227,8 +246,9 @@ const books = [{
     "categories": ["Java"]
   },
   {
+    "publisher_fee": 10,
     "stock": 25,
-    "id": "b-20",
+    "book_ID": "b-20",
     "title": "Hibernate in Action (Chinese Edition)",
     "isbn": "9781932394575",
     "pageCount": 400,

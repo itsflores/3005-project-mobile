@@ -29,7 +29,7 @@ This application was first designed and prototyped using [Figma](https://figma.c
 
 ### Try it out! 
 
-To run this on your locally, you'll have to do the following: 
+To run this locally: 
 
 - Install the expo app on your mobile device through either the [Google Play Store](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en_CA) or the [Apple Store](https://apps.apple.com/us/app/expo-client/id982107779)
 - Clone this repository
