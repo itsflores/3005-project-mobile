@@ -173,8 +173,8 @@ class Store extends React.Component<StoreProps, StoreState> {
 					|| parseInt(newBook['stock']) < 20) {
 					verified = false;
 				}
-			} catch {
-				
+			} catch (err) {
+				console.log(err);
 			}
 		})
 

@@ -12,7 +12,7 @@ export const populateRoles = `
 
 export const populateUsers = `
     insert into users (
-        user_ID, role_id, username, password, card_number, year, month, address, phone_number
+        user_ID, role_ID, username, password, card_number, year, month, address, phone_number
     )
     values (
         'u-01', 'r-00', 'jeremy', 'password', 123456, 2021, 4, '123 Carleton', '6131111235'

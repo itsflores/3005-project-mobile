@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, TextInput, Modal, ScrollView, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Modal, ScrollView, Alert, Picker } from 'react-native';
 import AccountStyles from './Account.styles';
 import { connect } from 'react-redux';
 import { bindActionCreators, compose } from 'redux';
@@ -26,7 +26,10 @@ interface OrderState {
   inputPublisherAddress: null | string,
   inputPublisherBankNumber: null | string,
   inputPublisherPhone: null | string,
-  showNewPublisher: boolean
+  showNewAdmin: boolean,
+  showNewPublisher: boolean,
+  newAdminSelection: null | string,
+  availableUsers: any []
 }
 
 class Account extends React.Component <OrderProps, OrderState> {
@@ -35,6 +38,7 @@ class Account extends React.Component <OrderProps, OrderState> {
     this.state = {
       showOrders: false,
       showBilling: false,
+      showNewAdmin: false,
       inputUsername: null,
       inputPassword: null,
       inputPublisherId: null,
@@ -43,7 +47,9 @@ class Account extends React.Component <OrderProps, OrderState> {
       inputPublisherBankNumber: null,
       inputPublisherPhone: null,
       showNewPublisher: false,
+      newAdminSelection: null,
       orders: [],
+      availableUsers: []
     }
   }
 
@@ -178,6 +184,29 @@ class Account extends React.Component <OrderProps, OrderState> {
     }
   }
 
+  createNewAdmin = () => {
+    const { newAdminSelection } = this.state;
+
+    runQuery(`
+      update users
+      set role_ID = 'r-00'
+      where username = '${newAdminSelection}';
+    `).then((result: any) => {
+      Alert.alert(
+        'LookinnaBook',
+        `${newAdminSelection} is now an admin!`,
+        [{
+          text: 'Done',
+          style: 'default'
+        }], {
+          cancelable: true
+        }
+      );
+
+      this.setState({ showNewAdmin: false, newAdminSelection: null });
+    });
+  }
+
   render() {
     const { currUser } = this.props.bookAppStore;
     const { showOrders, 
@@ -190,7 +219,10 @@ class Account extends React.Component <OrderProps, OrderState> {
       inputPublisherName,
       inputPublisherAddress,
       inputPublisherBankNumber,
-      inputPublisherPhone 
+      inputPublisherPhone,
+      showNewAdmin,
+      availableUsers,
+      newAdminSelection
     } = this.state;
 
     return (
@@ -250,7 +282,6 @@ class Account extends React.Component <OrderProps, OrderState> {
               <View style={generalStyles.overlayContainer}>
                 <View style={generalStyles.contentOverlayContainer}>
                   <ScrollView style={AccountStyles.orderHistoryContainer}>
-
                     <Text style={[generalStyles.cardHeader]}>
                       Create a new publisher
                     </Text>
@@ -314,6 +345,75 @@ class Account extends React.Component <OrderProps, OrderState> {
                   <TouchableOpacity 
                     style={generalStyles.exitOverlayButton} 
                     onPress={() => this.setState({ showNewPublisher: false })}
+                  >
+                    <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
+                      close
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+
+            <Modal 
+              animationType='fade'
+              transparent={true}
+              visible={showNewAdmin}
+              onShow={() => {
+                runQuery(`
+                  select username 
+                  from users
+                  where role_ID not in ('r-00');
+                `).then((result: any) => {
+                  const users = result._array.reduce((acc: any [], user) => {
+                    acc.push(user.username);
+                    return acc;
+                  }, []);
+
+                  if (users.length === 1) {
+                    this.setState({ availableUsers: users, newAdminSelection: users[0] });
+                  } else {
+                    this.setState({ availableUsers: users });
+                  }
+                })
+              }}
+            >
+              <View style={generalStyles.overlayContainer}>
+                <View style={generalStyles.contentOverlayContainer}>
+                  <View>
+                    <Text style={[generalStyles.cardHeader]}>
+                      Make a user an admin 
+                    </Text>
+                    <Text style={[generalStyles.subheader2]}>
+                      Select a username from the dropdown
+                    </Text>
+                  </View>
+                  {availableUsers.length > 0 ? (
+                    <Picker 
+                      onValueChange={(value) => this.setState({ newAdminSelection: value })}
+                      selectedValue={newAdminSelection}
+                      style={{ width: '100%', marginTop: 20, marginBottom: 20, alignItems: 'center' }}>
+                      {availableUsers.map((username, index) => (
+                        <Picker.Item key={index} label={username} value={username} />
+                      ))}
+                    </Picker>
+                  ) : (
+                    <View style={{ marginTop: 20, marginBottom: 20 }}>
+                      <Text style={[generalStyles.subheader1]}>
+                        There are no available users!
+                      </Text>
+                    </View>
+                  )}
+                  <TouchableOpacity
+                    style={generalStyles.closeOverlayButton} 
+                    onPress={() => this.createNewAdmin()}
+                  >
+                    <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
+                      save
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={generalStyles.exitOverlayButton} 
+                    onPress={() => this.setState({ showNewAdmin: false })}
                   >
                     <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
                       close
@@ -438,21 +538,25 @@ class Account extends React.Component <OrderProps, OrderState> {
                 billing information 
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.setState({ showNewPublisher: true })} style={{ marginTop: 10 }}>
-              <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
-                new publisher
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.setState({ showBilling: true })} style={{ marginTop: 10 }}>
-              <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
-                new admin 
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.setState({ showBilling: true })} style={{ marginTop: 10 }}>
-              <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
-                sales reports 
-              </Text>
-            </TouchableOpacity>
+            {currUser.admin && (
+              <View style={{ justifyContent: 'center', width: '100%', alignItems: 'center' }}>
+                <TouchableOpacity onPress={() => this.setState({ showNewPublisher: true })} style={{ marginTop: 10 }}>
+                  <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
+                    new publisher
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.setState({ showNewAdmin: true })} style={{ marginTop: 10 }}>
+                  <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
+                    new admin
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.setState({ showBilling: true })} style={{ marginTop: 10 }}>
+                  <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
+                    sales reports 
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
             <TouchableOpacity onPress={() => this.props.logOut()} style={AccountStyles.loginButton}>
               <Text style={[generalStyles.actionButton]}>
                 log out 
