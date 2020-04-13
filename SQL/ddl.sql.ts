@@ -35,8 +35,7 @@ export const createPub=`
     name text,
     bank_number int,
     address text,
-    phone_num text,
-    sale int
+    phone_num text
   );`
 
 export const createBook=`
@@ -50,6 +49,7 @@ export const createBook=`
     published_year int,
     thumbnail_url text,
     price text,
+    publisher_fee int,
     foreign key (publisher_ID) references publisher(publisher_ID)
   );`
 
