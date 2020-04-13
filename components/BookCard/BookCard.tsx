@@ -5,7 +5,7 @@ import unselected from '../../assets/img/unselected.png';
 import { generalStyles, colors } from '../../App.styles';
 import BookStyles from './BookCard.styles';
 
-const BookCard = ({ title, author, price, cover, release, id, isbn, genres, addBook = null, removeBook = null, numPages, type }) => {
+const BookCard = ({ title, author, price, cover, release, id, isbn, genres, publisher, addBook = null, removeBook = null, numPages, type }) => {
   const [bookSelected, setSelection] = useState(false)
   const [showOverlay, setOverlay] = useState(false)
   const componentDidMount = useRef(false);
@@ -61,6 +61,12 @@ const BookCard = ({ title, author, price, cover, release, id, isbn, genres, addB
             </Text>
             <Text style={[generalStyles.header1, BookStyles.bookOverlayText]}>
               {isbn}
+            </Text>
+            <Text style={[generalStyles.subheader2, BookStyles.bookOverlayLabel]}>
+              publisher
+            </Text>
+            <Text style={[generalStyles.header1, BookStyles.bookOverlayText]}>
+              {publisher}
             </Text>
             <Text style={[generalStyles.subheader2, BookStyles.bookOverlayLabel]}>
               price

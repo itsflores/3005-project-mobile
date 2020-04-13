@@ -30,14 +30,14 @@ interface StoreProps {
 }
 
 interface newBook {
-	thumbnailUrl: string | null,
+	thumbnail_url: string | null,
 	title: string | null,
 	authors: string | null,
-	publishedYear: string | null,
+	published_year: string | null,
 	categories: string | null, 
 	isbn: string | null,
 	price: string | null,
-	pageCount: string | null,
+	page_count: string | null,
 	stock: string | null
 }
 
@@ -47,23 +47,23 @@ interface bookUnit {
 }
 
 const newBookInit = {
-	thumbnailUrl: null,
+	thumbnail_url: null,
 	title: null,
 	authors: null,
-	publishedYear: null,
+	published_year: null,
 	categories: null, 
 	isbn: null,
 	price: null,
-	pageCount: null,
+	page_count: null,
 	stock: null
 }
 
 const bookInputInfo = {
 	title: 'title',
 	authors: 'authors',
-	publishedYear: 'year published',
+	published_year: 'year published',
 	categories: 'categories',
-	pageCount: 'number of pages',
+	page_count: 'number of pages',
 	isbn: 'ISBN',
 	price: 'price',
 	stock: 'stock (> 20)'
@@ -104,8 +104,8 @@ class Store extends React.Component<StoreProps, StoreState> {
 				return (book.title.toUpperCase().includes(input.toUpperCase()))
 				|| (book.authors.join(' ').toUpperCase().includes(input.toUpperCase()))
 				|| (book.categories.join(' ').toUpperCase().includes(input.toUpperCase()))
-				|| (book.publishedYear.toString().includes(input.toUpperCase()))
-				|| (book.pageCount.toString().includes(input.toUpperCase()))
+				|| (book.published_year.toString().includes(input.toUpperCase()))
+				|| (book.page_count.toString().includes(input.toUpperCase()))
 				|| (book.price.toString().includes(input.toUpperCase()))
 				|| (book.isbn.includes(input.toUpperCase()))
 			});
@@ -140,7 +140,7 @@ class Store extends React.Component<StoreProps, StoreState> {
 				this.setState((prevState) => ({
 					newBook: {
 						...prevState.newBook,
-						thumbnailUrl: upload.uri
+						thumbnail_url: upload.uri
 					}
 				}));
 			}
@@ -166,9 +166,9 @@ class Store extends React.Component<StoreProps, StoreState> {
 				if (newBook[entry] === null 
 					|| parseInt(newBook['price']) === NaN
 					|| newBook['price'].length > 4
-					|| parseInt(newBook['publishedYear']) === NaN
-					|| parseInt(newBook['publishedYear']) > new Date().getFullYear()
-					|| parseInt(newBook['pageCount']) === NaN
+					|| parseInt(newBook['published_year']) === NaN
+					|| parseInt(newBook['published_year']) > new Date().getFullYear()
+					|| parseInt(newBook['page_count']) === NaN
 					|| parseInt(newBook['stock']) === NaN
 					|| parseInt(newBook['stock']) < 20) {
 					verified = false;
@@ -184,10 +184,10 @@ class Store extends React.Component<StoreProps, StoreState> {
 			this.props.addBookToStore({
 				...newBook,
 				id: `b-${bookList.length + 1}`,
-				publishedYear: parseInt(newBook.publishedYear),
+				published_year: parseInt(newBook.published_year),
 				authors: [...newBook.authors.split(',')],
 				categories: [...newBook.categories.split(', ')],
-				pageCount: parseInt(newBook.pageCount),
+				page_count: parseInt(newBook.page_count),
 				price: parseInt(newBook.price)
 			})
 
@@ -226,7 +226,7 @@ class Store extends React.Component<StoreProps, StoreState> {
 						<View style={generalStyles.contentOverlayContainer}>
 							<ScrollView style={{ width: '100%', marginBottom: 20 }}>
 								<TouchableOpacity onPress={() => this.uploadImage()} style={{ alignSelf: 'center' }}>
-									<Image source={newBook.thumbnailUrl ? {uri: newBook.thumbnailUrl} : emptyCover} style={BookStyles.bookOverlayImage}/>
+									<Image source={newBook.thumbnail_url ? {uri: newBook.thumbnail_url} : emptyCover} style={BookStyles.bookOverlayImage}/>
 								</TouchableOpacity>
 								<View>
 									{Object.keys(bookInputInfo).map((key, index) => (
@@ -287,16 +287,17 @@ class Store extends React.Component<StoreProps, StoreState> {
 								key={index}
 								author={book.authors}
 								title={book.title}
-								cover={book.thumbnailUrl}
+								cover={book.thumbnail_url}
 								price={book.price}
-								release={book.publishedYear}
+								release={book.published_year}
 								id={book.id}
 								isbn={book.isbn}
 								genres={book.categories}
 								addBook={this.addToCart}
 								removeBook={this.removeFromCart}
 								type="store"
-								numPages={book.pageCount}
+								numPages={book.page_count}
+								publisher={book.publisher_ID}
 							/>
 							{currUser !== null && currUser.admin && (
 								<TouchableOpacity onPress={() => this.removeFromStore(book.id)}>

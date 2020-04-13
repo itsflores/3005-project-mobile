@@ -21,6 +21,12 @@ interface OrderState {
   orders: any [],
   inputUsername: null | string,
   inputPassword: null | string,
+  inputPublisherId: null | string,
+  inputPublisherName: null | string,
+  inputPublisherAddress: null | string,
+  inputPublisherBankNumber: null | string,
+  inputPublisherPhone: null | string,
+  showNewPublisher: boolean
 }
 
 class Account extends React.Component <OrderProps, OrderState> {
@@ -31,6 +37,12 @@ class Account extends React.Component <OrderProps, OrderState> {
       showBilling: false,
       inputUsername: null,
       inputPassword: null,
+      inputPublisherId: null,
+      inputPublisherName: null,
+      inputPublisherAddress: null,
+      inputPublisherBankNumber: null,
+      inputPublisherPhone: null,
+      showNewPublisher: false,
       orders: [],
     }
   }
@@ -114,9 +126,72 @@ class Account extends React.Component <OrderProps, OrderState> {
     })
   }
 
+  verifyUniquePublisher = async (targetID) => {
+    return await runQuery(`
+      select publisher_ID from publisher where publisher_ID = '${targetID}'
+    `).then((res: any) => {
+      if (res._array.length === 0) {
+        return Promise.resolve(true)
+      } else {
+        return Promise.resolve(false)
+      }
+    })
+  }
+
+  createNewPublisher = async () => {
+    const {
+      inputPublisherId, 
+      inputPublisherName,
+      inputPublisherAddress,
+      inputPublisherBankNumber,
+      inputPublisherPhone 
+    } = this.state;
+
+    if (inputPublisherId &&
+      inputPublisherName &&
+      inputPublisherAddress &&
+      inputPublisherBankNumber &&
+      inputPublisherPhone && 
+      inputPublisherPhone &&
+      await this.verifyUniquePublisher(inputPublisherId)
+    ) {
+      runQuery(`
+        insert into publisher (
+          publisher_ID, name, bank_number, address, phone_num
+        )
+        values (
+            '${inputPublisherId}', '${inputPublisherName}', ${inputPublisherBankNumber}, '${inputPublisherAddress}', '${inputPublisherPhone}'
+        );
+      `)
+      this.setState({ showNewPublisher: false });
+    } else {
+      Alert.alert(
+        'LookinnaBook',
+        `Please verify your information and try again!`,
+        [{
+          text: 'Done',
+          style: 'default',
+        }], {
+          cancelable: true,
+        }
+      );
+    }
+  }
+
   render() {
     const { currUser } = this.props.bookAppStore;
-    const { showOrders, showBilling, inputPassword, inputUsername, orders } = this.state;
+    const { showOrders, 
+      showBilling, 
+      inputPassword, 
+      inputUsername, 
+      orders, 
+      showNewPublisher, 
+      inputPublisherId, 
+      inputPublisherName,
+      inputPublisherAddress,
+      inputPublisherBankNumber,
+      inputPublisherPhone 
+    } = this.state;
 
     return (
       <View style={AccountStyles.accountContainer}>
@@ -168,6 +243,87 @@ class Account extends React.Component <OrderProps, OrderState> {
             </Modal>
 
             <Modal 
+              animationType='fade'
+              transparent={true}
+              visible={showNewPublisher}
+            >
+              <View style={generalStyles.overlayContainer}>
+                <View style={generalStyles.contentOverlayContainer}>
+                  <ScrollView style={AccountStyles.orderHistoryContainer}>
+
+                    <Text style={[generalStyles.cardHeader]}>
+                      Create a new publisher
+                    </Text>
+                    <View style={AccountStyles.billingInfoContainer}>
+                      <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
+                        Name
+                      </Text>
+                      <TextInput
+                        style={[generalStyles.header1, AccountStyles.billingInfoInputBox]} 
+                        onChangeText={(input) => this.setState({ inputPublisherName: input })}
+                        value={inputPublisherName}
+                      />
+
+                      <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
+                        id
+                      </Text>
+                      <TextInput 
+                        style={[generalStyles.header1, AccountStyles.billingInfoInputBox]}
+                        onChangeText={(input) => this.setState({ inputPublisherId: input })}
+                        value={inputPublisherId}
+                      />
+
+                      <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
+                        Bank account
+                      </Text>
+                      <TextInput 
+                        style={[generalStyles.header1, AccountStyles.billingInfoInputBox]}
+                        onChangeText={(input) => this.setState({ inputPublisherBankNumber: input })}
+                        value={inputPublisherBankNumber}
+                        keyboardType='number-pad'
+                      />
+
+                      <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
+                        Address
+                      </Text>
+                      <TextInput 
+                        style={[generalStyles.header1, AccountStyles.billingInfoInputBox]}
+                        onChangeText={(input) => this.setState({ inputPublisherAddress: input })}
+                        value={inputPublisherAddress}
+                      />
+
+                      <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
+                        Phone number
+                      </Text>
+                      <TextInput 
+                        style={[generalStyles.header1, AccountStyles.billingInfoInputBox]}
+                        onChangeText={(input) => this.setState({ inputPublisherPhone: input })}
+                        value={inputPublisherPhone}
+                        keyboardType='phone-pad'
+                      />
+                    </View>
+                  </ScrollView>
+                  <TouchableOpacity
+                    style={generalStyles.closeOverlayButton} 
+                    onPress={() => this.createNewPublisher()}
+                  >
+                    <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
+                      save
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={generalStyles.exitOverlayButton} 
+                    onPress={() => this.setState({ showNewPublisher: false })}
+                  >
+                    <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
+                      close
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+
+            <Modal
               animationType='fade'
               transparent={true}
               visible={showBilling}
@@ -282,9 +438,9 @@ class Account extends React.Component <OrderProps, OrderState> {
                 billing information 
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.setState({ showBilling: true })} style={{ marginTop: 10 }}>
+            <TouchableOpacity onPress={() => this.setState({ showNewPublisher: true })} style={{ marginTop: 10 }}>
               <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
-                new author
+                new publisher
               </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => this.setState({ showBilling: true })} style={{ marginTop: 10 }}>

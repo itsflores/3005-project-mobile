@@ -86,13 +86,14 @@ class Order extends React.Component <OrderProps, OrderState> {
                 <BookCard
                   title={currItem.book.title}
                   author={currItem.book.authors}
-                  cover={currItem.book.thumbnailUrl}
+                  cover={currItem.book.thumbnail_url}
                   price={currItem.book.price}
-                  release={currItem.book.publishedYear}
+                  release={currItem.book.published_year}
                   id={currItem.book.id}
                   isbn={currItem.book.isbn}
                   genres={currItem.book.categories}
-                  numPages={currItem.book.pageCount}
+                  numPages={currItem.book.page_count}
+                  publisher={currItem.book.publisher_ID}
                   type="order"
                 />
                 <View style={{ 

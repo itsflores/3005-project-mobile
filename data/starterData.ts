@@ -1,5 +1,6 @@
 const books = [{
-    "publisher_fee": 10,
+  "publisher_ID": "p-01",  
+  "publisher_fee": 10,
     "stock": 25,
     "book_ID": "b-01",
     "title": "Unlocking Android",
@@ -8,10 +9,11 @@ const books = [{
     "published_year": "2009",
     "thumbnail_url": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/ableson.jpg",
     "authors": ["W. Frank Ableson", "Charlie Collins", "Robi Sen"],
-    "price": 24,
+    "price": 12,
     "categories": ["Open Source", "Mobile"]
   },
   {
+    "publisher_ID": "p-01",
     "publisher_fee": 10,
     "stock": 25,
     "book_ID": "b-02",
@@ -21,10 +23,11 @@ const books = [{
     "published_year": 2011,
     "thumbnail_url": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/ableson2.jpg",
     "authors": ["W. Frank Ableson", "Robi Sen"],
-    "price": 24,
+    "price": 8,
     "categories": ["Java"]
   },
   {
+    "publisher_ID": "p-01",
     "publisher_fee": 10,
     "stock": 25,
     "book_ID": "b-03",
@@ -34,10 +37,11 @@ const books = [{
     "published_year": 2011,
     "thumbnail_url": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/adzic.jpg",
     "authors": ["Gojko Adzic"],
-    "price": 24,
+    "price": 16,
     "categories": ["Software Engineering"]
   },
   {
+    "publisher_ID": "p-01",
     "publisher_fee": 10,
     "stock": 25,
     "book_ID": "b-04",
@@ -47,10 +51,11 @@ const books = [{
     "published_year": 2009,
     "thumbnail_url": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/ahmed.jpg",
     "authors": ["Tariq Ahmed with Jon Hirschi", "Faisal Abid"],
-    "price": 24,
+    "price": 32,
     "categories": ["Internet"]
   },
   {
+    "publisher_ID": "p-01",
     "publisher_fee": 10,
     "stock": 25,
     "book_ID": "b-05",
@@ -60,10 +65,11 @@ const books = [{
     "published_year": 2010,
     "thumbnail_url": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/ahmed2.jpg",
     "authors": ["Tariq Ahmed", "Dan Orlando", "John C. Bland II", "Joel Hooks"],
-    "price": 24,
+    "price": 6,
     "categories": ["Internet"]
   },
   {
+    "publisher_ID": "p-02",
     "publisher_fee": 10,
     "stock": 25,
     "book_ID": "b-06",
@@ -73,10 +79,11 @@ const books = [{
     "published_year": 2008,
     "thumbnail_url": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/alag.jpg",
     "authors": ["Satnam Alag"],
-    "price": 24,
+    "price": 30,
     "categories": ["Internet"]
   },
   {
+    "publisher_ID": "p-02",
     "publisher_fee": 10,
     "stock": 25,
     "book_ID": "b-07",
@@ -86,10 +93,11 @@ const books = [{
     "published_year": 2008,
     "thumbnail_url": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/allen.jpg",
     "authors": ["Rob Allen", "Nick Lo", "Steven Brown"],
-    "price": 24,
+    "price": 22,
     "categories": ["Web Development"]
   },
   {
+    "publisher_ID": "p-02",
     "publisher_fee": 10,
     "stock": 25,
     "book_ID": "b-08",
@@ -99,10 +107,11 @@ const books = [{
     "published_year": 2010,
     "thumbnail_url": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/allmon.jpg",
     "authors": ["Bernerd Allmon", "Jeremy Anderson"],
-    "price": 24,
+    "price": 18,
     "categories": ["Internet"]
   },
   {
+    "publisher_ID": "p-02",
     "publisher_fee": 10,
     "stock": 25,
     "book_ID": "b-09",
@@ -112,10 +121,11 @@ const books = [{
     "published_year": 2012,
     "thumbnail_url": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/almiray.jpg",
     "authors": ["Andres Almiray", "Danno Ferrin", "James Shingler"],
-    "price": 24,
+    "price": 10,
     "categories": ["Java"]
   },
   {
+    "publisher_ID": "p-03",
     "publisher_fee": 10,
     "stock": 25,
     "book_ID": "b-10",
@@ -125,10 +135,11 @@ const books = [{
     "published_year": 2011,
     "thumbnail_url": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/alves.jpg",
     "authors": ["Alexandre de Castro Alves"],
-    "price": 24,
+    "price": 11,
     "categories": ["Java"]
   },
   {
+    "publisher_ID": "p-03",
     "publisher_fee": 10,
     "stock": 25,
     "book_ID": "b-11",
@@ -138,10 +149,11 @@ const books = [{
     "published_year": 2008,
     "thumbnail_url": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/armstrong.jpg",
     "authors": ["Peter Armstrong"],
-    "price": 24,
+    "price": 6,
     "categories": ["Web Development"]
   },
   {
+    "publisher_ID": "p-03",
     "publisher_fee": 10,
     "stock": 25,
     "book_ID": "b-12",
@@ -155,6 +167,7 @@ const books = [{
     "categories": ["Internet"]
   },
   {
+    "publisher_ID": "p-03",
     "publisher_fee": 10,
     "stock": 25,
     "book_ID": "b-13",
@@ -164,10 +177,11 @@ const books = [{
     "published_year": 1997,
     "thumbnail_url": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/asher.jpg",
     "authors": ["Levi Asher", "Christian Crumlish"],
-    "price": 24,
+    "price": 25,
     "categories": ["Miscellaneous"]
   },
   {
+    "publisher_ID": "p-04",
     "publisher_fee": 10,
     "stock": 25,
     "book_ID": "b-14",
@@ -177,10 +191,11 @@ const books = [{
     "published_year": 2010,
     "thumbnail_url": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/baley.jpg",
     "authors": ["Kyle Baley", "Donald Belcham"],
-    "price": 24,
+    "price": 17,
     "categories": ["Microsoft"]
   },
   {
+    "publisher_ID": "p-04",
     "publisher_fee": 10,
     "stock": 25,
     "book_ID": "b-15",
@@ -190,10 +205,11 @@ const books = [{
     "published_year": 2011,
     "thumbnail_url": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/banker.jpg",
     "authors": ["Kyle Banker"],
-    "price": 24,
+    "price": 16,
     "categories": ["Next Generation Databases"]
   },
   {
+    "publisher_ID": "p-04",
     "publisher_fee": 10,
     "stock": 25,
     "book_ID": "b-16",
@@ -203,10 +219,11 @@ const books = [{
     "published_year": 1999,
     "thumbnail_url": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/barlotta2.jpg",
     "authors": ["Michael Barlotta"],
-    "price": 24,
+    "price": 14,
     "categories": ["PowerBuilder", "Client-Server"]
   },
   {
+    "publisher_ID": "p-04",
     "publisher_fee": 10,
     "stock": 25,
     "book_ID": "b-17",
@@ -216,10 +233,11 @@ const books = [{
     "published_year": 2000,
     "thumbnail_url": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/barlotta3.jpg",
     "authors": ["Michael J. Barlotta", "Jason R. Weiss"],
-    "price": 24,
+    "price": 14,
     "categories": ["PowerBuilder"]
   },
   {
+    "publisher_ID": "p-04",
     "publisher_fee": 10,
     "stock": 25,
     "book_ID": "b-18",
@@ -229,10 +247,11 @@ const books = [{
     "published_year": 2000,
     "thumbnail_url": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/barrilleaux.jpg",
     "authors": ["Jon Barrilleaux"],
-    "price": 24,
+    "price": 12,
     "categories": ["Java", "Computer Graphics"]
   },
   {
+    "publisher_ID": "p-04",
     "publisher_fee": 10,
     "stock": 25,
     "book_ID": "b-19",
@@ -242,10 +261,11 @@ const books = [{
     "published_year": 2004,
     "thumbnail_url": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/bauer.jpg",
     "authors": ["Christian Bauer", "Gavin King"],
-    "price": 24,
+    "price": 10,
     "categories": ["Java"]
   },
   {
+    "publisher_ID": "p-04",
     "publisher_fee": 10,
     "stock": 25,
     "book_ID": "b-20",
@@ -255,7 +275,7 @@ const books = [{
     "published_year": 1999,
     "thumbnail_url": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/bauer-cn.jpg",
     "authors": ["Christian Bauer", "Gavin King"],
-    "price": 24,
+    "price": 10,
     "categories": ["Java"]
   },
 ]
