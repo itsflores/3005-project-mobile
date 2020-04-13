@@ -1,6 +1,6 @@
 const books = [{
-  "publisher_ID": "p-01",  
-  "publisher_fee": 10,
+    "publisher_ID": "p-01",
+    "publisher_fee": 10,
     "stock": 25,
     "book_ID": "b-01",
     "title": "Unlocking Android",

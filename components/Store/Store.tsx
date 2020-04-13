@@ -11,6 +11,7 @@ import BookCard from '../../components/BookCard/BookCard';
 import { Header } from '../../components/Shared/SharedComponents';
 import newbook from '../../assets/img/newbook.png';
 import emptyCover from '../../assets/img/emptyCover.png';
+import { runQuery } from '../../database';
 
 interface StoreState {
 	bookList: any,
@@ -38,7 +39,9 @@ interface newBook {
 	isbn: string | null,
 	price: string | null,
 	page_count: string | null,
-	stock: string | null
+	stock: string | null,
+	publisher_fee: string | null,
+	publisher_ID: string | null,
 }
 
 interface bookUnit {
@@ -55,7 +58,9 @@ const newBookInit = {
 	isbn: null,
 	price: null,
 	page_count: null,
-	stock: null
+	stock: null,
+	publisher_fee: null,
+	publisher_ID: null
 }
 
 const bookInputInfo = {
@@ -66,7 +71,9 @@ const bookInputInfo = {
 	page_count: 'number of pages',
 	isbn: 'ISBN',
 	price: 'price',
-	stock: 'stock (> 20)'
+	stock: 'stock (> 20)',
+	publisher_ID: 'publisher id',
+	publisher_fee: 'publisher fee'
 }
 
 class Store extends React.Component<StoreProps, StoreState> {
@@ -156,45 +163,108 @@ class Store extends React.Component<StoreProps, StoreState> {
 		}))
 	}
 
-	saveNewBook = () => {
+	verifyPublisher = async (targetID) => {
+		return await runQuery(`
+			select publisher_ID
+			from publisher 
+			where publisher_ID = '${targetID}';
+		`).then(async (result: any) => {
+			console.log(result);
+
+			if (result._array.length === 1) {
+				return await Promise.resolve(true);
+			} else if (result._array.length === 0) {
+				return await Promise.resolve(false);
+			}
+		})
+	}
+
+	saveNewBook = async () => {
 		const { bookList } = this.props.bookAppStore;
 		const { newBook } = this.state;
 		let verified = true;
 
-		Object.keys(newBook).forEach((entry) => {
-			try {
-				if (newBook[entry] === null 
-					|| parseInt(newBook['price']) === NaN
-					|| newBook['price'].length > 4
-					|| parseInt(newBook['published_year']) === NaN
-					|| parseInt(newBook['published_year']) > new Date().getFullYear()
-					|| parseInt(newBook['page_count']) === NaN
-					|| parseInt(newBook['stock']) === NaN
-					|| parseInt(newBook['stock']) < 20) {
-					verified = false;
-				}
-			} catch (err) {
-				console.log(err);
-			}
-		})
+		const validPublisher = await this.verifyPublisher(newBook.publisher_ID)
+		const isEmpty = !Object.values(newBook).some(bookEntry => (bookEntry === null));
+
+		if (!isEmpty
+			|| !validPublisher
+			|| parseInt(newBook['price']) === NaN
+			|| newBook['price'].length > 4
+			|| parseInt(newBook['published_year']) === NaN
+			|| parseInt(newBook['published_year']) > new Date().getFullYear()
+			|| parseInt(newBook['page_count']) === NaN
+			|| parseInt(newBook['stock']) === NaN
+			|| parseInt(newBook['stock']) < 20
+			|| parseInt(newBook['publisher_fee']) === NaN
+		) {
+			verified = false;
+		}
 
 		// console.log(newBook);
 
 		if (verified) {
+			const newId = `b-${bookList.length + 1}`
+			const newAuthors = [...newBook.authors.split(',')];
+			const newCategories = [...newBook.categories.split(',')]
+
 			this.props.addBookToStore({
 				...newBook,
-				id: `b-${bookList.length + 1}`,
+				book_ID: newId,
 				published_year: parseInt(newBook.published_year),
-				authors: [...newBook.authors.split(',')],
-				categories: [...newBook.categories.split(', ')],
+				authors: newAuthors,
+				categories: newCategories,
 				page_count: parseInt(newBook.page_count),
-				price: parseInt(newBook.price)
+				price: parseInt(newBook.price),
+				publisher_fee: parseInt(newBook.publisher_fee)
+			})
+			
+			newAuthors.forEach((author) => {
+				runQuery(`
+					insert into author (
+						book_ID, name
+					)
+					values (
+						'${newId}', '${author}'
+					)
+				`)
+			});
+
+			newCategories.forEach((category) => {
+				runQuery(`
+					insert into category (
+						book_ID, category_name
+					)
+					values(
+						'${newId}', '${category}'
+					)
+				`)
+			});
+
+			runQuery(`
+				insert into book (
+					book_ID, publisher_ID, stock, title, isbn, page_count, published_year, thumbnail_url, price, publisher_fee
+				)
+				values (
+					'${newId}', '${newBook.publisher_ID}', ${newBook.stock}, '${newBook.title}', '${newBook.isbn}', ${newBook.page_count}, ${newBook.published_year}, '${newBook.thumbnail_url}', '${newBook.price}', ${newBook.publisher_fee}
+				);
+			`).then((result: any) => {
+				Alert.alert(
+					'LookinnaBook',
+					`Your book has been added to the store!`,
+					[{
+						text: 'Done',
+						style: 'default'
+					}], {
+						cancelable: true
+					}
+				);
 			})
 
 			this.setState({
 				showNewBook: false, 
 				newBook: newBookInit, 
-			})
+			});
 		} else {
 			Alert.alert(
 				'LookinnaBook',
@@ -236,7 +306,7 @@ class Store extends React.Component<StoreProps, StoreState> {
 											onChangeText={(input) => this.updateNewBook(input, key)}
 											style={[generalStyles.header1, StoreStyles.bookInfoInputBox]} 
 											placeholder={bookInputInfo[key]}
-											keyboardType={key === 'price' ? 'number-pad' : 'default'}
+											keyboardType={['price', 'stock', 'publisher_fee', 'published_year', 'page_count'].includes(key)  ? 'number-pad' : 'default'}
 										/>
 									))}
 								</View>
