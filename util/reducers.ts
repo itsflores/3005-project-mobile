@@ -60,6 +60,9 @@ const bookStoreReducer = (state = INITIAL_STATE, action) => {
 
       return { ...state, order: newOrder };
 
+    case 'CLEAR_ORDER':
+
+      return { ...state, order: [] };
     case 'LOG_IN': 
       const newInfo = action.payload;
 
@@ -79,18 +82,7 @@ const bookStoreReducer = (state = INITIAL_STATE, action) => {
     case 'LOG_OUT': 
 
       return { ...state, currUser: null };
-
-    // case 'NEW_USER':
-    //   const newUser = {
-    //     ...initialUser,
-    //     id: (`u-${appUsers.length + 1}`),
-    //     username: action.payload.inputUsername,
-    //     password: action.payload.inputPassword
-    //   }
-    //   newUsers.push(newUser);
       
-    //   return { ...state, appUsers: newUsers }
-
     default:
       return state
   }
