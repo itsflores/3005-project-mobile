@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { removeBookFromOrder, increaseBookOrder, decreaseBookOrder } from '../../util/actions';
+import { removeBookFromOrder, increaseBookOrder, decreaseBookOrder, clearOrder } from '../../util/actions';
 import OrderStyles from './Order.styles';
 import BookCard from '../../components/BookCard/BookCard';
 import { generalStyles, colors } from '../../App.styles';
 import { Header } from '../Shared/SharedComponents';
+import { runQuery } from '../../database';
 
 const pricing = {
   shipping: 12,
@@ -17,7 +18,8 @@ interface OrderProps {
   bookAppStore: any,
 	removeBookFromOrder: Function,
   increaseBookOrder: Function, 
-  decreaseBookOrder: Function
+  decreaseBookOrder: Function,
+  clearOrder: Function
 }
 
 interface OrderState {
@@ -46,6 +48,15 @@ class Order extends React.Component <OrderProps, OrderState> {
     this.updatePricing(); 
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { order } = this.props.bookAppStore;    
+    const newBooksPrice = order.reduce((acc, currBook) => acc += currBook.quantity * currBook.book.price, 0);
+
+    if (prevState.totalBooksPrice !== newBooksPrice) {
+      this.updatePricing();
+    }
+  }
+
   updatePricing = () => {
     const { order } = this.props.bookAppStore;
     const newBooks = order.reduce((acc, currBook) => acc += currBook.quantity, 0)
@@ -54,19 +65,89 @@ class Order extends React.Component <OrderProps, OrderState> {
     const newShipping = order.reduce((acc, currBook) => acc += currBook.quantity, 0) % 3 * pricing.shipping + pricing.shipping;
     const newTotal = newBooksPrice + newTax + newShipping;
 
-    this.setState({ 
-      totalBooksPrice: newBooksPrice, 
-      totalShipping: newShipping, 
-      totalTax: newTax, 
-      totalPrice: newTotal, 
-      totalBooks: newBooks 
+    this.setState({
+      totalBooksPrice: parseFloat(newBooksPrice.toFixed()), 
+      totalShipping: parseFloat(newShipping.toFixed()), 
+      totalTax: parseFloat(newTax.toFixed()), 
+      totalPrice: parseFloat(newTotal.toFixed()), 
+      totalBooks: parseFloat(newBooks.toFixed()) 
     });
+  }
+
+  checkout = async () => {
+    const { totalPrice } = this.state;
+    const { order, currUser } = this.props.bookAppStore;
+
+    if (currUser === null) {
+      Alert.alert(
+        'LookinnaBook',
+        `You must be logged in in order to place an order!`,
+        [{
+          text: 'Done',
+          style: 'default'
+        }], {
+          cancelable: true
+        }
+      );
+
+      return;
+    }
+
+    const numOrders = await runQuery(`
+      select * 
+      from orders;
+    `).then((result: any) => Promise.resolve(result._array.length));
+
+    const newOrderId = `o-${numOrders + 1}`;
+    const currDate = new Date();
+
+    await runQuery(`
+      insert into orders (
+        tracking_num, user_ID, price, year, day, month
+      ) 
+      values (
+        '${newOrderId}', '${currUser.userId}', '${totalPrice}', ${currDate.getFullYear()}, ${currDate.getDay()}, ${currDate.getMonth()}
+      );
+    `);
+
+    const numItems = await runQuery(`
+      select * 
+      from item;
+    `).then((result: any) => Promise.resolve(result._array.length));
+
+    await order.forEach(async (item, index) => {
+      await runQuery(`
+        insert into item (
+          item_ID, order_ID, book_ID, quantity
+        )
+        values (
+          'i-${numItems + index + 1}', '${newOrderId}', '${item.book.book_ID}', ${item.quantity}
+        );
+      `)
+    });
+
+    const dbOrders = await runQuery('select * from orders').then((result: any) => result._array);
+    const dbItems = await runQuery('select * from item').then((result: any) => result._array);
+
+    // console.log(dbOrders);
+    // console.log(dbItems);
+
+    Alert.alert(
+      'LookinnaBook',
+      `Your order has been placed!`,
+      [{
+        text: 'Done',
+        style: 'default'
+      }], {
+        cancelable: true
+      }
+    );
+    this.props.clearOrder();
   }
 
   render() {
     const { order } = this.props.bookAppStore;
     const { totalPrice, totalBooksPrice, totalShipping, totalTax } = this.state;
-    // console.log(order);
 
     return (
       <View style={OrderStyles.orderContainer}>
@@ -89,7 +170,7 @@ class Order extends React.Component <OrderProps, OrderState> {
                   cover={currItem.book.thumbnail_url}
                   price={currItem.book.price}
                   release={currItem.book.published_year}
-                  id={currItem.book.id}
+                  id={currItem.book.book_ID}
                   isbn={currItem.book.isbn}
                   genres={currItem.book.categories}
                   numPages={currItem.book.page_count}
@@ -105,9 +186,9 @@ class Order extends React.Component <OrderProps, OrderState> {
                 }}>
                   <TouchableOpacity onPress={() => {
                     if (currItem.quantity === 1) {
-                      this.props.removeBookFromOrder(order.findIndex((curr) => curr.book.id === currItem.book.id));
+                      this.props.removeBookFromOrder(order.findIndex((curr) => curr.book.book_ID === currItem.book.book_ID));
                     } else if (currItem.quantity > 0) {
-                      this.props.decreaseBookOrder(order.findIndex((curr) => curr.book.id === currItem.book.id));
+                      this.props.decreaseBookOrder(order.findIndex((curr) => curr.book.book_ID === currItem.book.book_ID));
                       this.updatePricing();
                     }
                   }}>
@@ -120,7 +201,7 @@ class Order extends React.Component <OrderProps, OrderState> {
                   </Text>
                   <TouchableOpacity onPress={() => {
                     if (currItem.quantity < 25) {
-                      this.props.increaseBookOrder(order.findIndex((curr) => curr.book.id === currItem.book.id));
+                      this.props.increaseBookOrder(order.findIndex((curr) => curr.book.book_ID === currItem.book.book_ID));
                       this.updatePricing();
                     }
                   }}>
@@ -176,7 +257,7 @@ class Order extends React.Component <OrderProps, OrderState> {
                 </Text>
               </View>
             </View>
-            <TouchableOpacity style={OrderStyles.checkoutButton}>
+            <TouchableOpacity onPress={() => this.checkout()} style={OrderStyles.checkoutButton}>
               <Text style={[generalStyles.actionButton]}>
                 checkout 
               </Text>
@@ -192,7 +273,8 @@ const mapDispatchToProps = dispatch => (
   bindActionCreators({
 		removeBookFromOrder,
     increaseBookOrder,
-    decreaseBookOrder
+    decreaseBookOrder,
+    clearOrder,
   }, dispatch)
 );
 

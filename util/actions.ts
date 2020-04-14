@@ -28,6 +28,10 @@ export const decreaseBookOrder = targetIndex => ({
   payload: targetIndex,
 });
 
+export const clearOrder = () => ({
+  type: 'CLEAR_ORDER',
+})
+
 export const logIn = credentials => ({
   type: 'LOG_IN',
   payload: credentials
@@ -35,9 +39,4 @@ export const logIn = credentials => ({
 
 export const logOut = () => ({
   type: 'LOG_OUT',
-});
-
-export const newUser = credentials => ({
-  type: 'NEW_USER',
-  payload: credentials,
 });

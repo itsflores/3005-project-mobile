@@ -2,9 +2,9 @@ import React from 'react';
 import { View, Text, TouchableOpacity, TextInput, Modal, ScrollView, Alert, Picker } from 'react-native';
 import AccountStyles from './Account.styles';
 import { connect } from 'react-redux';
-import { bindActionCreators, compose } from 'redux';
+import { bindActionCreators } from 'redux';
 import { runQuery } from '../../database';
-import { logIn, logOut, newUser } from '../../util/actions';
+import { logIn, logOut } from '../../util/actions';
 import { generalStyles, colors } from '../../App.styles';
 import { Header } from '../Shared/SharedComponents';
 
@@ -12,7 +12,6 @@ interface AccountProps {
   bookAppStore: any,
 	logIn: Function,
 	logOut: Function,
-	newUser: Function,
 }
 
 interface AccountState {
@@ -110,8 +109,6 @@ class Account extends React.Component <AccountProps, AccountState> {
             );
           })
         })
-
-        this.props.newUser({ inputUsername, inputPassword })
       } else {
         Alert.alert(
           'LookinnaBook',
@@ -686,8 +683,8 @@ class Account extends React.Component <AccountProps, AccountState> {
               onChangeText={(input) => this.setState({ inputPassword: input })}
             />
             <View style={{ width: '100%', marginTop: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
-              <TouchableOpacity onPress={() => this.registerUser()} style={[AccountStyles.loginButton, { width: '47%' }]}>
-                <Text style={[generalStyles.actionButton]}>
+              <TouchableOpacity onPress={() => this.registerUser()} style={[AccountStyles.loginButton, { width: '47%', backgroundColor: 'white', borderColor: colors.blue, borderWidth: 2 }]}>
+                <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
                   register
                 </Text>
               </TouchableOpacity>
@@ -761,7 +758,6 @@ const mapDispatchToProps = dispatch => (
   bindActionCreators({
     logIn,
     logOut,
-    newUser
   }, dispatch)
 );
 
