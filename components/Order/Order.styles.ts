@@ -3,7 +3,9 @@ import {
   StatusBar
 } from 'react-native';
 
-import { colors } from '../../App.styles';
+import {
+  colors
+} from '../../App.styles';
 
 export default StyleSheet.create({
   orderContainer: {
@@ -36,7 +38,7 @@ export default StyleSheet.create({
     // borderColor: 'green',
     // borderWidth: 3
   },
-  emptyOrderBanner: { 
+  emptyOrderBanner: {
     flex: 1,
     flexDirection: 'column',
     alignContent: 'center',
@@ -45,16 +47,22 @@ export default StyleSheet.create({
     // borderColor: 'blue',
     // borderWidth: 3
   },
-  checkoutContainer: { 
-    width: '100%', 
-    flexDirection: 'row', 
-    alignContent: 'center', 
-    alignItems: 'center', 
-    justifyContent: 'center', 
+  checkoutContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 20,
   },
-  checkoutPriceContainer: { marginLeft: 4, flexDirection: 'column', alignContent: 'flex-end', justifyContent: 'flex-end', alignItems: 'flex-end' },
-  checkoutButton: { 
+  checkoutPriceContainer: {
+    marginLeft: 4,
+    flexDirection: 'column',
+    alignContent: 'flex-end',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end'
+  },
+  checkoutButton: {
     alignItems: 'center',
     padding: 10,
     borderRadius: 20,

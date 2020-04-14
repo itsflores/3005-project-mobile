@@ -63,6 +63,7 @@ const bookStoreReducer = (state = INITIAL_STATE, action) => {
     case 'CLEAR_ORDER':
 
       return { ...state, order: [] };
+      
     case 'LOG_IN': 
       const newInfo = action.payload;
 
