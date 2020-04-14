@@ -18,7 +18,10 @@ interface AccountProps {
 interface AccountState {
   showOrders: boolean,
   showBilling: boolean,
-  orders: any [],
+  showTracking: boolean,
+  showNewAdmin: boolean,
+  showNewPublisher: boolean,
+  showDeleteUser: boolean,
   inputUsername: null | string,
   inputPassword: null | string,
   inputPublisherId: null | string,
@@ -26,17 +29,17 @@ interface AccountState {
   inputPublisherAddress: null | string,
   inputPublisherBankNumber: null | string,
   inputPublisherPhone: null | string,
-  showNewAdmin: boolean,
-  showNewPublisher: boolean,
   newAdminSelection: null | string,
   updateExpiryMonth: null | string,
   updateExpiryYear: null | string,
   updateCardNumber: null | string,
   updateAddress: null | string,
   updatePhoneNumber: null | string
-  availableUsers: any [],
-  showDeleteUser: boolean,
   deleteUserSelection: null | string,
+  inputTrackOrder: null | string,
+  orderStatus: null | string,
+  availableUsers: any [],
+  orders: any [],
 }
 
 class Account extends React.Component <AccountProps, AccountState> {
@@ -46,22 +49,25 @@ class Account extends React.Component <AccountProps, AccountState> {
       showOrders: false,
       showBilling: false,
       showNewAdmin: false,
-      inputUsername: null,
+      showNewPublisher: false,
+      showDeleteUser: false,
+      showTracking: false,
       inputPassword: null,
+      inputUsername: null,
       inputPublisherId: null,
       inputPublisherName: null,
       inputPublisherAddress: null,
       inputPublisherBankNumber: null,
       inputPublisherPhone: null,
+      inputTrackOrder: null,
       updateExpiryMonth: null,
       updateExpiryYear: null,
       updateCardNumber: null,
       updateAddress: null,
       updatePhoneNumber: null,
-      showNewPublisher: false,
       newAdminSelection: null,
-      showDeleteUser: false,
       deleteUserSelection: null,
+      orderStatus: null,
       orders: [],
       availableUsers: []
     }
@@ -329,6 +335,47 @@ class Account extends React.Component <AccountProps, AccountState> {
     this.setState({ showBilling: false })
   }
 
+  trackOrder = () => {
+    const { inputTrackOrder } = this.state;
+  
+    if (!inputTrackOrder) {
+      Alert.alert(
+        'LookinnaBook',
+        `Please enter a valid tracking number!`,
+        [{
+          text: 'Done',
+          style: 'default'
+        }], {
+          cancelable: true
+        }
+      );
+
+      return;
+    }
+
+    runQuery(`
+      select * 
+      from orders
+      where tracking_num = '${inputTrackOrder}';
+    `).then((result: any) => {
+      if (result._array.length > 0) {
+        this.setState({ orderStatus: 'Your order will be delivered in 3 business days' })
+      } else {
+        Alert.alert(
+          'LookinnaBook',
+          `That order doesn't seem to exist!`,
+          [{
+            text: 'Done',
+            style: 'default'
+          }], {
+            cancelable: true
+          }
+        );
+      }
+    })
+    
+  }
+
   render() {
     const { currUser } = this.props.bookAppStore;
     const { showOrders, 
@@ -342,6 +389,7 @@ class Account extends React.Component <AccountProps, AccountState> {
       inputPublisherAddress,
       inputPublisherBankNumber,
       inputPublisherPhone,
+      inputTrackOrder,
       showNewAdmin,
       availableUsers,
       newAdminSelection,
@@ -351,7 +399,9 @@ class Account extends React.Component <AccountProps, AccountState> {
       updateAddress,
       updatePhoneNumber,
       showDeleteUser,
+      showTracking,
       deleteUserSelection,
+      orderStatus
     } = this.state;
 
     return (
@@ -403,7 +453,7 @@ class Account extends React.Component <AccountProps, AccountState> {
               </View>
             </Modal>
 
-            <Modal 
+            <Modal
               animationType='fade'
               transparent={true}
               visible={showNewPublisher}
@@ -474,6 +524,50 @@ class Account extends React.Component <AccountProps, AccountState> {
                   <TouchableOpacity 
                     style={generalStyles.exitOverlayButton} 
                     onPress={() => this.setState({ showNewPublisher: false })}
+                  >
+                    <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
+                      close
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+
+            <Modal 
+              animationType='fade'
+              transparent={true}
+              visible={showTracking}
+            >
+              <View style={generalStyles.overlayContainer}>
+                <View style={generalStyles.contentOverlayContainer}>
+                  <Text style={[generalStyles.cardHeader]}>
+                    Track an order
+                  </Text>
+                  <View style={AccountStyles.billingInfoContainer}>
+                    <Text style={[generalStyles.subheader1, { marginTop: 10, marginBottom: 4 }]}>
+                      Enter your tracking number here
+                    </Text>
+                    <TextInput
+                      style={[generalStyles.header1, AccountStyles.billingInfoInputBox]} 
+                      onChangeText={(input) => this.setState({ inputTrackOrder: input })}
+                      placeholder="i.e. o-12345"
+                      value={inputTrackOrder}
+                    />
+                  <Text style={[generalStyles.header1Bold, { marginTop: 20 }]}>
+                    {orderStatus}
+                  </Text>
+                  </View>
+                  <TouchableOpacity
+                    style={generalStyles.closeOverlayButton} 
+                    onPress={() => this.trackOrder()}
+                  >
+                    <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
+                      track order
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={generalStyles.exitOverlayButton} 
+                    onPress={() => this.setState({ showTracking: false })}
                   >
                     <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
                       close
@@ -767,6 +861,11 @@ class Account extends React.Component <AccountProps, AccountState> {
             <TouchableOpacity onPress={() => this.setState({ showBilling: true })} style={{ marginTop: 10 }}>
               <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
                 billing information 
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.setState({ showTracking: true })} style={{ marginTop: 10 }}>
+              <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
+                track an order
               </Text>
             </TouchableOpacity>
             {currUser.admin && (

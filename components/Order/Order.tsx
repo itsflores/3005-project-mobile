@@ -276,9 +276,24 @@ class Order extends React.Component <OrderProps, OrderState> {
                 </Text>
               </View>
             </View>
-            <TouchableOpacity onPress={() => this.checkout()} style={OrderStyles.checkoutButton}>
+            <TouchableOpacity onPress={() => this.checkout()} style={[OrderStyles.checkoutButton, { marginBottom: 20 }]}>
               <Text style={[generalStyles.actionButton]}>
                 checkout 
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              onPress={() => this.props.clearOrder()} 
+              style={[OrderStyles.checkoutButton, { 
+                marginTop: 0, 
+                justifyContent: 'center',
+                backgroundColor: 'white',
+                borderColor: colors.blue,
+                borderWidth: 2,
+                width: '50%',
+                alignSelf: 'center'
+              }]}>
+              <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
+                clear cart 
               </Text>
             </TouchableOpacity>
           </ScrollView>
