@@ -26,7 +26,7 @@ export const createOrders=`
     year int,
     day int,
     month int,
-    foreign key (user_ID) references users(user_ID)
+    foreign key (user_ID) references users(user_ID) on delete cascade
   );`
 
 export const createPub=`
@@ -75,7 +75,7 @@ export const createItem=`
     order_ID text,
     book_ID text,
     quantity int,
-    foreign key (order_ID) references orders(tracking_num),
+    foreign key (order_ID) references orders(tracking_num) on delete cascade,
     foreign key (book_ID) references book(book_ID)
   );
 `;
