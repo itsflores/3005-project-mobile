@@ -25,7 +25,7 @@ const INITIAL_STATE: INITIAL_STATE_INTERFACE = {
 };
 
 const bookStoreReducer = (state = INITIAL_STATE, action) => {
-  const { order, bookList } = state;
+  const { order, bookList, currUser } = state;
   const newOrder = order;
   const newBookList = bookList;
 
@@ -83,6 +83,20 @@ const bookStoreReducer = (state = INITIAL_STATE, action) => {
 
       return { ...state, currUser: null };
       
+    case 'UPDATE_USER':
+      const newUserInfo = action.payload;
+
+      const updatedUser: USER = {
+        ...currUser,
+        cardNumber: newUserInfo.updateCardNumber,
+        expiryMonth: newUserInfo.updateExpiryMonth,
+        expiryYear: newUserInfo.updateExpiryYear,
+        address: newUserInfo.updateAddress,
+        phoneNumber: newUserInfo.updatePhoneNumber
+      }
+      
+      return { ...state, currUser: updatedUser }
+
     default:
       return state
   }

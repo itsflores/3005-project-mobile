@@ -4,14 +4,15 @@ import AccountStyles from './Account.styles';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { runQuery } from '../../database';
-import { logIn, logOut } from '../../util/actions';
+import { logIn, logOut, updateUser } from '../../util/actions';
 import { generalStyles, colors } from '../../App.styles';
 import { Header } from '../Shared/SharedComponents';
 
 interface AccountProps {
   bookAppStore: any,
 	logIn: Function,
-	logOut: Function,
+  logOut: Function,
+  updateUser: Function
 }
 
 interface AccountState {
@@ -28,8 +29,11 @@ interface AccountState {
   showNewAdmin: boolean,
   showNewPublisher: boolean,
   newAdminSelection: null | string,
-  inputExpiryMonth: null,
-  inputExpiryYear: null,
+  updateExpiryMonth: null | string,
+  updateExpiryYear: null | string,
+  updateCardNumber: null | string,
+  updateAddress: null | string,
+  updatePhoneNumber: null | string
   availableUsers: any [],
   showDeleteUser: boolean,
   deleteUserSelection: null | string,
@@ -49,8 +53,11 @@ class Account extends React.Component <AccountProps, AccountState> {
       inputPublisherAddress: null,
       inputPublisherBankNumber: null,
       inputPublisherPhone: null,
-      inputExpiryMonth: null,
-      inputExpiryYear: null,
+      updateExpiryMonth: null,
+      updateExpiryYear: null,
+      updateCardNumber: null,
+      updateAddress: null,
+      updatePhoneNumber: null,
       showNewPublisher: false,
       newAdminSelection: null,
       showDeleteUser: false,
@@ -94,8 +101,8 @@ class Account extends React.Component <AccountProps, AccountState> {
           runQuery(`
             select * from users;
           `).then((result: any) => {
-            console.log('updated users:');
-            console.log(result._array);
+            // console.log('updated users:');
+            // console.log(result._array);
 
             Alert.alert(
               'LookinnaBook',
@@ -288,6 +295,40 @@ class Account extends React.Component <AccountProps, AccountState> {
     });
   }
 
+  updateBillingInfo = () => {
+    const { updateAddress, updateCardNumber, updateExpiryMonth, updateExpiryYear, updatePhoneNumber } = this.state;
+    const { currUser } = this.props.bookAppStore;
+
+    if (!(updateAddress && updateCardNumber && updateExpiryMonth && updateExpiryYear && updatePhoneNumber)) {
+      Alert.alert(
+        'LookinnaBook',
+        `Please enter valid information!`,
+        [{
+          text: 'Done',
+          style: 'default'
+        }], {
+          cancelable: true
+        }
+      );
+
+      return; 
+    }
+
+    runQuery(`
+      update users
+      set address = '${updateAddress}', card_number = ${updateCardNumber}, phone_number = '${updatePhoneNumber}', month = ${updateExpiryMonth}, year = ${updateExpiryYear}
+      where user_ID = '${currUser.userId}';
+    `).then((result: any) => {
+      
+      // runQuery(`
+      //   select * from users;
+      // `).then((result) => console.log(result));
+
+      this.props.updateUser({ updateAddress, updateCardNumber, updateExpiryMonth, updateExpiryYear, updatePhoneNumber })
+    })
+    this.setState({ showBilling: false })
+  }
+
   render() {
     const { currUser } = this.props.bookAppStore;
     const { showOrders, 
@@ -304,10 +345,13 @@ class Account extends React.Component <AccountProps, AccountState> {
       showNewAdmin,
       availableUsers,
       newAdminSelection,
-      inputExpiryMonth,
-      inputExpiryYear,
+      updateExpiryMonth,
+      updateExpiryYear,
+      updateCardNumber,
+      updateAddress,
+      updatePhoneNumber,
       showDeleteUser,
-      deleteUserSelection
+      deleteUserSelection,
     } = this.state;
 
     return (
@@ -493,7 +537,7 @@ class Account extends React.Component <AccountProps, AccountState> {
                     onPress={() => this.createNewAdmin()}
                   >
                     <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
-                      save
+                      close & save
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity 
@@ -562,7 +606,7 @@ class Account extends React.Component <AccountProps, AccountState> {
                     onPress={() => this.deleteAccount()}
                   >
                     <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
-                      save
+                      close & save
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity 
@@ -581,7 +625,13 @@ class Account extends React.Component <AccountProps, AccountState> {
               animationType='fade'
               transparent={true}
               visible={showBilling}
-              onShow={() => this.setState({ inputExpiryYear: currUser.expiryYear, inputExpiryMonth: currUser.expiryMonth })}
+              onShow={() => this.setState({ 
+                updateExpiryYear: currUser.expiryYear, 
+                updateExpiryMonth: currUser.expiryMonth,
+                updatePhoneNumber: currUser.phoneNumber,
+                updateAddress: currUser.address,
+                updateCardNumber: (currUser.cardNumber ? currUser.cardNumber.toString() : '')
+              })}
             >
               <View style={generalStyles.overlayContainer}>
                 <View style={generalStyles.contentOverlayContainer}>
@@ -595,7 +645,9 @@ class Account extends React.Component <AccountProps, AccountState> {
                       </Text>
                       <TextInput 
                         style={[generalStyles.header1, AccountStyles.billingInfoInputBox]} 
-                        placeholder={(currUser.cardNumber) ? currUser.cardNumber.toString() : ''} 
+                        placeholder={(currUser.cardNumber) ? currUser.cardNumber.toString() : ''}
+                        onChangeText={(input) => this.setState({ updateCardNumber: input })}
+                        value={updateCardNumber}
                       />
 
                       <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
@@ -605,8 +657,8 @@ class Account extends React.Component <AccountProps, AccountState> {
                         Year
                       </Text>
                       <Picker
-                        onValueChange={(value) => this.setState({ inputExpiryYear: value })}
-                        selectedValue={inputExpiryYear}
+                        onValueChange={(value) => this.setState({ updateExpiryYear: value })}
+                        selectedValue={updateExpiryYear}
                         style={{ width: '100%', alignItems: 'center' }}>
                         {['2020', '2021', '2022', '2023', '2024'].map((year, index) => (
                           <Picker.Item key={index} label={year} value={year} />
@@ -616,8 +668,8 @@ class Account extends React.Component <AccountProps, AccountState> {
                         Month
                       </Text>
                       <Picker
-                        onValueChange={(value) => this.setState({ inputExpiryMonth: value })}
-                        selectedValue={inputExpiryMonth}
+                        onValueChange={(value) => this.setState({ updateExpiryMonth: value })}
+                        selectedValue={updateExpiryMonth}
                         style={{ width: '100%', alignItems: 'center' }}>
                         {['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'].map((year, index) => (
                           <Picker.Item key={index}label={year} value={year} />
@@ -630,6 +682,8 @@ class Account extends React.Component <AccountProps, AccountState> {
                       <TextInput 
                         style={[generalStyles.header1, AccountStyles.billingInfoInputBox]} 
                         placeholder={(currUser.address ? currUser.address : '')} 
+                        onChangeText={(input) => this.setState({ updateAddress: input })}
+                        value={updateAddress}
                       />
 
                       <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
@@ -638,12 +692,14 @@ class Account extends React.Component <AccountProps, AccountState> {
                       <TextInput 
                         style={[generalStyles.header1, AccountStyles.billingInfoInputBox]} 
                         placeholder={(currUser.phoneNumber ? currUser.phoneNumber : '')} 
+                        onChangeText={(input) => this.setState({ updatePhoneNumber: input })}
+                        value={updatePhoneNumber}
                       />
                     </View>
                   </ScrollView>
                   <TouchableOpacity
                     style={generalStyles.closeOverlayButton} 
-                    onPress={() => this.setState({ showBilling: false })}
+                    onPress={() => this.updateBillingInfo()}
                   >
                     <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
                       close & save
@@ -737,7 +793,10 @@ class Account extends React.Component <AccountProps, AccountState> {
                 </TouchableOpacity>
               </View>
             )}
-            <TouchableOpacity onPress={() => this.props.logOut()} style={AccountStyles.loginButton}>
+            <TouchableOpacity onPress={() => {
+              this.setState({ inputUsername: '', inputPassword: '' })
+              this.props.logOut()
+            }} style={AccountStyles.loginButton}>
               <Text style={[generalStyles.actionButton]}>
                 log out 
               </Text>
@@ -758,6 +817,7 @@ const mapDispatchToProps = dispatch => (
   bindActionCreators({
     logIn,
     logOut,
+    updateUser
   }, dispatch)
 );
 

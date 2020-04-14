@@ -40,3 +40,8 @@ export const logIn = credentials => ({
 export const logOut = () => ({
   type: 'LOG_OUT',
 });
+
+export const updateUser = (newInfo) => ({
+  type: 'UPDATE_USER',
+  payload: newInfo 
+})
