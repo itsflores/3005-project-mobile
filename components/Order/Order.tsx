@@ -93,6 +93,21 @@ class Order extends React.Component <OrderProps, OrderState> {
       return;
     }
 
+    if (!currUser.cardNumber) {
+      Alert.alert(
+        'LookinnaBook',
+        `You don't seem to have valid billing information, please update it!`,
+        [{
+          text: 'Done',
+          style: 'default'
+        }], {
+          cancelable: true
+        }
+      );
+
+      return;
+    }
+
     const numOrders = await runQuery(`
       select * 
       from orders;
@@ -124,6 +139,10 @@ class Order extends React.Component <OrderProps, OrderState> {
           'i-${numItems + index + 1}', '${newOrderId}', '${item.book.book_ID}', ${item.quantity}
         );
       `)
+
+      // if (item.quantity === item.book.stock) {
+        //!SEND EMAIL TO PUBLISHER HERE
+      // }
     });
 
     const dbOrders = await runQuery('select * from orders').then((result: any) => result._array);
