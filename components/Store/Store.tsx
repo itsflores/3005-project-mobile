@@ -90,7 +90,7 @@ class Store extends React.Component<StoreProps, StoreState> {
 
 	addToCart = (newId) => {
 		const { bookList } = this.props.bookAppStore;
-		this.props.addBookToOrder({ book: bookList[bookList.findIndex((currBook) => currbook.book_ID === newId)], quantity: 1 });
+		this.props.addBookToOrder({ book: bookList[bookList.findIndex((currBook) => currBook.book_ID === newId)], quantity: 1 });
 	}
 
 	removeFromCart = (target) => {
@@ -114,9 +114,9 @@ class Store extends React.Component<StoreProps, StoreState> {
 		`).then(async (result: any) => {
 			// console.log(`books after deletion:`);
 			// await printBooks();
+			this.setState({ searchList: [], search: '' });
+			this.props.removeBookFromStore(bookList.findIndex((item) => item.book_ID === targetId));
 		})
-
-		this.props.removeBookFromStore(bookList.findIndex((item) => item.book_ID === targetId));
 	}
 	
 	generateSearchList = (input) => {
@@ -124,8 +124,7 @@ class Store extends React.Component<StoreProps, StoreState> {
 
 		if (input) {
 			const searchResults = bookList.filter((book) => {
-				return (book.stock > 0
-				||	book.title.toUpperCase().includes(input.toUpperCase()))
+				return (book.title.toUpperCase().includes(input.toUpperCase()))
 				|| (book.authors.join(' ').toUpperCase().includes(input.toUpperCase()))
 				|| (book.categories.join(' ').toUpperCase().includes(input.toUpperCase()))
 				|| (book.published_year.toString().includes(input.toUpperCase()))
