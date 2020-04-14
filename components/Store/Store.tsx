@@ -90,17 +90,33 @@ class Store extends React.Component<StoreProps, StoreState> {
 
 	addToCart = (newId) => {
 		const { bookList } = this.props.bookAppStore;
-		this.props.addBookToOrder({ book: bookList[bookList.findIndex((currBook) => currBook.id === newId)], quantity: 1 });
+		this.props.addBookToOrder({ book: bookList[bookList.findIndex((currBook) => currbook.book_ID === newId)], quantity: 1 });
 	}
 
 	removeFromCart = (target) => {
 		const { order } = this.props.bookAppStore;
-		this.props.removeBookFromOrder(order.findIndex((currItem) => currItem.book.id === target), 1);
+		this.props.removeBookFromOrder(order.findIndex((currItem) => currItem.book.book_ID === target), 1);
 	}
 
-	removeFromStore = (targetId) => {
+	removeFromStore = async (targetId) => {
 		const { bookList } = this.props.bookAppStore;
-		this.props.removeBookFromStore(bookList.findIndex((item) => item.id === targetId));
+
+		const printBooks = async () => console.log(await runQuery(`select * from book;`)
+			.then((results: any) => Promise.resolve(results._array)));
+
+		// console.log(`books before deletion:`);
+		// await printBooks();
+
+		runQuery(`
+			update book
+			set stock = 0
+			where book_ID = '${targetId}';
+		`).then(async (result: any) => {
+			// console.log(`books after deletion:`);
+			// await printBooks();
+		})
+
+		this.props.removeBookFromStore(bookList.findIndex((item) => item.book_ID === targetId));
 	}
 	
 	generateSearchList = (input) => {
@@ -108,7 +124,8 @@ class Store extends React.Component<StoreProps, StoreState> {
 
 		if (input) {
 			const searchResults = bookList.filter((book) => {
-				return (book.title.toUpperCase().includes(input.toUpperCase()))
+				return (book.stock > 0
+				||	book.title.toUpperCase().includes(input.toUpperCase()))
 				|| (book.authors.join(' ').toUpperCase().includes(input.toUpperCase()))
 				|| (book.categories.join(' ').toUpperCase().includes(input.toUpperCase()))
 				|| (book.published_year.toString().includes(input.toUpperCase()))
@@ -352,31 +369,33 @@ class Store extends React.Component<StoreProps, StoreState> {
 				/>
 				<ScrollView showsVerticalScrollIndicator={false} style={StoreStyles.bookListConainer}>
 					{searchList && (searchList.length > 0 ? searchList : bookList).map((book, index) => (
-						<View key={index}>
-							<BookCard
-								key={index}
-								author={book.authors}
-								title={book.title}
-								cover={book.thumbnail_url}
-								price={book.price}
-								release={book.published_year}
-								id={book.id}
-								isbn={book.isbn}
-								genres={book.categories}
-								addBook={this.addToCart}
-								removeBook={this.removeFromCart}
-								type="store"
-								numPages={book.page_count}
-								publisher={book.publisher_ID}
-							/>
-							{currUser !== null && currUser.admin && (
-								<TouchableOpacity onPress={() => this.removeFromStore(book.id)}>
-									<Text style={[generalStyles.actionExit, { color: colors.blue, marginBottom: 20, textAlign: 'center' }]}>
-										remove
-									</Text>
-								</TouchableOpacity>
-							)}
-						</View>
+						book.stock > 0 && (
+							<View key={index}>
+								<BookCard
+									key={index}
+									author={book.authors}
+									title={book.title}
+									cover={book.thumbnail_url}
+									price={book.price}
+									release={book.published_year}
+									id={book.book_ID}
+									isbn={book.isbn}
+									genres={book.categories}
+									addBook={this.addToCart}
+									removeBook={this.removeFromCart}
+									type="store"
+									numPages={book.page_count}
+									publisher={book.publisher_ID}
+								/>
+								{currUser !== null && currUser.admin && (
+									<TouchableOpacity onPress={() => this.removeFromStore(book.book_ID)}>
+										<Text style={[generalStyles.actionExit, { color: colors.blue, marginBottom: 20, textAlign: 'center' }]}>
+											remove
+										</Text>
+									</TouchableOpacity>
+								)}
+							</View>
+						)
 					))}
 				</ScrollView>
 			</View>

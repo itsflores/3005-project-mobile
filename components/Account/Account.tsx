@@ -686,8 +686,8 @@ class Account extends React.Component <AccountProps, AccountState> {
               onChangeText={(input) => this.setState({ inputPassword: input })}
             />
             <View style={{ width: '100%', marginTop: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
-              <TouchableOpacity onPress={() => this.registerUser()} style={[AccountStyles.loginButton, { width: '47%' }]}>
-                <Text style={[generalStyles.actionButton]}>
+              <TouchableOpacity onPress={() => this.registerUser()} style={[AccountStyles.loginButton, { width: '47%', backgroundColor: 'white', borderColor: colors.blue, borderWidth: 2 }]}>
+                <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
                   register
                 </Text>
               </TouchableOpacity>

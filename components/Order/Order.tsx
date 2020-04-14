@@ -89,7 +89,7 @@ class Order extends React.Component <OrderProps, OrderState> {
                   cover={currItem.book.thumbnail_url}
                   price={currItem.book.price}
                   release={currItem.book.published_year}
-                  id={currItem.book.id}
+                  id={currItem.book.book_ID}
                   isbn={currItem.book.isbn}
                   genres={currItem.book.categories}
                   numPages={currItem.book.page_count}
@@ -105,9 +105,9 @@ class Order extends React.Component <OrderProps, OrderState> {
                 }}>
                   <TouchableOpacity onPress={() => {
                     if (currItem.quantity === 1) {
-                      this.props.removeBookFromOrder(order.findIndex((curr) => curr.book.id === currItem.book.id));
+                      this.props.removeBookFromOrder(order.findIndex((curr) => curr.book.book_ID === currItem.book.book_ID));
                     } else if (currItem.quantity > 0) {
-                      this.props.decreaseBookOrder(order.findIndex((curr) => curr.book.id === currItem.book.id));
+                      this.props.decreaseBookOrder(order.findIndex((curr) => curr.book.book_ID === currItem.book.book_ID));
                       this.updatePricing();
                     }
                   }}>
@@ -120,7 +120,7 @@ class Order extends React.Component <OrderProps, OrderState> {
                   </Text>
                   <TouchableOpacity onPress={() => {
                     if (currItem.quantity < 25) {
-                      this.props.increaseBookOrder(order.findIndex((curr) => curr.book.id === currItem.book.id));
+                      this.props.increaseBookOrder(order.findIndex((curr) => curr.book.book_ID === currItem.book.book_ID));
                       this.updatePricing();
                     }
                   }}>

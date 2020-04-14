@@ -134,12 +134,12 @@ export const obtainFullDb = () => {
 }
 
 export const runQuery = (query: string) => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     db.transaction((transaction) => {
       transaction.executeSql(query, [], (_, { rows }) => {
         resolve(rows);
       });
-    }, (err) => console.log(err))
+    }, (err) => reject(err));
   });
 }
 
