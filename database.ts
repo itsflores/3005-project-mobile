@@ -2,8 +2,6 @@ import * as SQLite from 'expo-sqlite';
 import { Database } from 'expo-sqlite';
 import * as D from './SQL/ddl.sql';
 import * as Q from './SQL/queries.sql';
-import {  } from './SQL/triggers.sql';
-import initialBooks from './data/starterData';
 import books from './data/starterData';
 
 let db: Database = null;
