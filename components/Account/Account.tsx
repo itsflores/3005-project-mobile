@@ -16,7 +16,7 @@ interface AccountProps {
 }
 
 interface AccountState {
-  showOrders: boolean,
+  showOrderHistory: boolean,
   showBilling: boolean,
   showTracking: boolean,
   showNewAdmin: boolean,
@@ -46,7 +46,7 @@ class Account extends React.Component <AccountProps, AccountState> {
   constructor(props) {
     super(props);
     this.state = {
-      showOrders: false,
+      showOrderHistory: false,
       showBilling: false,
       showNewAdmin: false,
       showNewPublisher: false,
@@ -227,7 +227,6 @@ class Account extends React.Component <AccountProps, AccountState> {
       where user_ID = '${currUser.userId}'
     `).then((result: any) => {
       const results = result._array;
-
       this.setState({ orders: results });
     })
   }
@@ -384,7 +383,7 @@ class Account extends React.Component <AccountProps, AccountState> {
 
   render() {
     const { currUser } = this.props.bookAppStore;
-    const { showOrders, 
+    const { showOrderHistory, 
       showBilling, 
       inputPassword, 
       inputUsername, 
@@ -418,7 +417,7 @@ class Account extends React.Component <AccountProps, AccountState> {
               onShow={() => this.updateOrders()}
               animationType='fade'
               transparent={true}
-              visible={showOrders}
+              visible={showOrderHistory}
             >
               <View style={generalStyles.overlayContainer}>
                 <View style={generalStyles.contentOverlayContainer}>
@@ -426,30 +425,33 @@ class Account extends React.Component <AccountProps, AccountState> {
                     Your order history
                   </Text>
                   <ScrollView style={AccountStyles.orderHistoryContainer}>
-                    {orders.map((order, index) => (
-                      <View style={AccountStyles.orderContainer} key={index}>
-                        <View style={AccountStyles.orderDescriptionContainer}>
-                          <Text style={[generalStyles.header1, { textAlign: 'left' }]}>
-                            {`#${order.id}`}
-                          </Text>
-                          <Text style={[generalStyles.header1Bold, { textAlign: 'right' }]}>
-                            {`$${order.price.toFixed(2)}`}
-                          </Text>
+                    {(orders.length > 0) ? (
+                      orders.map((order, index) => (
+                        <View style={AccountStyles.orderContainer} key={index}>
+                          <View style={AccountStyles.orderDescriptionContainer}>
+                            <Text style={[generalStyles.header1Bold]}>
+                              {`tracking #${order.tracking_num}`}
+                            </Text>
+                            <Text style={[generalStyles.header1Bold, { textAlign: 'right' }]}>
+                              {`$${order.price}`}
+                            </Text>
+                          </View>
+                          <View style={AccountStyles.orderDescriptionContainer}>
+                            <Text style={[generalStyles.header2]}>
+                              {`${order.day}/${order.month}/${order.year}`}
+                            </Text>
+                          </View>
                         </View>
-                        <View style={AccountStyles.orderDescriptionContainer}>
-                          <Text style={[generalStyles.header2]}>
-                            {`${order.date.getDate()}/${order.date.getMonth()}/${order.date.getFullYear()}`}
-                          </Text>
-                          <Text style={[generalStyles.header2]}>
-                            {`tracking #${order.tracking}`}
-                          </Text>
-                        </View>
-                      </View>
-                    ))}
+                      ))
+                    ) : (
+                      <Text style={generalStyles.header2}>
+                        You haven't placed any orders yet!
+                      </Text>
+                    )}
                   </ScrollView>
                   <TouchableOpacity 
                     style={generalStyles.closeOverlayButton} 
-                    onPress={() => this.setState({ showOrders: false })}
+                    onPress={() => this.setState({ showOrderHistory: false })}
                   >
                     <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
                       done 
@@ -859,7 +861,7 @@ class Account extends React.Component <AccountProps, AccountState> {
                 good to see you again
               </Text>
             </Text>
-            <TouchableOpacity onPress={() => this.setState({ showOrders: true })} style={{ marginTop: 30 }}>
+            <TouchableOpacity onPress={() => this.setState({ showOrderHistory: true })} style={{ marginTop: 30 }}>
               <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
                 order history
               </Text>
