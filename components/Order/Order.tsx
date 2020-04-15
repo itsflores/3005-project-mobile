@@ -293,7 +293,7 @@ class Order extends React.Component <OrderProps, OrderState> {
                 alignSelf: 'center'
               }]}>
               <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
-                clear cart 
+                clear order 
               </Text>
             </TouchableOpacity>
           </ScrollView>
