@@ -54,7 +54,7 @@ The app contains 4 default users:
   - john
   - david
 
-The password for all of this users is `password`.
+The password for these users is `password`.
 
 There are also 3 default publishers: 
 
