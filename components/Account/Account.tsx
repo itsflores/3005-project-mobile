@@ -459,8 +459,6 @@ class Account extends React.Component <AccountProps, AccountState> {
     const totalPublisherFees: any = Object.values(publisherSales).reduce((acc: any, curr: any) => acc += curr, 0);
     const totalRevenue = totalEarnings - totalPublisherFees;
 
-    console.log(publisherSales);
-
     this.setState({
       totalSales, 
       categorySales,
@@ -518,8 +516,7 @@ class Account extends React.Component <AccountProps, AccountState> {
               transparent={true}
               visible={showSales}
             >
-              {totalSales && (
-
+              {totalSales !== null && (
                 <View style={generalStyles.overlayContainer}>
                   <View style={generalStyles.contentOverlayContainer}>
                     <Text style={[generalStyles.cardHeader]}>
