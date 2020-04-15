@@ -7,6 +7,7 @@ import { runQuery } from '../../database';
 import { logIn, logOut, updateUser } from '../../util/actions';
 import { generalStyles, colors } from '../../App.styles';
 import { Header } from '../Shared/SharedComponents';
+import { salesPerGenre, salesPerAuthor, salesPerPublisher } from '../../SQL/queries.sql';
 
 interface AccountProps {
   bookAppStore: any,
@@ -22,6 +23,7 @@ interface AccountState {
   showNewAdmin: boolean,
   showNewPublisher: boolean,
   showDeleteUser: boolean,
+  showSales: boolean,
   inputUsername: null | string,
   inputPassword: null | string,
   inputPublisherId: null | string,
@@ -38,6 +40,13 @@ interface AccountState {
   deleteUserSelection: null | string,
   inputTrackOrder: null | string,
   orderStatus: null | string,
+  totalSales: null | string
+  categorySales: null | any,
+  authorSales: null | any,
+  publisherSales: null | any,
+  totalPublisherFees: null | string,
+  totalEarnings: null | string,
+  totalRevenue: null | string,
   availableUsers: any [],
   orders: any [],
 }
@@ -52,6 +61,7 @@ class Account extends React.Component <AccountProps, AccountState> {
       showNewPublisher: false,
       showDeleteUser: false,
       showTracking: false,
+      showSales: false,
       inputPassword: null,
       inputUsername: null,
       inputPublisherId: null,
@@ -68,6 +78,13 @@ class Account extends React.Component <AccountProps, AccountState> {
       newAdminSelection: null,
       deleteUserSelection: null,
       orderStatus: null,
+      totalSales: null,
+      categorySales: null,
+      authorSales: null,
+      publisherSales: null,
+      totalPublisherFees: null,
+      totalEarnings: null,
+      totalRevenue: null,
       orders: [],
       availableUsers: []
     }
@@ -378,7 +395,81 @@ class Account extends React.Component <AccountProps, AccountState> {
         );
       }
     })
+  }
+
+  getSales = async () => {
+    const totalSales = await runQuery('select * from item')
+      .then((result: any) => {
+        const total = result._array.reduce((acc, item) => (acc += item.quantity), 0);
+        return Promise.resolve(total);
+      })
+
+    const totalEarnings = await runQuery('select * from orders')
+      .then((result: any) => {
+        const total = result._array.reduce((acc, item) => (acc += parseFloat(item.price)), 0);
+        return Promise.resolve(total);
+      })
+
+    const categorySales = await runQuery(salesPerGenre)
+      .then((result: any) => {
+        const sales = result._array.reduce((acc, item) => {
+
+          if (acc[item.category_name]) {
+            acc[item.category_name] += item.quantity;
+          } else {
+            acc[item.category_name] = item.quantity;
+          }
+
+          return acc;
+        }, {});
+        return Promise.resolve(sales);
+      });
+
+    const authorSales = await runQuery(salesPerAuthor)
+      .then((result: any) => {
+        const sales = result._array.reduce((acc, item) => {
+
+          if (acc[item.author]) {
+            acc[item.author] += item.quantity;
+          } else {
+            acc[item.author] = item.quantity;
+          }
+
+          return acc;
+        }, {});
+        return Promise.resolve(sales);
+      });
+
+    const publisherSales = await runQuery(salesPerPublisher)
+      .then((result: any) => {
+        const sales = result._array.reduce((acc, item) => {
+          const amount = parseFloat((item.price * (item.publisher_fee / 100) * item.quantity).toFixed(2))
+
+          if (acc[item.publisher]) {
+            acc[item.publisher] += amount;
+          } else {
+            acc[item.publisher] = amount;
+          }
+
+          return acc;
+        }, {});
+        return Promise.resolve(sales);
+      });
     
+    const totalPublisherFees: any = Object.values(publisherSales).reduce((acc: any, curr: any) => acc += curr, 0);
+    const totalRevenue = totalEarnings - totalPublisherFees;
+
+    console.log(publisherSales);
+
+    this.setState({
+      totalSales, 
+      categorySales,
+      authorSales,
+      publisherSales,
+      totalPublisherFees: totalPublisherFees.toString(),
+      totalEarnings: totalEarnings.toString(),
+      totalRevenue: totalRevenue.toString()
+    })
   }
 
   render() {
@@ -405,14 +496,123 @@ class Account extends React.Component <AccountProps, AccountState> {
       updatePhoneNumber,
       showDeleteUser,
       showTracking,
+      showSales,
       deleteUserSelection,
-      orderStatus
+      orderStatus,
+      totalSales,
+      categorySales,
+      authorSales,
+      publisherSales,
+      totalPublisherFees,
+      totalEarnings,
+      totalRevenue,
     } = this.state;
 
     return (
       <View style={AccountStyles.accountContainer}>
         {currUser !== null && (
           <View>
+            <Modal
+              onShow={() => this.getSales()}
+              animationType='fade'
+              transparent={true}
+              visible={showSales}
+            >
+              {totalSales && (
+
+                <View style={generalStyles.overlayContainer}>
+                  <View style={generalStyles.contentOverlayContainer}>
+                    <Text style={[generalStyles.cardHeader]}>
+                      Sales report
+                    </Text>
+                    <ScrollView style={AccountStyles.orderHistoryContainer}>
+                      <View>
+                        <Text style={generalStyles.header1Bold}>
+                          General
+                        </Text>
+                        <Text style={[generalStyles.subheader1, { marginTop: 6 }]}>
+                          Books Sold
+                        </Text>
+                        <Text style={generalStyles.subheader3}>
+                          {totalSales}
+                        </Text>
+                        <Text style={[generalStyles.subheader1, { marginTop: 6 }]}>
+                          Total Earnings
+                        </Text>
+                        <Text style={generalStyles.subheader3}>
+                          {`$${totalEarnings}`}
+                        </Text>
+                        <Text style={[generalStyles.subheader1, { marginTop: 6 }]}>
+                          Total Publisher Fees Paid
+                        </Text>
+                        <Text style={generalStyles.subheader3}>
+                          {`$${totalPublisherFees}`}
+                        </Text>
+                        <Text style={[generalStyles.subheader1, { marginTop: 6 }]}>
+                          Total Revenue
+                        </Text>
+                        <Text style={generalStyles.subheader3}>
+                          {`$${totalRevenue}`}
+                        </Text>
+                      </View>
+                      <View style={{ marginTop: 20 }}>
+                        <Text style={generalStyles.header1Bold}>
+                          Summary
+                        </Text>
+                        <Text style={[generalStyles.header1, { marginTop: 10 }]}>
+                          Per Publisher
+                        </Text>
+                        {Object.keys(publisherSales).map((publisher, index) => (
+                          <View key={index}>
+                            <Text style={[generalStyles.subheader1, { marginTop: 6 }]}>
+                              {publisher}
+                            </Text>
+                            <Text style={generalStyles.subheader3}>
+                              {publisherSales[publisher].toFixed(2)}
+                            </Text>
+                          </View>
+                        ))}
+                        <Text style={[generalStyles.header1, { marginTop: 10 }]}>
+                          Per Author
+                        </Text>
+                        {Object.keys(authorSales).map((author, index) => (
+                          <View key={index}>
+                            <Text style={[generalStyles.subheader1, { marginTop: 6 }]}>
+                              {author}
+                            </Text>
+                            <Text style={generalStyles.subheader3}>
+                              {authorSales[author]}
+                            </Text>
+                          </View>
+                        ))}
+                        <Text style={[generalStyles.header1, { marginTop: 10 }]}>
+                          Per Category
+                        </Text>
+                        {Object.keys(categorySales).map((category, index) => (
+                          <View key={index}>
+                            <Text style={[generalStyles.subheader1, { marginTop: 6 }]}>
+                              {category}
+                            </Text>
+                            <Text style={generalStyles.subheader3}>
+                              {categorySales[category]}
+                            </Text>
+                          </View>
+                        ))}
+                      </View>
+                    </ScrollView>
+                    <TouchableOpacity 
+                      style={generalStyles.closeOverlayButton} 
+                      onPress={() => this.setState({ showSales: false })}
+                    >
+                      <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
+                        done
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              )}
+            </Modal>
+
             <Modal
               onShow={() => this.updateOrders()}
               animationType='fade'
@@ -888,7 +1088,7 @@ class Account extends React.Component <AccountProps, AccountState> {
                     new admin
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.setState({ showBilling: true })} style={{ marginTop: 10 }}>
+                <TouchableOpacity onPress={() => this.setState({ showSales: true })} style={{ marginTop: 10 }}>
                   <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
                     sales reports 
                   </Text>
