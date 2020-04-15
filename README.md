@@ -40,3 +40,26 @@ To run this locally:
 - Follow the instructions shown on the expo tab on your browser
 
 **Alternatively**, you may download the apk file for android [here](https://omarflores.dev/3005project.apk).
+
+---
+
+### Using the app
+
+The app contains 4 default users: 
+
+- Admins:
+  - omar
+  - jeremy
+- Users:
+  - john
+  - david
+
+The password for these users is `password`.
+
+There are also 3 default publishers: 
+
+- p-01
+- p-02
+- p-03
+
+These ids muse be used when adding a book to the store, otherwise you'll have to add a publisher to the store as an admin.
