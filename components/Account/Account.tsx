@@ -148,16 +148,18 @@ class Account extends React.Component <AccountProps, AccountState> {
     }
   }
 
-  deleteAccount = () => {
+  deleteAccount = (target?: string) => {
     const { deleteUserSelection } = this.state;
+
+    const targetUser = target || deleteUserSelection;
 
     runQuery(`
       delete from users
-      where username = '${deleteUserSelection}'
+      where username = '${targetUser}'
     `).then((result: any) => {
       Alert.alert(
         'LookinnaBook',
-        `The user ${deleteUserSelection} has been deleted!`,
+        `The user ${targetUser} has been deleted!`,
         [{
           text: 'Done',
           style: 'default'
@@ -165,6 +167,10 @@ class Account extends React.Component <AccountProps, AccountState> {
           cancelable: true
         }
       );
+
+      if (target) {
+        this.props.logOut();
+      }
 
       this.setState({ showDeleteUser: false })
     })
@@ -462,7 +468,7 @@ class Account extends React.Component <AccountProps, AccountState> {
                 <View style={generalStyles.contentOverlayContainer}>
                   <ScrollView style={AccountStyles.orderHistoryContainer}>
                     <Text style={[generalStyles.cardHeader]}>
-                      Create a new publisher
+                      Add a new publisher
                     </Text>
                     <View style={AccountStyles.billingInfoContainer}>
                       <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
@@ -872,7 +878,7 @@ class Account extends React.Component <AccountProps, AccountState> {
               <View style={{ justifyContent: 'center', width: '100%', alignItems: 'center' }}>
                 <TouchableOpacity onPress={() => this.setState({ showNewPublisher: true })} style={{ marginTop: 10 }}>
                   <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
-                    new publisher
+                    add a publisher
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => this.setState({ showNewAdmin: true })} style={{ marginTop: 10 }}>
@@ -900,7 +906,7 @@ class Account extends React.Component <AccountProps, AccountState> {
                 log out 
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.deleteAccount()} style={{ marginTop: 10 }}>
+            <TouchableOpacity onPress={() => this.deleteAccount(currUser.username)} style={{ marginTop: 10 }}>
               <Text style={[generalStyles.subheader1, { color: colors.red }]}>
                 delete account 
               </Text>
