@@ -51,20 +51,18 @@ export const bookAmount = `select count(book_ID) from book;`;
 export const sales = `select sum(price) from orders`;
 
 export const salesPerGenre = `
-    select sum(book.price), category
-    from book 
-        inner join item on book.book_ID = item.book_ID,
-        inner join order on order_Id = item.order_id
-    group by
-        category;`;
+    select 
+        book.price as price, category, quantity 
+    from 
+        book 
+        inner join item on book.book_ID = item.book_ID
+        inner join orders on orders.tracking_number = item.order_id`;
 
 export const salesPerAuthor = `
-    select sum(book.price), author
+    select book.price, author, quantity
     from book 
         inner join item on book.book_ID = item.book_ID,
-        inner join order on order_Id = item.order_id
-    group by
-        author;`;
+        inner join order on orders.tracking_number = item.order_id`;
 
 export const clearItem = `drop table item;`;
 export const clearBook = `drop table book;`;

@@ -7,6 +7,7 @@ import { runQuery } from '../../database';
 import { logIn, logOut, updateUser } from '../../util/actions';
 import { generalStyles, colors } from '../../App.styles';
 import { Header } from '../Shared/SharedComponents';
+import { salesPerGenre, salesPerAuthor } from '../../SQL/queries.sql';
 
 interface AccountProps {
   bookAppStore: any,
@@ -22,6 +23,7 @@ interface AccountState {
   showNewAdmin: boolean,
   showNewPublisher: boolean,
   showDeleteUser: boolean,
+  showSales: boolean,
   inputUsername: null | string,
   inputPassword: null | string,
   inputPublisherId: null | string,
@@ -52,6 +54,7 @@ class Account extends React.Component <AccountProps, AccountState> {
       showNewPublisher: false,
       showDeleteUser: false,
       showTracking: false,
+      showSales: false,
       inputPassword: null,
       inputUsername: null,
       inputPublisherId: null,
@@ -378,6 +381,12 @@ class Account extends React.Component <AccountProps, AccountState> {
         );
       }
     })
+  }
+
+  getSales = () => {
+    runQuery(salesPerGenre).then((result: any) => console.log(result));
+    runQuery(salesPerAuthor).then((result: any) => console.log(result));
+
     
   }
 
@@ -405,6 +414,7 @@ class Account extends React.Component <AccountProps, AccountState> {
       updatePhoneNumber,
       showDeleteUser,
       showTracking,
+      showSales,
       deleteUserSelection,
       orderStatus
     } = this.state;
@@ -413,6 +423,34 @@ class Account extends React.Component <AccountProps, AccountState> {
       <View style={AccountStyles.accountContainer}>
         {currUser !== null && (
           <View>
+            <Modal
+              onShow={() => this.getSales()}
+              animationType='fade'
+              transparent={true}
+              visible={showSales}
+            >
+              <View style={generalStyles.overlayContainer}>
+                <View style={generalStyles.contentOverlayContainer}>
+                  <Text style={[generalStyles.cardHeader]}>
+                    Sales report
+                  </Text>
+                  <ScrollView style={AccountStyles.orderHistoryContainer}>
+                    <Text>
+                      Sales go here
+                    </Text>
+                  </ScrollView>
+                  <TouchableOpacity 
+                    style={generalStyles.closeOverlayButton} 
+                    onPress={() => this.setState({ showSales: false })}
+                  >
+                    <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
+                      done
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+
             <Modal
               onShow={() => this.updateOrders()}
               animationType='fade'
@@ -888,7 +926,7 @@ class Account extends React.Component <AccountProps, AccountState> {
                     new admin
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.setState({ showBilling: true })} style={{ marginTop: 10 }}>
+                <TouchableOpacity onPress={() => this.setState({ showSales: true })} style={{ marginTop: 10 }}>
                   <Text style={[generalStyles.actionButton, { color: colors.blue }]}>
                     sales reports 
                   </Text>
