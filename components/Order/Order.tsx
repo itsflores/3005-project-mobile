@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, ScrollView, Alert } from 'react-na
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { removeBookFromOrder, increaseBookOrder, decreaseBookOrder, clearOrder } from '../../util/actions';
+import { OrderState, OrderProps } from './Order.interfaces';
 import OrderStyles from './Order.styles';
 import BookCard from '../../components/BookCard/BookCard';
 import { generalStyles, colors } from '../../App.styles';
@@ -12,23 +13,6 @@ import { runQuery } from '../../database';
 const pricing = {
   shipping: 12,
   tax: 0.13
-}
-
-interface OrderProps {
-  bookAppStore: any,
-	removeBookFromOrder: Function,
-  increaseBookOrder: Function, 
-  decreaseBookOrder: Function,
-  clearOrder: Function
-}
-
-interface OrderState {
-  totalPrice: number,
-  totalBooksPrice: number,
-  totalBooks: number
-  totalTax: number,
-  totalShipping: number,
-  currOrder: [],
 }
 
 class Order extends React.Component <OrderProps, OrderState> {
@@ -139,14 +123,10 @@ class Order extends React.Component <OrderProps, OrderState> {
           'i-${numItems + index + 1}', '${newOrderId}', '${item.book.book_ID}', ${item.quantity}
         );
       `)
-
-      // if (item.quantity === item.book.stock) {
-        //!SEND EMAIL TO PUBLISHER HERE
-      // }
     });
 
-    const dbOrders = await runQuery('select * from orders').then((result: any) => result._array);
-    const dbItems = await runQuery('select * from item').then((result: any) => result._array);
+    // const dbOrders = await runQuery('select * from orders').then((result: any) => result._array);
+    // const dbItems = await runQuery('select * from item').then((result: any) => result._array);
 
     // console.log(dbOrders);
     // console.log(dbItems);

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addBookToOrder, removeBookFromOrder, addBookToStore, removeBookFromStore } from '../../util/actions';
 import { generalStyles, colors } from '../../App.styles';
+import { StoreState, StoreProps } from './Store.interfaces';
 import StoreStyles from './Store.styles';
 import BookStyles from '../BookCard/BookCard.styles';
 import BookCard from '../../components/BookCard/BookCard';
@@ -12,42 +13,7 @@ import { Header } from '../../components/Shared/SharedComponents';
 import newbook from '../../assets/img/newbook.png';
 import emptyCover from '../../assets/img/emptyCover.png';
 import { runQuery } from '../../database';
-
-interface StoreState {
-	bookList: any,
-	order: bookUnit [],
-	search: null | string,
-	showNewBook: boolean,
-	newBook: newBook,
-	searchList: any
-}
-
-interface StoreProps {
-	bookAppStore: any,
-	addBookToOrder: Function,
-	removeBookFromOrder: Function,
-	addBookToStore: Function,
-	removeBookFromStore: Function,
-}
-
-interface newBook {
-	thumbnail_url: string | null,
-	title: string | null,
-	authors: string | null,
-	published_year: string | null,
-	categories: string | null, 
-	isbn: string | null,
-	price: string | null,
-	page_count: string | null,
-	stock: string | null,
-	publisher_fee: string | null,
-	publisher_ID: string | null,
-}
-
-interface bookUnit {
-	book: any,
-	quantity: number
-}
+import { NewBookModal } from '../Modals/NewBookModal';
 
 const newBookInit = {
 	thumbnail_url: null,
@@ -104,16 +70,11 @@ class Store extends React.Component<StoreProps, StoreState> {
 		const printBooks = async () => console.log(await runQuery(`select * from book;`)
 			.then((results: any) => Promise.resolve(results._array)));
 
-		// console.log(`books before deletion:`);
-		// await printBooks();
-
 		runQuery(`
 			update book
 			set stock = 0
 			where book_ID = '${targetId}';
 		`).then(async (result: any) => {
-			// console.log(`books after deletion:`);
-			// await printBooks();
 			this.setState({ searchList: [], search: '' });
 			this.props.removeBookFromStore(bookList.findIndex((item) => item.book_ID === targetId));
 		})
@@ -147,7 +108,7 @@ class Store extends React.Component<StoreProps, StoreState> {
 		imagePicker.launchImageLibraryAsync({
 			allowsEditing: false,
 			quality: 0.2,
-		}).then((upload) => {
+		}).then((upload: any) => {
 			if (upload.cancelled) {
 				Alert.alert(
 					'LookinnaBook',
@@ -216,8 +177,6 @@ class Store extends React.Component<StoreProps, StoreState> {
 		) {
 			verified = false;
 		}
-
-		// console.log(newBook);
 
 		if (verified) {
 			const newId = `b-${bookList.length + 1}`
@@ -295,57 +254,26 @@ class Store extends React.Component<StoreProps, StoreState> {
 		}
 	}
 
+	updateState = (update) => {
+		this.setState(update)
+	}
+
 	render() {
 		const { searchList, search, showNewBook, newBook } = this.state;
 		const { bookList, order, currUser } = this.props.bookAppStore;
 
-		// console.log(order);
-
 		return (
 			<View style={StoreStyles.storeContainer}>
-				<Modal 
-					animationType='fade'
-					transparent={true}
-					visible={showNewBook}
-				>
-					<View style={generalStyles.overlayContainer}>
-						<View style={generalStyles.contentOverlayContainer}>
-							<ScrollView style={{ width: '100%', marginBottom: 20 }}>
-								<TouchableOpacity onPress={() => this.uploadImage()} style={{ alignSelf: 'center' }}>
-									<Image source={newBook.thumbnail_url ? {uri: newBook.thumbnail_url} : emptyCover} style={BookStyles.bookOverlayImage}/>
-								</TouchableOpacity>
-								<View>
-									{Object.keys(bookInputInfo).map((key, index) => (
-										<TextInput 
-											key={index}
-											value={newBook[key]}
-											onChangeText={(input) => this.updateNewBook(input, key)}
-											style={[generalStyles.header1, StoreStyles.bookInfoInputBox]} 
-											placeholder={bookInputInfo[key]}
-											keyboardType={['price', 'stock', 'publisher_fee', 'published_year', 'page_count'].includes(key)  ? 'number-pad' : 'default'}
-										/>
-									))}
-								</View>
-							</ScrollView>
-							<TouchableOpacity 
-								style={generalStyles.closeOverlayButton} 
-								onPress={() => this.saveNewBook()}
-							>
-								<Text style={[generalStyles.actionExit, { color: colors.blue }]}>
-									add book 
-								</Text>
-							</TouchableOpacity>
-							<TouchableOpacity 
-								style={generalStyles.exitOverlayButton} 
-								onPress={() => this.setState({ showNewBook: false, newBook: newBookInit })}
-							>
-								<Text style={[generalStyles.actionExit, { color: colors.blue }]}>
-									close
-								</Text>
-							</TouchableOpacity>
-						</View>
-					</View>
-				</Modal>
+				<NewBookModal 
+					isVisible={showNewBook}
+					updateState={this.updateState}
+					newBook={newBook}
+					newBookInit={newBookInit}
+					bookInputInfo={bookInputInfo}
+					saveBook={this.saveNewBook}
+					updateBook={this.updateNewBook}
+					uploadImage={this.uploadImage}
+				/>
 
 				<View style={StoreStyles.headerContainer}>
 					<Header title="Store" />

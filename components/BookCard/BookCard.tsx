@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, Image, TouchableOpacity, Button, Modal } from 'react-native';
 import selected from '../../assets/img/selected.png';
 import unselected from '../../assets/img/unselected.png';
-import { generalStyles, colors } from '../../App.styles';
+import { generalStyles } from '../../App.styles';
 import BookStyles from './BookCard.styles';
+import { BookModal } from '../Modals/BookModal';
 
 const BookCard = ({ title, author, price, cover, release, id, isbn, genres, publisher, addBook = null, removeBook = null, numPages, type }) => {
   const [bookSelected, setSelection] = useState(false)
@@ -24,67 +25,18 @@ const BookCard = ({ title, author, price, cover, release, id, isbn, genres, publ
 
   return (
     <View style={BookStyles.cardContainer}>
-      <Modal 
-        animationType='fade'
-        transparent={true}
-        visible={showOverlay}
-      >
-        <View style={generalStyles.overlayContainer}>
-          <View style={generalStyles.contentOverlayContainer}>
-            <Image source={{ uri: cover }} style={BookStyles.bookOverlayImage}/>
-            <Text style={[generalStyles.subheader2, BookStyles.bookOverlayLabel]}>
-              title
-            </Text>
-            <Text style={[generalStyles.header1, BookStyles.bookOverlayText]}>
-              {title}
-            </Text>
-            <Text style={[generalStyles.subheader2, BookStyles.bookOverlayLabel]}>
-              authors
-            </Text>
-            <Text style={[generalStyles.subheader1, BookStyles.bookOverlayText]}>
-              {author.join(', ')}
-            </Text>
-            <Text style={[generalStyles.subheader2, BookStyles.bookOverlayLabel]}>
-              release
-            </Text>
-            <Text style={[generalStyles.header1, BookStyles.bookOverlayText]}>
-              {release}
-            </Text>
-            <Text style={[generalStyles.subheader2, BookStyles.bookOverlayLabel]}>
-              categories
-            </Text>
-            <Text style={[generalStyles.header1, BookStyles.bookOverlayText]}>
-              {genres.join(', ')}
-            </Text>
-            <Text style={[generalStyles.subheader2, BookStyles.bookOverlayLabel]}>
-              ISBN
-            </Text>
-            <Text style={[generalStyles.header1, BookStyles.bookOverlayText]}>
-              {isbn}
-            </Text>
-            <Text style={[generalStyles.subheader2, BookStyles.bookOverlayLabel]}>
-              publisher
-            </Text>
-            <Text style={[generalStyles.header1, BookStyles.bookOverlayText]}>
-              {publisher}
-            </Text>
-            <Text style={[generalStyles.subheader2, BookStyles.bookOverlayLabel]}>
-              price
-            </Text>
-            <Text style={[generalStyles.header1, BookStyles.bookOverlayText]}>
-              {`$${price}`}
-            </Text>
-            <TouchableOpacity 
-              style={generalStyles.closeOverlayButton} 
-              onPress={() => setOverlay(!showOverlay)}
-             >
-              <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
-                done 
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+      <BookModal 
+        isVisible={showOverlay}
+        cover={cover}
+        title={title}
+        author={author}
+        release={release}
+        genres={genres}
+        isbn={isbn}
+        publisher={publisher}
+        price={price}
+        setOverlay={setOverlay}
+      />
 
       <TouchableOpacity onPress={() => setOverlay(!showOverlay)} style={[BookStyles.descriptionContainer, (type === 'order' && { width: '100%' })]}>
         <Image source={{uri: cover}} style={BookStyles.bookCover} />
