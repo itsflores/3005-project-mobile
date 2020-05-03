@@ -114,4 +114,4 @@ export const SalesReportModal = ({
       </View>
     )}
   </Modal>
-)
+);

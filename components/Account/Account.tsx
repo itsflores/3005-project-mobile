@@ -10,6 +10,9 @@ import { generalStyles, colors } from '../../App.styles';
 import { Header } from '../Shared/SharedComponents';
 import { salesPerGenre, salesPerAuthor, salesPerPublisher } from '../../SQL/queries.sql';
 import { SalesReportModal } from '../Modals/SalesReportModal';
+import { OrderHistoryModal } from '../Modals/OrderHistoryModal';
+import { NewPublisherModal } from '../Modals/NewPublisherModal';
+import { TrackOrderModal } from '../Modals/TrackOrderModal';
 
 class Account extends React.Component <AccountProps, AccountState> {
   constructor(props) {
@@ -481,177 +484,31 @@ class Account extends React.Component <AccountProps, AccountState> {
               updateState={this.updateState}
             />
 
-            <Modal
-              onShow={() => this.updateOrders()}
-              animationType='fade'
-              transparent={true}
-              visible={showOrderHistory}
-            >
-              <View style={generalStyles.overlayContainer}>
-                <View style={generalStyles.contentOverlayContainer}>
-                  <Text style={[generalStyles.cardHeader]}>
-                    Your order history
-                  </Text>
-                  <ScrollView style={AccountStyles.orderHistoryContainer}>
-                    {(orders.length > 0) ? (
-                      orders.map((order, index) => (
-                        <View style={AccountStyles.orderContainer} key={index}>
-                          <View style={AccountStyles.orderDescriptionContainer}>
-                            <Text style={[generalStyles.header1Bold]}>
-                              {`tracking #${order.tracking_num}`}
-                            </Text>
-                            <Text style={[generalStyles.header1Bold, { textAlign: 'right' }]}>
-                              {`$${order.price}`}
-                            </Text>
-                          </View>
-                          <View style={AccountStyles.orderDescriptionContainer}>
-                            <Text style={[generalStyles.header2]}>
-                              {`${order.day}/${order.month}/${order.year}`}
-                            </Text>
-                          </View>
-                        </View>
-                      ))
-                    ) : (
-                      <Text style={generalStyles.header2}>
-                        You haven't placed any orders yet!
-                      </Text>
-                    )}
-                  </ScrollView>
-                  <TouchableOpacity 
-                    style={generalStyles.closeOverlayButton} 
-                    onPress={() => this.setState({ showOrderHistory: false })}
-                  >
-                    <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
-                      done 
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </Modal>
+            <OrderHistoryModal 
+              isVisible={showOrderHistory}
+              updateState={this.updateState}
+              getOrders={this.updateOrders}
+              orders={orders}
+            />
 
-            <Modal
-              animationType='fade'
-              transparent={true}
-              visible={showNewPublisher}
-            >
-              <View style={generalStyles.overlayContainer}>
-                <View style={generalStyles.contentOverlayContainer}>
-                  <ScrollView style={AccountStyles.orderHistoryContainer}>
-                    <Text style={[generalStyles.cardHeader]}>
-                      Add a new publisher
-                    </Text>
-                    <View style={AccountStyles.billingInfoContainer}>
-                      <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
-                        Name
-                      </Text>
-                      <TextInput
-                        style={[generalStyles.header1, AccountStyles.billingInfoInputBox]} 
-                        onChangeText={(input) => this.setState({ inputPublisherName: input })}
-                        value={inputPublisherName}
-                      />
+            <NewPublisherModal 
+              isVisible={showNewPublisher}
+              updateState={this.updateState}
+              addPublisher={this.createNewPublisher}
+              inputPublisherAddress={inputPublisherAddress}
+              inputPublisherBankNumber={inputPublisherBankNumber}
+              inputPublisherId={inputPublisherId}
+              inputPublisherName={inputPublisherName}
+              inputPublisherPhone={inputPublisherPhone}
+            />
 
-                      <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
-                        id
-                      </Text>
-                      <TextInput 
-                        style={[generalStyles.header1, AccountStyles.billingInfoInputBox]}
-                        onChangeText={(input) => this.setState({ inputPublisherId: input })}
-                        value={inputPublisherId}
-                      />
-
-                      <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
-                        Bank account
-                      </Text>
-                      <TextInput 
-                        style={[generalStyles.header1, AccountStyles.billingInfoInputBox]}
-                        onChangeText={(input) => this.setState({ inputPublisherBankNumber: input })}
-                        value={inputPublisherBankNumber}
-                        keyboardType='number-pad'
-                      />
-
-                      <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
-                        Address
-                      </Text>
-                      <TextInput 
-                        style={[generalStyles.header1, AccountStyles.billingInfoInputBox]}
-                        onChangeText={(input) => this.setState({ inputPublisherAddress: input })}
-                        value={inputPublisherAddress}
-                      />
-
-                      <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
-                        Phone number
-                      </Text>
-                      <TextInput 
-                        style={[generalStyles.header1, AccountStyles.billingInfoInputBox]}
-                        onChangeText={(input) => this.setState({ inputPublisherPhone: input })}
-                        value={inputPublisherPhone}
-                        keyboardType='phone-pad'
-                      />
-                    </View>
-                  </ScrollView>
-                  <TouchableOpacity
-                    style={generalStyles.closeOverlayButton} 
-                    onPress={() => this.createNewPublisher()}
-                  >
-                    <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
-                      save
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity 
-                    style={generalStyles.exitOverlayButton} 
-                    onPress={() => this.setState({ showNewPublisher: false })}
-                  >
-                    <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
-                      close
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </Modal>
-
-            <Modal 
-              animationType='fade'
-              transparent={true}
-              visible={showTracking}
-            >
-              <View style={generalStyles.overlayContainer}>
-                <View style={generalStyles.contentOverlayContainer}>
-                  <Text style={[generalStyles.cardHeader]}>
-                    Track an order
-                  </Text>
-                  <View style={AccountStyles.billingInfoContainer}>
-                    <Text style={[generalStyles.subheader1, { marginTop: 10, marginBottom: 4 }]}>
-                      Enter your tracking number here
-                    </Text>
-                    <TextInput
-                      style={[generalStyles.header1, AccountStyles.billingInfoInputBox]} 
-                      onChangeText={(input) => this.setState({ inputTrackOrder: input })}
-                      placeholder="i.e. o-12345"
-                      value={inputTrackOrder}
-                    />
-                  <Text style={[generalStyles.header1Bold, { marginTop: 20 }]}>
-                    {orderStatus}
-                  </Text>
-                  </View>
-                  <TouchableOpacity
-                    style={generalStyles.closeOverlayButton} 
-                    onPress={() => this.trackOrder()}
-                  >
-                    <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
-                      track order
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity 
-                    style={generalStyles.exitOverlayButton} 
-                    onPress={() => this.setState({ showTracking: false })}
-                  >
-                    <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
-                      close
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </Modal>
+            <TrackOrderModal 
+              isVisible={showTracking}
+              updateState={this.updateState}
+              trackOrder={this.trackOrder}
+              orderStatus={orderStatus}
+              inputTrackOrder={inputTrackOrder}
+            />
 
             <Modal 
               animationType='fade'
