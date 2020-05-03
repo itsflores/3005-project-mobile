@@ -288,11 +288,21 @@ class Account extends React.Component <AccountProps, AccountState> {
     });
   }
 
+  verifyBillingIngfo = (): boolean => {
+    const { updateCardNumber } = this.state;
+
+    if (parseInt(updateCardNumber) === NaN) {
+      return false;
+    }
+
+    return true;
+  }
+
   updateBillingInfo = () => {
     const { updateAddress, updateCardNumber, updateExpiryMonth, updateExpiryYear, updatePhoneNumber } = this.state;
     const { currUser } = this.props.bookAppStore;
 
-    if (!(updateAddress && updateCardNumber && updateExpiryMonth && updateExpiryYear && updatePhoneNumber)) {
+    if (!(updateAddress && updateCardNumber && updateExpiryMonth && updateExpiryYear && updatePhoneNumber) || this.verifyBillingIngfo()) {
       Alert.alert(
         'LookinnaBook',
         `Please enter valid information!`,
