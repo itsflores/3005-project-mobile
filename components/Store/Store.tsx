@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addBookToOrder, removeBookFromOrder, addBookToStore, removeBookFromStore } from '../../util/actions';
 import { generalStyles, colors } from '../../App.styles';
-import { StoreState, StoreProps, newBook, bookUnit } from './StoreInterface';
+import { StoreState, StoreProps } from './Store.interfaces';
 import StoreStyles from './Store.styles';
 import BookStyles from '../BookCard/BookCard.styles';
 import BookCard from '../../components/BookCard/BookCard';
