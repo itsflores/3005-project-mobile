@@ -1,3 +1,14 @@
+export const bookAmount = `select count(book_ID) from book;`;
+export const sales = `select sum(price) from orders`;
+export const clearItem = `drop table item;`;
+export const clearBook = `drop table book;`;
+export const clearPub = `drop table publisher;`;
+export const clearOrder = `drop table orders;`;
+export const clearUser = `drop table users;`;
+export const clearRoles = `drop table roles;`;
+export const clearAuthors = `drop table author;`;
+export const clearCategories = `drop table category;`;
+
 export const populateRoles = `
     insert into roles (
         role_ID, role_name
@@ -46,10 +57,6 @@ export const populatePubs = `
     );
 `;
 
-export const bookAmount = `select count(book_ID) from book;`;
-
-export const sales = `select sum(price) from orders`;
-
 export const salesPerGenre = `
     select 
         book.price as price, category_name, quantity 
@@ -68,7 +75,7 @@ export const salesPerAuthor = `
         inner join author on author.book_ID = book.book_ID
         inner join orders on orders.tracking_num = item.order_id`;
 
-export const salesPerPublisher= `
+export const salesPerPublisher = `
     select 
         book.price as price, publisher.name as publisher, quantity, publisher_fee
     from 
@@ -76,12 +83,3 @@ export const salesPerPublisher= `
         inner join item on book.book_ID = item.book_ID
         inner join publisher on publisher.publisher_ID = book.publisher_ID
         inner join orders on orders.tracking_num = item.order_id`;
-
-export const clearItem = `drop table item;`;
-export const clearBook = `drop table book;`;
-export const clearPub = `drop table publisher;`;
-export const clearOrder = `drop table orders;`;
-export const clearUser= `drop table users;`;
-export const clearRoles = `drop table roles;`;
-export const clearAuthors = `drop table author;`;
-export const clearCategories = `drop table category;`;

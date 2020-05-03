@@ -21,10 +21,6 @@ const appStore = createStore(appBookReducer);
 const Tab = createBottomTabNavigator();
 
 Db.initializeDb();
-Db.clearDb();
-Db.createDb();
-Db.populateDb();
-Db.populateBooks();
 
 const App = () => {
   const [fontsLoaded, fontStatus] = useState(false)

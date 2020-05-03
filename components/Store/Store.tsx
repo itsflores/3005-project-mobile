@@ -104,16 +104,11 @@ class Store extends React.Component<StoreProps, StoreState> {
 		const printBooks = async () => console.log(await runQuery(`select * from book;`)
 			.then((results: any) => Promise.resolve(results._array)));
 
-		// console.log(`books before deletion:`);
-		// await printBooks();
-
 		runQuery(`
 			update book
 			set stock = 0
 			where book_ID = '${targetId}';
 		`).then(async (result: any) => {
-			// console.log(`books after deletion:`);
-			// await printBooks();
 			this.setState({ searchList: [], search: '' });
 			this.props.removeBookFromStore(bookList.findIndex((item) => item.book_ID === targetId));
 		})
@@ -147,7 +142,7 @@ class Store extends React.Component<StoreProps, StoreState> {
 		imagePicker.launchImageLibraryAsync({
 			allowsEditing: false,
 			quality: 0.2,
-		}).then((upload) => {
+		}).then((upload: any) => {
 			if (upload.cancelled) {
 				Alert.alert(
 					'LookinnaBook',
@@ -216,8 +211,6 @@ class Store extends React.Component<StoreProps, StoreState> {
 		) {
 			verified = false;
 		}
-
-		// console.log(newBook);
 
 		if (verified) {
 			const newId = `b-${bookList.length + 1}`
