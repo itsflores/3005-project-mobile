@@ -13,6 +13,7 @@ import { Header } from '../../components/Shared/SharedComponents';
 import newbook from '../../assets/img/newbook.png';
 import emptyCover from '../../assets/img/emptyCover.png';
 import { runQuery } from '../../database';
+import { NewBookModal } from '../Modals/NewBookModal';
 
 const newBookInit = {
 	thumbnail_url: null,
@@ -253,57 +254,26 @@ class Store extends React.Component<StoreProps, StoreState> {
 		}
 	}
 
+	updateState = (update) => {
+		this.setState(update)
+	}
+
 	render() {
 		const { searchList, search, showNewBook, newBook } = this.state;
 		const { bookList, order, currUser } = this.props.bookAppStore;
 
-		// console.log(order);
-
 		return (
 			<View style={StoreStyles.storeContainer}>
-				<Modal 
-					animationType='fade'
-					transparent={true}
-					visible={showNewBook}
-				>
-					<View style={generalStyles.overlayContainer}>
-						<View style={generalStyles.contentOverlayContainer}>
-							<ScrollView style={{ width: '100%', marginBottom: 20 }}>
-								<TouchableOpacity onPress={() => this.uploadImage()} style={{ alignSelf: 'center' }}>
-									<Image source={newBook.thumbnail_url ? {uri: newBook.thumbnail_url} : emptyCover} style={BookStyles.bookOverlayImage}/>
-								</TouchableOpacity>
-								<View>
-									{Object.keys(bookInputInfo).map((key, index) => (
-										<TextInput 
-											key={index}
-											value={newBook[key]}
-											onChangeText={(input) => this.updateNewBook(input, key)}
-											style={[generalStyles.header1, StoreStyles.bookInfoInputBox]} 
-											placeholder={bookInputInfo[key]}
-											keyboardType={['price', 'stock', 'publisher_fee', 'published_year', 'page_count'].includes(key)  ? 'number-pad' : 'default'}
-										/>
-									))}
-								</View>
-							</ScrollView>
-							<TouchableOpacity 
-								style={generalStyles.closeOverlayButton} 
-								onPress={() => this.saveNewBook()}
-							>
-								<Text style={[generalStyles.actionExit, { color: colors.blue }]}>
-									add book 
-								</Text>
-							</TouchableOpacity>
-							<TouchableOpacity 
-								style={generalStyles.exitOverlayButton} 
-								onPress={() => this.setState({ showNewBook: false, newBook: newBookInit })}
-							>
-								<Text style={[generalStyles.actionExit, { color: colors.blue }]}>
-									close
-								</Text>
-							</TouchableOpacity>
-						</View>
-					</View>
-				</Modal>
+				<NewBookModal 
+					isVisible={showNewBook}
+					updateState={this.updateState}
+					newBook={newBook}
+					newBookInit={newBookInit}
+					bookInputInfo={bookInputInfo}
+					saveBook={this.saveNewBook}
+					updateBook={this.updateNewBook}
+					uploadImage={this.uploadImage}
+				/>
 
 				<View style={StoreStyles.headerContainer}>
 					<Header title="Store" />
