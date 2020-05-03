@@ -13,6 +13,9 @@ import { SalesReportModal } from '../Modals/SalesReportModal';
 import { OrderHistoryModal } from '../Modals/OrderHistoryModal';
 import { NewPublisherModal } from '../Modals/NewPublisherModal';
 import { TrackOrderModal } from '../Modals/TrackOrderModal';
+import { NewAdminModal } from '../Modals/NewAdminModal';
+import { DeleteUserModal } from '../Modals/DeleteUserModal';
+import { UpdateBillingModal } from '../Modals/UpdateBillingModal';
 
 class Account extends React.Component <AccountProps, AccountState> {
   constructor(props) {
@@ -510,239 +513,33 @@ class Account extends React.Component <AccountProps, AccountState> {
               inputTrackOrder={inputTrackOrder}
             />
 
-            <Modal 
-              animationType='fade'
-              transparent={true}
-              visible={showNewAdmin}
-              onShow={() => {
-                runQuery(`
-                  select username 
-                  from users
-                  where role_ID not in ('r-00');
-                `).then((result: any) => {
-                  const users = result._array.reduce((acc: any [], user) => {
-                    acc.push(user.username);
-                    return acc;
-                  }, []);
+            <NewAdminModal 
+              isVisible={showNewAdmin}
+              updateState={this.updateState}
+              addAmin={this.createNewAdmin}
+              availableUsers={availableUsers}
+              newAdminSelection={newAdminSelection}
+            />
 
-                  if (users.length === 1) {
-                    this.setState({ availableUsers: users, newAdminSelection: users[0] });
-                  } else {
-                    this.setState({ availableUsers: users });
-                  }
-                })
-              }}
-            >
-              <View style={generalStyles.overlayContainer}>
-                <View style={generalStyles.contentOverlayContainer}>
-                  <View>
-                    <Text style={[generalStyles.cardHeader]}>
-                      Make a user an admin 
-                    </Text>
-                    <Text style={[generalStyles.subheader2]}>
-                      Select a username from the dropdown
-                    </Text>
-                  </View>
-                  {availableUsers.length > 0 ? (
-                    <Picker 
-                      onValueChange={(value) => this.setState({ newAdminSelection: value })}
-                      selectedValue={newAdminSelection}
-                      style={{ width: '100%', marginTop: 20, marginBottom: 20, alignItems: 'center' }}>
-                      {availableUsers.map((username, index) => (
-                        <Picker.Item key={index} label={username} value={username} />
-                      ))}
-                    </Picker>
-                  ) : (
-                    <View style={{ marginTop: 20, marginBottom: 20 }}>
-                      <Text style={[generalStyles.subheader1]}>
-                        There are no available users!
-                      </Text>
-                    </View>
-                  )}
-                  <TouchableOpacity
-                    style={generalStyles.closeOverlayButton} 
-                    onPress={() => this.createNewAdmin()}
-                  >
-                    <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
-                      close & save
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity 
-                    style={generalStyles.exitOverlayButton} 
-                    onPress={() => this.setState({ showNewAdmin: false })}
-                  >
-                    <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
-                      close
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </Modal>
+            <DeleteUserModal 
+              isVisible={showDeleteUser}
+              updateState={this.updateState}
+              deleteAccount={this.deleteAccount}
+              availableUsers={availableUsers}
+              deleteUserSelection={deleteUserSelection}
+            />
 
-            <Modal 
-              animationType='fade'
-              transparent={true}
-              visible={showDeleteUser}
-              onShow={() => {
-                runQuery(`
-                  select username 
-                  from users
-                  where role_ID not in ('r-00');
-                `).then((result: any) => {
-                  const users = result._array.reduce((acc: any [], user) => {
-                    acc.push(user.username);
-                    return acc;
-                  }, []);
-
-                  if (users.length === 1) {
-                    this.setState({ availableUsers: users, deleteUserSelection: users[0] });
-                  } else {
-                    this.setState({ availableUsers: users });
-                  }
-                })
-              }}
-            >
-              <View style={generalStyles.overlayContainer}>
-                <View style={generalStyles.contentOverlayContainer}>
-                  <View>
-                    <Text style={[generalStyles.cardHeader]}>
-                      Delete a user account from the store 
-                    </Text>
-                    <Text style={[generalStyles.subheader2]}>
-                      Select a username from the dropdown
-                    </Text>
-                  </View>
-                  {availableUsers.length > 0 ? (
-                    <Picker 
-                      onValueChange={(value) => this.setState({ deleteUserSelection: value })}
-                      selectedValue={deleteUserSelection}
-                      style={{ width: '100%', marginTop: 20, marginBottom: 20, alignItems: 'center' }}>
-                      {availableUsers.map((username, index) => (
-                        <Picker.Item key={index} label={username} value={username} />
-                      ))}
-                    </Picker>
-                  ) : (
-                    <View style={{ marginTop: 20, marginBottom: 20 }}>
-                      <Text style={[generalStyles.subheader1]}>
-                        There are no available users!
-                      </Text>
-                    </View>
-                  )}
-                  <TouchableOpacity
-                    style={generalStyles.closeOverlayButton} 
-                    onPress={() => this.deleteAccount()}
-                  >
-                    <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
-                      close & save
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity 
-                    style={generalStyles.exitOverlayButton} 
-                    onPress={() => this.setState({ showDeleteUser: false })}
-                  >
-                    <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
-                      close
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </Modal>
-
-            <Modal
-              animationType='fade'
-              transparent={true}
-              visible={showBilling}
-              onShow={() => this.setState({ 
-                updateExpiryYear: currUser.expiryYear, 
-                updateExpiryMonth: currUser.expiryMonth,
-                updatePhoneNumber: currUser.phoneNumber,
-                updateAddress: currUser.address,
-                updateCardNumber: (currUser.cardNumber ? currUser.cardNumber.toString() : '')
-              })}
-            >
-              <View style={generalStyles.overlayContainer}>
-                <View style={generalStyles.contentOverlayContainer}>
-                  <ScrollView style={AccountStyles.orderHistoryContainer}>
-                    <Text style={[generalStyles.cardHeader]}>
-                      Your billing information
-                    </Text>
-                    <View style={AccountStyles.billingInfoContainer}>
-                      <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
-                        Card number
-                      </Text>
-                      <TextInput 
-                        style={[generalStyles.header1, AccountStyles.billingInfoInputBox]} 
-                        placeholder={(currUser.cardNumber) ? currUser.cardNumber.toString() : ''}
-                        onChangeText={(input) => this.setState({ updateCardNumber: input })}
-                        value={updateCardNumber}
-                      />
-
-                      <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
-                        Expiry date
-                      </Text>
-                      <Text style={[generalStyles.subheader1, { marginTop: 4 }]}>
-                        Year
-                      </Text>
-                      <Picker
-                        onValueChange={(value) => this.setState({ updateExpiryYear: value })}
-                        selectedValue={updateExpiryYear}
-                        style={{ width: '100%', alignItems: 'center' }}>
-                        {['2020', '2021', '2022', '2023', '2024'].map((year, index) => (
-                          <Picker.Item key={index} label={year} value={year} />
-                        ))}
-                      </Picker>
-                      <Text style={[generalStyles.subheader1]}>
-                        Month
-                      </Text>
-                      <Picker
-                        onValueChange={(value) => this.setState({ updateExpiryMonth: value })}
-                        selectedValue={updateExpiryMonth}
-                        style={{ width: '100%', alignItems: 'center' }}>
-                        {['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'].map((year, index) => (
-                          <Picker.Item key={index}label={year} value={year} />
-                        ))}
-                      </Picker>
-
-                      <Text style={[generalStyles.subheader1, { marginTop: 0 }]}>
-                        Address
-                      </Text>
-                      <TextInput 
-                        style={[generalStyles.header1, AccountStyles.billingInfoInputBox]} 
-                        placeholder={(currUser.address ? currUser.address : '')} 
-                        onChangeText={(input) => this.setState({ updateAddress: input })}
-                        value={updateAddress}
-                      />
-
-                      <Text style={[generalStyles.subheader1, { marginTop: 10 }]}>
-                        Phone number
-                      </Text>
-                      <TextInput 
-                        style={[generalStyles.header1, AccountStyles.billingInfoInputBox]} 
-                        placeholder={(currUser.phoneNumber ? currUser.phoneNumber : '')} 
-                        onChangeText={(input) => this.setState({ updatePhoneNumber: input })}
-                        value={updatePhoneNumber}
-                      />
-                    </View>
-                  </ScrollView>
-                  <TouchableOpacity
-                    style={generalStyles.closeOverlayButton} 
-                    onPress={() => this.updateBillingInfo()}
-                  >
-                    <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
-                      close & save
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity 
-                    style={generalStyles.exitOverlayButton} 
-                    onPress={() => this.setState({ showBilling: false })}
-                  >
-                    <Text style={[generalStyles.actionExit, { color: colors.blue }]}>
-                      close
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </Modal>
+            <UpdateBillingModal 
+              isVisible={showBilling}
+              updateState={this.updateState}
+              currUser={currUser}
+              updateExpiryMonth={updateExpiryMonth}
+              updateExpiryYear={updateExpiryYear}
+              updateCardNumber={updateCardNumber}
+              updateAddress={updateAddress}
+              updatePhoneNumber={updatePhoneNumber}
+              updateBilling={this.updateBillingInfo}
+            />
           </View>
         )}
 
