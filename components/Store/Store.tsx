@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addBookToOrder, removeBookFromOrder, addBookToStore, removeBookFromStore } from '../../util/actions';
 import { generalStyles, colors } from '../../App.styles';
+import { StoreState, StoreProps, newBook, bookUnit } from './StoreInterface';
 import StoreStyles from './Store.styles';
 import BookStyles from '../BookCard/BookCard.styles';
 import BookCard from '../../components/BookCard/BookCard';
@@ -12,42 +13,6 @@ import { Header } from '../../components/Shared/SharedComponents';
 import newbook from '../../assets/img/newbook.png';
 import emptyCover from '../../assets/img/emptyCover.png';
 import { runQuery } from '../../database';
-
-interface StoreState {
-	bookList: any,
-	order: bookUnit [],
-	search: null | string,
-	showNewBook: boolean,
-	newBook: newBook,
-	searchList: any
-}
-
-interface StoreProps {
-	bookAppStore: any,
-	addBookToOrder: Function,
-	removeBookFromOrder: Function,
-	addBookToStore: Function,
-	removeBookFromStore: Function,
-}
-
-interface newBook {
-	thumbnail_url: string | null,
-	title: string | null,
-	authors: string | null,
-	published_year: string | null,
-	categories: string | null, 
-	isbn: string | null,
-	price: string | null,
-	page_count: string | null,
-	stock: string | null,
-	publisher_fee: string | null,
-	publisher_ID: string | null,
-}
-
-interface bookUnit {
-	book: any,
-	quantity: number
-}
 
 const newBookInit = {
 	thumbnail_url: null,
