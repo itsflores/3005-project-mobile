@@ -4,7 +4,8 @@ export interface StoreState {
 	search: null | string,
 	showNewBook: boolean,
 	newBook: newBook,
-	searchList: any
+	searchList: any,
+	bookListSignal: boolean
 }
 
 export interface StoreProps {

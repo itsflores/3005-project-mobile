@@ -6,10 +6,18 @@ import { generalStyles } from '../../App.styles';
 import BookStyles from './BookCard.styles';
 import { BookModal } from '../Modals/BookModal';
 
-const BookCard = ({ title, author, price, cover, release, id, isbn, genres, publisher, addBook = null, removeBook = null, numPages, type }) => {
-  const [bookSelected, setSelection] = useState(false)
-  const [showOverlay, setOverlay] = useState(false)
+const BookCard = ({ title, author, price, cover, release, id, isbn, genres, publisher, addBook = null, removeBook = null, numPages, type, signal }) => {
+  const [bookSelected, setSelection] = useState(false);
+  const [showOverlay, setOverlay] = useState(false);
+  const [resetSignal, setSignal] = useState(signal);
   const componentDidMount = useRef(false);
+
+  useEffect(() => {
+    if (signal !== resetSignal) {
+      setSignal(signal);
+      setSelection(false);
+    } 
+  }, [signal])
 
   useEffect(() => {
     if (componentDidMount.current) {
@@ -21,7 +29,7 @@ const BookCard = ({ title, author, price, cover, release, id, isbn, genres, publ
     } else {
       componentDidMount.current = true;
     }
-  }, [componentDidMount, bookSelected])
+  }, [componentDidMount, bookSelected]);
 
   return (
     <View style={BookStyles.cardContainer}>

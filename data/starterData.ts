@@ -33,7 +33,7 @@ const books = [{
     "book_ID": "b-03",
     "title": "Specification by Example",
     "isbn": "1617290084",
-    "page_count": 0,
+    "page_count": 25,
     "published_year": 2011,
     "thumbnail_url": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/adzic.jpg",
     "authors": ["Gojko Adzic"],

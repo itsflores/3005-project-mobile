@@ -7,11 +7,9 @@ import { addBookToOrder, removeBookFromOrder, addBookToStore, removeBookFromStor
 import { generalStyles, colors } from '../../App.styles';
 import { StoreState, StoreProps } from './Store.interfaces';
 import StoreStyles from './Store.styles';
-import BookStyles from '../BookCard/BookCard.styles';
 import BookCard from '../../components/BookCard/BookCard';
 import { Header } from '../../components/Shared/SharedComponents';
 import newbook from '../../assets/img/newbook.png';
-import emptyCover from '../../assets/img/emptyCover.png';
 import { runQuery } from '../../database';
 import { NewBookModal } from '../Modals/NewBookModal';
 
@@ -51,6 +49,16 @@ class Store extends React.Component<StoreProps, StoreState> {
 			search: null,
 			showNewBook: false,
 			newBook: newBookInit,
+			bookListSignal: 'on'
+		}
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		const { order } = this.props.bookAppStore;
+		const { bookListSignal } = this.state;
+
+		if (order.length !== prevProps.bookAppStore.order.length && order.length === 0) {
+			this.setState({ bookListSignal: !bookListSignal })
 		}
 	}
 
@@ -259,7 +267,7 @@ class Store extends React.Component<StoreProps, StoreState> {
 	}
 
 	render() {
-		const { searchList, search, showNewBook, newBook } = this.state;
+		const { searchList, search, showNewBook, newBook, bookListSignal } = this.state;
 		const { bookList, order, currUser } = this.props.bookAppStore;
 
 		return (
@@ -313,6 +321,7 @@ class Store extends React.Component<StoreProps, StoreState> {
 									type="store"
 									numPages={book.page_count}
 									publisher={book.publisher_ID}
+									signal={bookListSignal}
 								/>
 								{currUser !== null && currUser.admin && (
 									<TouchableOpacity onPress={() => this.removeFromStore(book.book_ID)}>
