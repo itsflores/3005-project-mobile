@@ -58,7 +58,7 @@ class Store extends React.Component<StoreProps, StoreState> {
 		const { bookListSignal } = this.state;
 
 		if (order.length !== prevProps.bookAppStore.order.length && order.length === 0) {
-			this.setState({ bookListSignal: !bookListSignal })
+			this.setState({ bookListSignal: !bookListSignal });
 		}
 	}
 

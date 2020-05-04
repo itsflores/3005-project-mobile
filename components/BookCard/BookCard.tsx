@@ -6,7 +6,7 @@ import { generalStyles } from '../../App.styles';
 import BookStyles from './BookCard.styles';
 import { BookModal } from '../Modals/BookModal';
 
-const BookCard = ({ title, author, price, cover, release, id, isbn, genres, publisher, addBook = null, removeBook = null, numPages, type, signal }) => {
+const BookCard = ({ title, author, price, cover, release, id, isbn, genres, publisher, addBook = null, removeBook = null, numPages, type, signal = false }) => {
   const [bookSelected, setSelection] = useState(false);
   const [showOverlay, setOverlay] = useState(false);
   const [resetSignal, setSignal] = useState(signal);
